@@ -8,7 +8,8 @@ setup(
     version="0.1.0",
     description="Ferramenta para converter arquivos XSD em documentos de mapeamento XML",
     author="Desenvolvido Automaticamente",
-    packages=find_packages(),
+    packages=find_packages(include=["src", "src.*"]),
+    package_dir={"": "."},
     include_package_data=True,
     install_requires=[
         "lxml>=4.9.0",
@@ -17,7 +18,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "syncpl=syncpl.cli:app",
+            "syncpl=src.cli:app",
         ],
     },
     python_requires=">=3.8",

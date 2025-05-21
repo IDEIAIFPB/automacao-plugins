@@ -51,12 +51,8 @@ syncpl generate caminho/para/seu/arquivo.xsd --root NomeDoElementoRaiz --output 
 
 ## Exemplo
 
-Arquivo xsd `nfse-v2-02.xsd` e queira gerar um mapeamento para o elemento raiz `CancelarNfseEnvio`:
+Arquivo xsd `nfse-v2-02.xsd` e queira gerar um mapeamento para o elemento raiz `GerarNfseEnvio`:
 
 ```bash
-python3 -m syncpl generate ./xsd-files/nfse-v-100.xsd --root CancelarNfseEnvio --output ./cancelar-mapper.xml 
-```
-
-```bash
-syncpl generate nfse-v2-02.xsd --root GerarNfseEnvio --output emissao-mapper.xml
+syncpl generate ./xsd--files/nfse-v2-02.xsd --root GerarNfseEnvio --output emissao-mapper.xml --properties properties.json
 ```
