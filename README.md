@@ -2,6 +2,28 @@
 
 Uma ferramenta para converter automaticamente arquivos XSD em documentos de mapeamento XML usando o XSD.
 
+## Desenvolvimento
+
+Para contribuir com o desenvolvimento é necessáiro que:
+
+1. Instale as dependências do projeto
+```bash
+pip install -e .
+```
+
+2. Crie e ative um ambiente virtual de desenvolvimento (venv)
+```bash
+python3 -m venv .venv
+```
+
+3. Instale o pre-commit (formatador de código)
+```bash
+pre-commit install
+```
+
+Agora, antes de todo commit seus código serão formatados.
+
+
 ## Instalação
 
 Para instalar a ferramenta, clone o repositório e instale usando pip:
