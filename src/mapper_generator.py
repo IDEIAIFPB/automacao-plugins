@@ -174,7 +174,7 @@ class MapperGenerator:
                 sources_node = etree.SubElement(value_node, "sources")
 
                 # Para atributos "Id", usar a variável criada em vez de xpath
-                if attr.name == "Id" and self.id_variables:
+                if attr.name in ("Id", "id") and self.id_variables:
                     # Encontrar a variável para este elemento
                     var_name = f"id{element.name.capitalize()}"
                     if var_name in self.id_variables:
