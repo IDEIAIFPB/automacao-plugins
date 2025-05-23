@@ -86,7 +86,7 @@ class MapperGenerator:
                 value = etree.SubElement(variable, "value")
                 sources = etree.SubElement(value, "sources")
                 random = etree.SubElement(sources, "random")
-                random.set("rangeStart", "0")
+                random.set("rangeStart", "100000000")
                 random.set("rangeEnd", "999999999")
 
         # Criar o nó de propriedades
@@ -114,7 +114,7 @@ class MapperGenerator:
 
         # Verificar atributos neste elemento
         for attr in element.attributes:
-            if attr.name == "Id":
+            if attr.name in ("Id", "id"):
                 # Criar um nome de variável baseado no nome do elemento
                 var_name = f"id{element_name.capitalize()}"
                 self.id_variables[var_name] = element_name
