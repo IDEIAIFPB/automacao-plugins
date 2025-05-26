@@ -1,0 +1,13 @@
+[project]
+name = "automacao-plugins"
+version = "0.0.1"
+dependencies = [
+    "typer",
+    "rich",
+    "pytest",
+    "lxml",
+    "pre-commit",
+]
+
+[tool.uv]
+package = false

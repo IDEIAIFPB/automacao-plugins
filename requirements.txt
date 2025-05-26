@@ -1,5 +1,0 @@
-typer
-rich
-pytest
-lxml
-pre-commit
