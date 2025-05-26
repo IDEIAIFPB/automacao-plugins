@@ -2,42 +2,24 @@
 
 Uma ferramenta para converter automaticamente arquivos XSD em documentos de mapeamento XML usando o XSD.
 
-## Desenvolvimento
+## Instalação
 
 Para contribuir com o desenvolvimento é necessáiro que:
 
 1. Instale as dependências do projeto
-```bash
-pip install -e .
-```
+    ```bash
+    uv sync
+    ```
 
-2. Crie e ative um ambiente virtual de desenvolvimento (venv)
-```bash
-python3 -m venv .venv
-```
+2. Ative a venv
+   ```bash
+    source .venv/bin/activate
+    ```
 
 3. Instale o pre-commit (formatador de código)
-```bash
-pre-commit install
-```
-
-Agora, antes de todo commit seus código serão formatados.
-
-
-## Instalação
-
-Para instalar a ferramenta, clone o repositório e instale usando pip:
-
-```bash
-# Clone o repositório
-git clone https://github.com/IDEIAIFPB/automacao-plugins
-
-# Entre no diretório
-cd syncpl
-
-# Instale o pacote em modo de desenvolvimento
-pip install -e .
-```
+    ```bash
+    pre-commit install
+    ```
 
 ## Uso
 
