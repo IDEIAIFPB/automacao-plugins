@@ -2,7 +2,7 @@
 name: Feature Request
 about: Solicitar uma nova funcionalidade
 title: "[FEATURE]: "
-labels: Backlog
+labels: To Dev
 assignees: ''
 ---
 
