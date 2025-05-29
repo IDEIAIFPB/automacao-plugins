@@ -2,25 +2,42 @@
 name: Feature Request
 about: Solicitar uma nova funcionalidade
 title: "[FEATURE]: "
-labels: enhancement
+labels: Backlog
 assignees: ''
+---
+
+## Qual é o problema?
+
+Descreva claramente o problema ou limitação atual que motivou a criação desta funcionalidade.  
+Exemplo: "Atualmente, não existem testes unitários cobrindo as regras de transformação do módulo X, dificultando a validação e aumentando o risco de regressões."
 
 ---
 
-## Descrição da funcionalidade
-Descreva de forma clara e objetiva a funcionalidade que está sendo proposta.
+## Tarefas Relacionadas
 
-## Justificativa
-Por que essa funcionalidade é importante? Quais problemas resolve ou quais benefícios traz?
+- [ ] #ID1 (descreva brevemente a relação)
+- [ ] #ID2 (se aplicável)
 
-## Possível solução
-Se tiver alguma ideia de como implementar, descreva aqui. Caso não saiba, pode deixar em branco.
+---
 
-## Alternativas consideradas
-Liste outras soluções ou abordagens que você avaliou e explique por que não foram escolhidas.
+## Objetivo da Solução
 
-## Impacto
-Descreva o impacto esperado dessa funcionalidade no sistema ou no usuário final.
+Explique qual é a solução proposta, incluindo orientações sobre estrutura, exemplos de referência ou padrões que devem ser seguidos.  
+Exemplo:  
+- Criar testes unitários baseados em regras existentes.  
+- Seguir estrutura de `server/tests/unittest/core/rules/modulo_x`.  
+- Exemplos: `test_modulo_abc.py`, `test_modulo_xyz.py`.
+
+---
+
+## Critérios de Aceite
+
+- [ ] Descrever o que deve ser considerado ao revisar o mr.
+- [ ] Podem ser testes de unidade e etapas para garantir a execução da solução, por exemplo.
+- [ ] A maioria das issues devem ter testes de unidade
+
+---
 
 ## Comentários adicionais
-Inclua qualquer informação extra relevante.
+
+Inclua aqui qualquer contexto extra, anotações ou decisões técnicas importantes.
