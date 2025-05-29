@@ -2,7 +2,7 @@
 name: Bug Report
 about: Reportar um defeito ou comportamento inesperado
 title: "[BUG]: "
-labels: Backlog
+labels: [To Dev, Bug]
 assignees: ''
 ---
 
