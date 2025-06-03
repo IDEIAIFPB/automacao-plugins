@@ -177,7 +177,7 @@ class XsdParser:
 
         # Processar elementos filhos de sequence
         for sequence in complex_type_elem.xpath(
-            ".//xsd:sequence", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
+            "./xsd:sequence", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
         ):
             for child in sequence.xpath(
                 "./xsd:element", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
@@ -186,16 +186,20 @@ class XsdParser:
 
         # Processar elementos filhos de choice
         for choice in complex_type_elem.xpath(
-            ".//xsd:choice", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
+            "./xsd:choice", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
         ):
             choice_elements = []
-            for child in choice.xpath(
-                "./xsd:element", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
+            for sequence in choice.xpath(
+                "./xsd:sequence", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
             ):
-                choice_element = self._create_element_from_node(child)
-                if choice_element:
-                    choice_element.parent = parent_element
-                    choice_elements.append(choice_element)
+                for child in sequence.xpath(
+                    "./xsd:element",
+                    namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"},
+                ):
+                    choice_element = self._create_element_from_node(child)
+                    if choice_element:
+                        choice_element.parent = parent_element
+                        choice_elements.append(choice_element)
 
             if choice_elements:
                 parent_element.choices.append(choice_elements)
