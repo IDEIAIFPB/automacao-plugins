@@ -22,7 +22,7 @@ console = Console()
 
 @app.command()
 def generate(
-    xsd_file: List[Path] = typer.Argument(
+    xsd_file: Path = typer.Argument(
         ...,
         help="Caminho para o arquivo XSD de entrada",
         exists=True,
@@ -74,11 +74,10 @@ def generate(
 
         with console.status(f"Analisando os arquivo XSD {xsd_file}..."):
             parser = XsdParser(str(xsd_file))
-            # parsers = [XsdParser(str(xsd_files)) for xsd_files in xsd_files ]
 
         with console.status("Gerando o documento de mapeamento..."):
             generator = MapperGenerator(
-                parser, xpath_prefix, str(properties_file) if properties_file else None
+                parser, xpath_prefix, str(properties_file) if properties_file is not str else None
             )
             generator.save_mapper_to_file(str(output_file), root_element, mapper_id)
 
@@ -130,6 +129,8 @@ if __name__ == "__main__":
         # eu tenho que mapear isso
         "xsd-files/automacao/NFSe_v1.00.xsd",
         "a.xml",
-        "NFSe"
+        "NFSe",
+        properties_file="properties.json",
+        mapper_id="teste"
     )
-    app()
+    # app()
