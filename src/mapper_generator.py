@@ -3,7 +3,7 @@
 
 from lxml import etree
 from src.xsd_parser import XsdParser, XsdElement
-
+import json
 
 class MapperGenerator:
     """Classe para gerar documentos de mapeamento XML a partir de um XSD."""
@@ -30,14 +30,10 @@ class MapperGenerator:
         # Carregar mapeamentos de XPath de properties.json, se disponível
         if properties_file:
             try:
-                import json
-
                 with open(properties_file, "r", encoding="utf-8") as f:
                     self.properties_map = json.load(f)
             except Exception as e:
-                print(
-                    f"Aviso: Não foi possível carregar o arquivo properties.json: {str(e)}"
-                )
+                print(f"Aviso: Não foi possível carregar o arquivo properties.json: {str(e)}")
                 self.properties_map = {}
 
     def generate_mapper(

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
 from typing import Dict, List, Optional, Any
 from lxml import etree
 from dataclasses import dataclass, field
@@ -16,11 +17,11 @@ class XsdElement:
     is_simple: bool = False
     min_occurs: int = 1
     max_occurs: int = 1
-    children: List["XsdElement"] = field(default_factory=list)
-    attributes: List["XsdAttribute"] = field(default_factory=list)
-    choices: List[List["XsdElement"]] = field(default_factory=list)
+    children: List[XsdElement] = field(default_factory=list)
+    attributes: List[XsdAttribute] = field(default_factory=list)
+    choices: List[List[XsdElement]] = field(default_factory=list)
     path: str = ""
-    parent: Optional["XsdElement"] = None
+    parent: Optional[XsdElement] = None
 
 
 @dataclass
@@ -47,10 +48,27 @@ class XsdParser:
         self.root = self._get_root()
         self.namespace_map = self._get_namespaces()
         self.includes: List[XsdParser] = self._get_includes()
-        self.simple_types: Dict[str, Dict[str, Any]] = self._get_simple_types()
-        self.complex_types: Dict[str, XsdElement] = self._get_complex_types()
+
+        self.simple_types: Dict[str, Dict[str, Any]] = {} # self._get_simple_types()
+        self.complex_types: Dict[str, XsdElement] = {} # self._get_complex_types()
+        self._process_types()
+
+        if self.includes:
+            self.resolve_includes()
+
         self.elements: Dict[str, XsdElement] = self._get_elements()
-        
+
+
+    def _process_types(self):
+        self.simple_types = self._get_simple_types()
+        self.complex_types = self._get_complex_types()
+
+    def resolve_includes(self):
+        for include in self.includes:
+            if include.includes:
+                include.resolve_includes()
+            self.complex_types = {**self.complex_types, **include.complex_types}
+            self.simple_types  = {**self.simple_types, **include.simple_types}
 
     def _get_base_xsd_path(self):
         # corta o ultimo item do xpath
@@ -81,7 +99,7 @@ class XsdParser:
         finally:
             return namespaces                                                                                                               
 
-    def _get_includes(self) -> List:
+    def _get_includes(self) -> List[XsdParser]:
         # analisar imports e includes
         includes = []
         for include in self.root.xpath("//xsd:include", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}):
@@ -116,6 +134,7 @@ class XsdParser:
                         facets[facet_name].append(facet_value)
 
                     simple_types[name] = {"base": base_type, "facets": facets}
+
         return simple_types
 
     def _get_complex_types(self) -> Dict[str, XsdElement]:
@@ -129,6 +148,7 @@ class XsdParser:
                 element = XsdElement(name=name, is_complex=True)
                 self._process_complex_type_children(complex_type, element)
                 complex_types[name] = element
+
         return complex_types
 
     def _get_elements(self) -> Dict[str, XsdElement]:
@@ -169,6 +189,7 @@ class XsdParser:
                     self._process_complex_type_children(complex_type_elems[0], element)
 
                 elements[name] = element
+
         return elements
 
     def _process_complex_type_children(self, complex_type_elem, parent_element):
