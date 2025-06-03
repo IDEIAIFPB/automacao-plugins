@@ -3,7 +3,7 @@
 
 import sys
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
 import typer
 from rich.console import Console
@@ -22,7 +22,7 @@ console = Console()
 
 @app.command()
 def generate(
-    xsd_file: Path = typer.Argument(
+    xsd_file: List[Path] = typer.Argument(
         ...,
         help="Caminho para o arquivo XSD de entrada",
         exists=True,
@@ -72,8 +72,9 @@ def generate(
         if not output_file:
             output_file = xsd_file.with_suffix(".xml")
 
-        with console.status(f"Analisando o arquivo XSD {xsd_file}..."):
+        with console.status(f"Analisando os arquivo XSD {xsd_file}..."):
             parser = XsdParser(str(xsd_file))
+            # parsers = [XsdParser(str(xsd_files)) for xsd_files in xsd_files ]
 
         with console.status("Gerando o documento de mapeamento..."):
             generator = MapperGenerator(
@@ -125,4 +126,10 @@ def list_elements(
 
 
 if __name__ == "__main__":
+    generate(
+        # eu tenho que mapear isso
+        "xsd-files/automacao/NFSe_v1.00.xsd",
+        "a.xml",
+        "NFSe"
+    )
     app()

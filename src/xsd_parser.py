@@ -40,48 +40,59 @@ class XsdParser:
         Inicializa o parser XSD.
 
         Args:
-            xsd_path: Caminho para o arquivo XSD.
+            xsd_path (str): Caminho para o arquivo XSD.
         """
         self.xsd_path = xsd_path
-        self.namespace_map = {}
-        self.root = None
-        self.elements: Dict[str, XsdElement] = {}
-        self.complex_types: Dict[str, XsdElement] = {}
-        self.simple_types: Dict[str, Dict[str, Any]] = {}
-        self._parse()
+        self.base_xsd_path = self._get_base_xsd_path()
+        self.root = self._get_root()
+        self.namespace_map = self._get_namespaces()
+        self.includes: List[XsdParser] = self._get_includes()
+        self.simple_types: Dict[str, Dict[str, Any]] = self._get_simple_types()
+        self.complex_types: Dict[str, XsdElement] = self._get_complex_types()
+        self.elements: Dict[str, XsdElement] = self._get_elements()
+        
 
-    def _parse(self):
-        """Realiza a análise do documento XSD."""
+    def _get_base_xsd_path(self):
+        # corta o ultimo item do xpath
+        base = "/".join(self.xsd_path.split("/")[0:-1])
+        return base
+
+    def _get_root(self):
         try:
             parser = etree.XMLParser(ns_clean=True, recover=True, encoding="utf-8")
             tree = etree.parse(self.xsd_path, parser)
-            self.root = tree.getroot()
+        except Exception as e:
+            raise Exception(f"Erro ao extrair raiz do XSD: {str(e)}")
+        finally:
+            return tree.getroot()
 
-            # Extrair os namespaces
-            self.namespace_map = {
+    def _get_namespaces(self):
+        try:
+            namespaces = {
                 prefix: uri
                 for prefix, uri in self.root.nsmap.items()
                 if prefix is not None
             }
-
-            # Adicionar o namespace padrão se existir
+            
             if None in self.root.nsmap:
-                self.namespace_map["xs"] = self.root.nsmap[None]
-
-            # Analisar todos os tipos simples
-            self._parse_simple_types()
-
-            # Analisar todos os tipos complexos
-            self._parse_complex_types()
-
-            # Analisar todos os elementos
-            self._parse_elements()
-
+                namespaces["xsd"] = self.root.nsmap[None]
         except Exception as e:
-            raise Exception(f"Erro ao analisar o XSD: {str(e)}")
+            raise Exception(f"Erro ao extrair namespaces do XSD: {str(e)}")
+        finally:
+            return namespaces                                                                                                               
 
-    def _parse_simple_types(self):
+    def _get_includes(self) -> List:
+        # analisar imports e includes
+        includes = []
+        for include in self.root.xpath("//xsd:include", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}):
+            inc_file = include.attrib["schemaLocation"]
+            include_schema = f"{self.base_xsd_path}/{inc_file}"
+            includes.append(XsdParser(include_schema))
+        return includes 
+
+    def _get_simple_types(self) -> Dict[str, Dict[str, Any]]:
         """Extrai todos os tipos simples definidos no XSD."""
+        simple_types = {}
         for simple_type in self.root.xpath(
             "//xsd:simpleType", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
         ):
@@ -104,10 +115,12 @@ class XsdParser:
                             facets[facet_name] = []
                         facets[facet_name].append(facet_value)
 
-                    self.simple_types[name] = {"base": base_type, "facets": facets}
+                    simple_types[name] = {"base": base_type, "facets": facets}
+        return simple_types
 
-    def _parse_complex_types(self):
+    def _get_complex_types(self) -> Dict[str, XsdElement]:
         """Extrai todos os tipos complexos definidos no XSD."""
+        complex_types = {}
         for complex_type in self.root.xpath(
             "//xsd:complexType", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
         ):
@@ -115,10 +128,12 @@ class XsdParser:
             if name:
                 element = XsdElement(name=name, is_complex=True)
                 self._process_complex_type_children(complex_type, element)
-                self.complex_types[name] = element
+                complex_types[name] = element
+        return complex_types
 
-    def _parse_elements(self):
+    def _get_elements(self) -> Dict[str, XsdElement]:
         """Extrai todos os elementos definidos no XSD."""
+        elements = {}
         for elem in self.root.xpath(
             "//xsd:element", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
         ):
@@ -153,7 +168,8 @@ class XsdParser:
                     element.is_complex = True
                     self._process_complex_type_children(complex_type_elems[0], element)
 
-                self.elements[name] = element
+                elements[name] = element
+        return elements
 
     def _process_complex_type_children(self, complex_type_elem, parent_element):
         """
