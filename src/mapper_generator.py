@@ -97,6 +97,9 @@ class MapperGenerator:
             properties, root_element, root_element_name, "", root_element_name
         )
 
+        properties = etree.SubElement(mapper_root, "checksum")
+        properties = etree.SubElement(mapper_root, "signature")
+
         return mapper_root
 
     def _collect_id_attributes(
