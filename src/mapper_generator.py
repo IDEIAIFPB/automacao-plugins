@@ -93,6 +93,9 @@ class MapperGenerator:
             properties, root_element, root_element_name, "", root_element_name
         )
 
+        properties = etree.SubElement(mapper_root, "checksum")
+        properties = etree.SubElement(mapper_root, "signature")
+
         return mapper_root
 
     def _collect_id_attributes(
@@ -112,7 +115,7 @@ class MapperGenerator:
         for attr in element.attributes:
             if attr.name in ("Id", "id"):
                 # Criar um nome de variável baseado no nome do elemento
-                var_name = f"id{element_name.capitalize()}"
+                var_name = f"id{element_name}"
                 self.id_variables[var_name] = element_name
 
         # Se o elemento for complexo, examinar seus filhos
@@ -172,7 +175,7 @@ class MapperGenerator:
                 # Para atributos "Id", usar a variável criada em vez de xpath
                 if attr.name in ("Id", "id") and self.id_variables:
                     # Encontrar a variável para este elemento
-                    var_name = f"id{element.name.capitalize()}"
+                    var_name = f"id{element.name}"
                     if var_name in self.id_variables:
                         # Usar a variável id
                         variable_node = etree.SubElement(sources_node, "variable")
