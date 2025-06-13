@@ -51,10 +51,10 @@ class XsdParser:
 
         self.simple_types: Dict[str, Dict[str, Any]] = {} # self._get_simple_types()
         self.complex_types: Dict[str, XsdElement] = {} # self._get_complex_types()
-        self._process_types()
+        # self._process_types()
 
         if self.includes:
-            self.resolve_includes()
+            self._resolve_includes()
 
         self.elements: Dict[str, XsdElement] = self._get_elements()
 
@@ -63,10 +63,11 @@ class XsdParser:
         self.simple_types = self._get_simple_types()
         self.complex_types = self._get_complex_types()
 
-    def resolve_includes(self):
+    def _resolve_includes(self):
         for include in self.includes:
+            self._process_types()
             if include.includes:
-                include.resolve_includes()
+                include._resolve_includes()
             self.complex_types = {**self.complex_types, **include.complex_types}
             self.simple_types  = {**self.simple_types, **include.simple_types}
 
@@ -272,6 +273,8 @@ class XsdParser:
         max_occurs = int(max_occurs) if max_occurs != "unbounded" else float("inf")
 
         if name:
+            if "TC" in name:
+                pass
             element = XsdElement(
                 name=name, type=type_name, min_occurs=min_occurs, max_occurs=max_occurs
             )
