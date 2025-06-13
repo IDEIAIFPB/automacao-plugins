@@ -133,4 +133,14 @@ if __name__ == "__main__":
         properties_file="properties.json",
         mapper_id="teste"
     )
+    
+    # generate(
+    #     # eu tenho que mapear isso
+    #     "xsd-files/NFSE.xsd.XSD",
+    #     "a.xml",
+    #     "CancelarNfseEnvio",
+    #     properties_file="properties.json",
+    #     mapper_id="teste"
+    # )
+    
     # app()
