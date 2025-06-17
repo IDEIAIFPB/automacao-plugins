@@ -28,7 +28,13 @@ Exemplo:
 - Seguir estrutura de `server/tests/unittest/core/rules/modulo_x`.  
 - Exemplos: `test_modulo_abc.py`, `test_modulo_xyz.py`.
 
----
+---  
+
+## Artefatos
+
+- Artefatos como links, docs e vídeos podem ser colocados nessa seção. Qualquer material que possa ajudar o desenvolvedor (se aplicável).
+
+---  
 
 ## Critérios de Aceite
 

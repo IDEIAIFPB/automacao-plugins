@@ -207,7 +207,7 @@ class MapperGenerator:
                     child,
                     child.name,
                     child_path,
-                    root_element_name or property_name,
+                    property_name or root_element_name,
                 )
 
             # Processar choices também
@@ -223,7 +223,7 @@ class MapperGenerator:
                         choice_element,
                         choice_element.name,
                         choice_path,
-                        root_element_name or property_name,
+                        property_name or root_element_name,
                     )
         else:
             # Elemento simples - criar nó de valor

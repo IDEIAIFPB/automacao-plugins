@@ -47,11 +47,13 @@ class XsdParser:
         self.base_xsd_path = self._get_base_xsd_path()
         self.root = self._get_root()
         self.namespace_map = self._get_namespaces()
-        self.includes: List[XsdParser] = self._get_includes()
 
-        self.simple_types: Dict[str, Dict[str, Any]] = {} # self._get_simple_types()
-        self.complex_types: Dict[str, XsdElement] = {} # self._get_complex_types()
-        # self._process_types()
+        self.includes: List[XsdParser] = self._get_includes()
+        
+        self.simple_types: Dict[str, Dict[str, Any]] = {}
+        self.complex_types: Dict[str, XsdElement] = {}
+
+        self._process_types()
 
         if self.includes:
             self._resolve_includes()
@@ -60,8 +62,8 @@ class XsdParser:
 
 
     def _process_types(self):
-        self.simple_types = self._get_simple_types()
         self.complex_types = self._get_complex_types()
+        self.simple_types = self._get_simple_types()
 
     def _resolve_includes(self):
         for include in self.includes:
@@ -103,7 +105,7 @@ class XsdParser:
     def _get_includes(self) -> List[XsdParser]:
         # analisar imports e includes
         includes = []
-        for include in self.root.xpath("//xsd:include", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}):
+        for include in self.root.xpath("./xsd:include", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}):
             inc_file = include.attrib["schemaLocation"]
             include_schema = f"{self.base_xsd_path}/{inc_file}"
             includes.append(XsdParser(include_schema))
@@ -113,12 +115,12 @@ class XsdParser:
         """Extrai todos os tipos simples definidos no XSD."""
         simple_types = {}
         for simple_type in self.root.xpath(
-            "//xsd:simpleType", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
+            "./xsd:simpleType", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
         ):
             name = simple_type.get("name")
             if name:
                 restrictions = simple_type.xpath(
-                    ".//xsd:restriction",
+                    "./xsd:restriction",
                     namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"},
                 )
                 if restrictions:
@@ -142,7 +144,7 @@ class XsdParser:
         """Extrai todos os tipos complexos definidos no XSD."""
         complex_types = {}
         for complex_type in self.root.xpath(
-            "//xsd:complexType", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
+            "./xsd:complexType", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
         ):
             name = complex_type.get("name")
             if name:
@@ -156,7 +158,7 @@ class XsdParser:
         """Extrai todos os elementos definidos no XSD."""
         elements = {}
         for elem in self.root.xpath(
-            "//xsd:element", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
+            "./xsd:element", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
         ):
             # Ignorar elementos que são filhos de tipos complexos
             if elem.getparent() is not None and etree.QName(
@@ -203,7 +205,7 @@ class XsdParser:
         """
         # Processar atributos
         for attr in complex_type_elem.xpath(
-            ".//xsd:attribute", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
+            "./xsd:attribute", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
         ):
             name = attr.get("name")
             type_name = attr.get("type")
@@ -292,8 +294,6 @@ class XsdParser:
         max_occurs = int(max_occurs) if max_occurs != "unbounded" else float("inf")
 
         if name:
-            if "TC" in name:
-                pass
             element = XsdElement(
                 name=name, type=type_name, min_occurs=min_occurs, max_occurs=max_occurs
             )
