@@ -32,24 +32,24 @@ def retrieve_relevant_documents(query_text: str, k: int = 3):
     query_embedding = generate_embeddings([query_text])[0].tolist()
 
     conn = None
-    cur = None
+    cursor = None
     documents = []
     try:
         conn = get_connection()
         register_vector(conn)
-        cur = conn.cursor()
+        cursor = conn.cursor()
 
-        cur.execute(
+        cursor.execute(
             "SELECT texto FROM documentos ORDER BY embedding <-> %s LIMIT %s;",
             (str(query_embedding), k),
         )
-        results = cur.fetchall()
+        results = cursor.fetchall()
         documents = [row[0] for row in results]
     except Exception as e:
         print(f"Erro ao recuperar documentos: {e}")
     finally:
-        if cur:
-            cur.close()
+        if cursor:
+            cursor.close()
         if conn:
             conn.close()
     return documents
