@@ -7,6 +7,7 @@ dependencies = [
     "pytest",
     "lxml",
     "pre-commit",
+    "xmlschema>=4.1.0",
 ]
 
 [tool.uv]

@@ -9,8 +9,7 @@ import typer
 from rich.console import Console
 from rich import print as rprint
 
-from src.xsd_parser import XsdParser
-from src.mapper_generator import MapperGenerator
+from src.mapper import Mapper
 
 
 app = typer.Typer(
@@ -73,13 +72,15 @@ def generate(
             output_file = xsd_file.with_suffix(".xml")
 
         with console.status(f"Analisando o arquivo XSD {xsd_file}..."):
-            parser = XsdParser(str(xsd_file))
+            parser = Mapper(
+                root_element,
+                xsd_file,
+                properties_file,
+                output_file
+            )
 
         with console.status("Gerando o documento de mapeamento..."):
-            generator = MapperGenerator(
-                parser, xpath_prefix, str(properties_file) if properties_file else None
-            )
-            generator.save_mapper_to_file(str(output_file), root_element, mapper_id)
+            parser.build_xml()
 
         rprint(
             f"[green]✓[/green] Documento de mapeamento gerado com sucesso: [bold]{output_file}[/bold]"
