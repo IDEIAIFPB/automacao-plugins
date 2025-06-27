@@ -74,7 +74,7 @@ def generate(
         with console.status(f"Analisando o arquivo XSD {xsd_file}..."):
             parser = Mapper(
                 root_element,
-                xsd_file,
+                str(xsd_file),
                 properties_file,
                 output_file
             )
@@ -126,4 +126,11 @@ def list_elements(
 
 
 if __name__ == "__main__":
-    app()
+    # app()
+    
+    generate(
+        xsd_file="xsd-files/NFSE.xsd.XSD",
+        output_file="a.xml",
+        root_element="CancelarNfseEnvio",
+        properties_file="properties.json"
+    )

@@ -5,12 +5,14 @@ import lxml.etree as etree
 
 
 class Mapper:
+    # variaveis -> ids
+    # id do mapper 
     def __init__(self, root_element: str, xsd_path: str, properties: str, output_file: str):
         self.props = json.load(open(properties, 'r'))
-        self.schema = xmlschema.XMLSchema(xsd_path, iterparse=etree.iterparse) # argv[1]
-        self.element = (self.schema.elements.get(root_element)) # argv[2]
+        self.schema = xmlschema.XMLSchema(xsd_path)
+        self.root_element = (self.schema.elements.get(root_element)) 
         self.arquivo = open(output_file, "w")
-        
+
     def _indent(self, spaces: int = 4, offset: int = 0) -> str:
         return f"{' ' * (spaces + offset)}"
 
@@ -27,15 +29,17 @@ class Mapper:
         spaces -= 4
         self.arquivo.write(f'{self._indent(spaces)}</property>\n')
 
+    def build_xml(self):
+        return self._build_xml(self.root_element)
 
-    def build_xml(self, element, spaces, current_path=""):
+    def _build_xml(self, element: XsdElement, spaces: int = 0, current_path=""):
         if not isinstance(element, XsdElement):
             print(f"Elemento desconhecido: {type(element)}")
 
         if isinstance(element, XsdGroup):
             # Trata sequence, choice, all como grupos
             for sub_element in element:
-                self.build_xml(sub_element, spaces, current_path)
+                self._build_xml(sub_element, spaces, current_path)
 
         spaces += 4
 
@@ -58,7 +62,7 @@ class Mapper:
             spaces += 4
             self.arquivo.write(f'{self._indent(spaces)}<properties>\n')
             for sub in content:
-                self.build_xml(sub, spaces, full_path)
+                self._build_xml(sub, spaces, full_path)
             self.arquivo.write(f'{self._indent(spaces)}</properties>\n')
             spaces -= 4
             self.arquivo.write(f'{self._indent(spaces)}</property>\n')
