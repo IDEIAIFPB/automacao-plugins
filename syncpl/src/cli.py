@@ -9,8 +9,8 @@ import typer
 from rich.console import Console
 from rich import print as rprint
 
-from src.xsd_parser import XsdParser
-from src.mapper_generator import MapperGenerator
+from .xsd_parser import XsdParser
+from .mapper_generator import MapperGenerator
 
 
 app = typer.Typer(

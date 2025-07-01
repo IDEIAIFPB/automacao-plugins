@@ -4,7 +4,32 @@ Uma ferramenta para converter automaticamente arquivos XSD em documentos de mape
 
 ## Instalação
 
-Para contribuir com o desenvolvimento é necessáiro que:
+### Para usuários
+
+#### Usando pip (recomendado para usuários finais)
+```bash
+pip install syncpl
+```
+
+#### Usando uv
+```bash
+# Clone o repositório
+git clone <url-do-repo>
+cd automacao-plugins-main
+
+# Execute o script de instalação
+chmod +x ./install-syncpl-uv.sh
+./install-syncpl-uv.sh
+
+# Ou manualmente:
+uv venv
+source .venv/bin/activate
+uv pip install -e .
+```
+
+### Para desenvolvimento
+
+Para contribuir com o desenvolvimento é necessário que:
 
 1. Instale as dependências do projeto
     ```bash

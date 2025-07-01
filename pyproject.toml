@@ -1,6 +1,7 @@
 [project]
-name = "automacao-plugins"
+name = "syncpl"
 version = "0.0.1"
+description = "Ferramenta para converter arquivos XSD em documentos de mapeamento XML"
 dependencies = [
     "typer",
     "rich",
@@ -9,5 +10,20 @@ dependencies = [
     "pre-commit",
 ]
 
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["syncpl"]      # Procurar pacotes dentro de syncpl/
+include = ["src*"]      # Incluir apenas pacotes que começam com src
+exclude = ["tests*"]    # Excluir explicitamente os testes
+
+[tool.setuptools.package-dir]
+"" = "syncpl"           # Mapear o diretório raiz para syncpl/
+
+[project.scripts]
+syncpl = "src.cli:app"
+
 [tool.uv]
-package = false
+package = true

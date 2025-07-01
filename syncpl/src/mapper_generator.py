@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from lxml import etree
-from src.xsd_parser import XsdParser, XsdElement
+from .xsd_parser import XsdParser, XsdElement
 
 
 class MapperGenerator:
