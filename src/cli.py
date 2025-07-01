@@ -5,6 +5,8 @@ import sys
 from pathlib import Path
 from typing import Optional
 
+from src.core.mapper.value_builder import ValueBuilder
+
 import typer
 from rich.console import Console
 from rich import print as rprint
@@ -134,3 +136,4 @@ if __name__ == "__main__":
         root_element="CancelarNfseEnvio",
         properties_file="properties.json"
     )
+    
