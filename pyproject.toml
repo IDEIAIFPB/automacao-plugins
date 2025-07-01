@@ -8,6 +8,7 @@ dependencies = [
     "pytest",
     "lxml",
     "pre-commit",
+    "python-dotenv>=1.1.1",
 ]
 
 [build-system]
