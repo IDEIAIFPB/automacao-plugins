@@ -4,13 +4,6 @@ Uma ferramenta para converter automaticamente arquivos XSD em documentos de mape
 
 ## Instalação
 
-### Para usuários
-
-#### Usando pip (recomendado para usuários finais)
-```bash
-pip install syncpl
-```
-
 #### Usando uv
 ```bash
 # Clone o repositório
