@@ -14,7 +14,6 @@ class PropertiesBuilder(ElementMapper):
         self._visited = set()
 
     def _get_element_name(self, element: XsdElement) -> str:
-        # return getattr(element, "local_name", element.name.split("}")[-1])
         return element.local_name
 
     def _build_xpath(self, element: XsdElement, xpath: str):
@@ -23,18 +22,22 @@ class PropertiesBuilder(ElementMapper):
             return f"/{name}"
         return f"{xpath}/{name}"
     
-    def build(self, xsd_element: XsdElement):
-        root = etree.Element("properties")
+    def build(self, tree: etree._Element, xsd_element: XsdElement):
+        root = etree.SubElement(tree, "properties")
         self._build(xsd_element, root)
-        return root
+        return tree # props !document-mapper
 
+    def _is_element_available(self, xsd_element: XsdElement) -> bool:
+        if self._get_element_name(xsd_element) == "Signature":
+            return False
+        if xsd_element in self._visited:
+            return False
+        return True
     def _build(self, xsd_element: XsdElement, tree: Optional[etree._Element] = None, xpath = ""):
         name = self._get_element_name(xsd_element)
-        if name == "Signature":
+        if not self._is_element_available(xsd_element):
             return tree
-        if xsd_element in self._visited:
-            return tree
-        
+
         self._visited.add(xsd_element)
 
         property = etree.SubElement(tree, "property", {"name": name})
@@ -42,8 +45,9 @@ class PropertiesBuilder(ElementMapper):
         current_path = self._build_xpath(xsd_element, xpath)
 
         xsd_type = xsd_element.type
+
         is_not_group = not isinstance(xsd_element, XsdGroup)
-        has_no_content = not getattr(xsd_type, 'content', False)
+        has_no_content = not getattr(xsd_type, 'content', False) # tipos anonimos
 
         if is_not_group and has_no_content:
             self._value_builder.build(property, current_path)

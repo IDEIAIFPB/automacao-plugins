@@ -1,18 +1,18 @@
 from unittest import TestCase, main
 
 import xmlschema
-from src.core.mapper import PropertiesBuilder
+from src.core.mapper import MapperBuilder
 import lxml.etree as etree
 
 class TestPropertiesBuilder(TestCase):
     def setUp(self):
-        self._builder = PropertiesBuilder()
-        _schema = xmlschema.XMLSchema("xsd-files/NFSE.xsd.XSD")
-        self._xsd_element = (_schema.elements.get("EnviarLoteRpsEnvio")) 
+        self._builder = MapperBuilder()
+        self._schema = xmlschema.XMLSchema("xsd-files/NFSE.xsd.XSD")
+        self._root = "EnviarLoteRpsEnvio"
+        self._plugin_id = "emissao-itaperuna"
 
     def test_build(self):
-        root = etree.Element("root")
-        tree = self._builder.build(root, self._xsd_element)
+        tree = self._builder.build(self._root, self._plugin_id, self._schema)
         s_tree = etree.tostring(tree, encoding='unicode')
         with open("teste.xml", "w") as f:
             f.write(s_tree)

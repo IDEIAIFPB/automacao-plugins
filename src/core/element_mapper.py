@@ -8,6 +8,3 @@ class ElementMapper():
     
     def build(self, tree: etree._Element) -> etree: 
         raise NotImplementedError
-
-    def build_xml(self) -> str:
-        raise NotImplementedError

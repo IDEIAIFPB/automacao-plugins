@@ -13,12 +13,8 @@ class ValueBuilder(ElementMapper):
     def build(self, tree: etree._Element, xpath: str):
         value_element = etree.SubElement(tree, self._tag)
         self._build_source(value_element, xpath)
-        
-        self._tree = value_element
-        return tree
 
-    def build_xml(self):
-        return super().build_xml()
+        return tree
 
     def _build_source(self, parent: etree._Element, xpath: str) -> etree._Element: 
         sources_tag = "sources"
