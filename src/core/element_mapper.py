@@ -1,10 +1,12 @@
+from typing import Optional
 import lxml.etree as etree
-from abc import ABCMeta
+
 class ElementMapper():
-    def __init__(self, tree: etree = None):
-        self._tree = tree
+    def __init__(self):
+        self._tree = None
+        self._tag = str()
     
-    def build(tree: etree) -> etree: 
+    def build(self, tree: etree._Element) -> etree: 
         raise NotImplementedError
 
     def build_xml(self) -> str:

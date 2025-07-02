@@ -4,19 +4,16 @@ from xmlschema.validators import XsdElement, XsdGroup, XsdAttribute
 import lxml.etree as etree
 
 from src.core.mapper import PropertiesBuilder
-from src.core.mapper.data import JsonProperties
 
 
 class Mapper:
     # variaveis -> ids
     # id do mapper 
     def __init__(self, root_element: str, xsd_path: str, properties: str, output_file: str):
-        self.props = JsonProperties() # json.load(open(properties, 'r'))
+        self.props = json.load(open(properties, 'r'))
         self.schema = xmlschema.XMLSchema(xsd_path)
         self.root_element = (self.schema.elements.get(root_element)) 
         self.arquivo = open(output_file, "w")
-        
-        self._properties_builder = PropertiesBuilder()
 
     def _indent(self, spaces: int = 4, offset: int = 0) -> str:
         return f"{' ' * (spaces + offset)}"

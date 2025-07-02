@@ -1,0 +1,51 @@
+    <property name="CancelarNfseEnvio">
+        <properties>
+            <property name="Pedido">
+                <properties>
+                    <property name="InfPedidoCancelamento">
+                        <properties>
+                            <property name="IdentificacaoNfse">
+                                <properties>
+                                    <property name="Numero">
+                                        <value>
+                                            <sources>
+                                                <xmlProperty xpath="/SynchroId/PedidoCancelamentoNFe/Detalhe/ChaveNFe/NumeroNFe"/>
+                                            </sources>
+                                        </value>
+                                    </property>
+                                    <property name="Cnpj">
+                                        <value>
+                                            <sources>
+                                                <xmlProperty xpath="/SynchroId/CpfCnpjPrestador"/>
+                                            </sources>
+                                        </value>
+                                    </property>
+                                    <property name="InscricaoMunicipal">
+                                        <value>
+                                            <sources>
+                                                <xmlProperty xpath="/SynchroId/PedidoCancelamentoNFe/Detalhe/ChaveNFe/InscricaoPrestador"/>
+                                            </sources>
+                                        </value>
+                                    </property>
+                                    <property name="CodigoMunicipio">
+                                        <value>
+                                            <sources>
+                                                <xmlProperty xpath="/SynchroId/CodIBGEMun"/>
+                                            </sources>
+                                        </value>
+                                    </property>
+                                </properties>
+                            </property>
+                            <property name="CodigoCancelamento">
+                                <value>
+                                    <sources>
+                                        <xmlProperty xpath="/SynchroId/PedidoCancelamentoNFe/Detalhe/ChaveNFe/CodigoCancelamento"/>
+                                    </sources>
+                                </value>
+                            </property>
+                        </properties>
+                    </property>
+                </properties>
+            </property>
+        </properties>
+    </property>
