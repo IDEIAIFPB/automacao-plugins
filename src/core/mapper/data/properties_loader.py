@@ -2,16 +2,19 @@ import json
 from typing import Any, Optional
 
 class JsonProperties:
-    _props: Optional[dict] = None
+    _instance: Optional['JsonProperties'] = None
     _json_path = "./properties.json"
-
+    
     def __new__(cls):
-        if cls._props:
-            return cls._props
-        return super().__new__(cls)
-
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
     def __init__(self):
-        self._props = json.load(open(self._json_path))
+        self._props = self._load_properties()
+
+    def _load_properties(self) -> dict:
+        return json.load(open(self._json_path))
 
     def get(self, key: Any, default: Any = "TODO") -> Any:
         return self._props.get(key, default)

@@ -13,9 +13,6 @@ class PropertiesBuilder(ElementMapper):
         self._value_builder = ValueBuilder()
         self._visited = set()
 
-    def build_xml(self):
-        return super().build_xml()
-
     def _get_element_name(self, element: XsdElement) -> str:
         # return getattr(element, "local_name", element.name.split("}")[-1])
         return element.local_name
@@ -49,7 +46,7 @@ class PropertiesBuilder(ElementMapper):
         has_no_content = not getattr(xsd_type, 'content', False)
 
         if is_not_group and has_no_content:
-            self._value_builder.build(property, xsd_element, current_path)
+            self._value_builder.build(property, current_path)
             return tree
 
         properties = etree.SubElement(property, "properties")
