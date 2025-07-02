@@ -13,8 +13,8 @@ class JsonProperties:
     def __init__(self):
         self._props = json.load(open(self._json_path))
 
-    def get(self, key: Any, default: Any) -> Any:
+    def get(self, key: Any, default: Any = "TODO") -> Any:
         return self._props.get(key, default)
     
-    def pop(self, key: Any, default: Any) -> Any:
+    def pop(self, key: Any, default: Any = None) -> Any:
         return self._props.pop(key, default)
