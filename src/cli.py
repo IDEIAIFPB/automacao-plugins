@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from src.core.mapper.value_builder import ValueBuilder
+from src.core.mapper.value.value_builder import ValueBuilder
 
 import typer
 from rich.console import Console

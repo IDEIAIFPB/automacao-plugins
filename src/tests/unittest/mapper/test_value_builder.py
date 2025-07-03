@@ -1,7 +1,7 @@
 
 import unittest
 
-from src.core.mapper.value_builder import ValueBuilder
+from src.core.mapper.value.value_builder import ValueBuilder
 from src.tests.utils.runner import run_test
 import lxml.etree as etree 
 
@@ -17,7 +17,5 @@ class TestValueBuilder(unittest.TestCase):
 
 if __name__ == "__main__":
     # unittest.main()
-    t = TestValueBuilder()
-    t.setUp()
-    t.test_build()
-    # run_test(TestValueBuilder, "test_build")
+    
+    run_test(TestValueBuilder, "test_build")

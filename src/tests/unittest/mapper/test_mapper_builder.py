@@ -16,7 +16,7 @@ class TestMapperBuilder(TestCase):
 
     def test_build(self):
         tree = self._builder.build(self._root, self._plugin_id, self._schema)
-        s_tree = etree.tostring(tree, encoding='unicode')
+        s_tree = etree.tostring(tree, encoding='unicode', pretty_print = True)
         with open(self._output_file, "w") as f:
             f.write(s_tree)
 
