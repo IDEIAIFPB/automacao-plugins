@@ -11,7 +11,9 @@ class MapperBuilder(ElementMapper):
         self._properties_builder = PropertiesBuilder()
     
     def build(self, root: str, plugin_id: str, schema: XMLSchema):
-        root = etree.Element("document-mapper", {"id" : plugin_id, "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation" : "../../../schemas/document-mapper.xsd"}, nsmap={"xsi": "http://www.w3.org/2001/XMLSchema-instance"})
-        return root
+        xml_root = etree.Element("document-mapper", {"id" : plugin_id, "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation" : "../../../schemas/document-mapper.xsd"}, nsmap={"xsi": "http://www.w3.org/2001/XMLSchema-instance"})
+        xsd_element = schema.elements.get(root)
+        self._properties_builder.build(xml_root, xsd_element)
+        return xml_root
 
     # def _build():
