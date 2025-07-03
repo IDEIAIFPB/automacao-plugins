@@ -14,7 +14,8 @@ class JsonProperties:
         self._props = self._load_properties()
 
     def _load_properties(self) -> dict:
-        return json.load(open(self._json_path))
+        with open(self._json_path) as properties:
+            return json.load(properties)
 
     def get(self, key: Any, default: Any = "TODO") -> Any:
         return self._props.get(key, default)
