@@ -14,7 +14,7 @@ class TestPropertiesBuilder(TestCase):
         root = etree.Element("root")
         tree = self._builder.build(root, self._xsd_element)
         s_tree = etree.tostring(tree, encoding='unicode')
-        with open("teste.xml", "w") as f:
+        with open("./src/tests/temp/teste.xml", "w") as f:
             f.write(s_tree)
 
 if __name__ == "__main__":
