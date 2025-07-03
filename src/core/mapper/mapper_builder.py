@@ -1,16 +1,21 @@
-from src.core.element_mapper import ElementMapper
+from src.core.element_mapper import ElementBuilder
 import lxml.etree as etree
+from lxml.etree import _Element
 from xmlschema import XMLSchema
 from xmlschema.validators import XsdElement
 
 from src.core.mapper.properties_builder import PropertiesBuilder
 
 
-class MapperBuilder(ElementMapper):
+class MapperBuilder(ElementBuilder):
     def __init__(self):
         super().__init__()
         self._tag = "document-mapper"
         self._properties_builder = PropertiesBuilder()
+    
+    @property
+    def metadata(self):
+        return self._properties_builder.metadata
 
     def build(self, root: str, plugin_id: str, schema: XMLSchema):
         xml_root = etree.Element(
@@ -27,5 +32,5 @@ class MapperBuilder(ElementMapper):
         self._build(xml_root, xsd_element)
         return xml_root
 
-    def _build(self, xml_root: etree._Element, xsd_element: XsdElement):
+    def _build(self, xml_root: _Element, xsd_element: XsdElement):
         self._properties_builder.build(xml_root, xsd_element)

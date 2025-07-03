@@ -4,7 +4,7 @@ import xmlschema
 from src.core.mapper import MapperBuilder
 import lxml.etree as etree
 
-from src.tests.utils.constants import build_output_file_path
+from src.tests.utils import build_output_file_path, export_xml_to_file, get_xml
 
 class TestMapperBuilder(TestCase):
     def setUp(self):
@@ -16,9 +16,10 @@ class TestMapperBuilder(TestCase):
 
     def test_build(self):
         tree = self._builder.build(self._root, self._plugin_id, self._schema)
-        s_tree = etree.tostring(tree, encoding='unicode', pretty_print = True)
-        with open(self._output_file, "w") as f:
-            f.write(s_tree)
+        teste = self._builder.metadata
+        print(teste)
+        s_tree = get_xml(tree)
+        export_xml_to_file(s_tree, self._output_file)
 
 if __name__ == "__main__":
     main()

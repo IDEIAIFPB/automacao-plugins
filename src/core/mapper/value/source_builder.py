@@ -1,12 +1,12 @@
 from typing import Any
-from src.core import ElementMapper
+from src.core import ElementBuilder
 from src.core.mapper.data import JsonProperties
 from src.core.mapper.enum import SourceType
 
 from lxml.etree import _Element
 import lxml.etree as etree
 
-class SourceBuilder(ElementMapper):
+class SourceBuilder(ElementBuilder):
     def __init__(self):
         super().__init__()
         self._tag = "sources"
