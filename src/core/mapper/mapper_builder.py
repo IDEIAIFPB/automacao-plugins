@@ -1,8 +1,6 @@
-from typing import Optional
 from src.core.element_mapper import ElementBuilder
 import lxml.etree as etree
 from lxml.etree import _Element
-from xmlschema import XMLSchema
 from xmlschema.validators import XsdElement
 
 from src.core.mapper.properties_builder import PropertiesBuilder
@@ -13,7 +11,7 @@ class MapperBuilder(ElementBuilder):
         super().__init__()
         self._tag = "document-mapper"
         self._properties_builder = PropertiesBuilder()
-    
+
     @property
     def metadata(self):
         return self._properties_builder.metadata

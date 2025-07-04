@@ -41,26 +41,21 @@ def generate(
     plugin_name: str = typer.Argument(
         "auto-generated",
         help="Identificador para o documento de mapeamento",
-    )
+    ),
 ):
     """
     Gera um documento de mapeamento XML a partir de um arquivo XSD.
     """
     try:
         with console.status("Construindo o parser"):
-            parser = Mapper(
-                root_element,
-                plugin_name,
-                xsd_file,
-                output_file
-            )
-        
-        with console.status(f"Gerando arvore do xml"):
+            parser = Mapper(root_element, plugin_name, xsd_file, output_file)
+
+        with console.status("Gerando arvore do xml"):
             tree = parser.build()
 
         with console.status("Gerando o documento de mapeamento..."):
             xml_content = parser.build_xml(tree)
-        
+
         with console.status(f"Exportando o documento para: {xsd_file}"):
             parser.export_xml_to_file(xml_content, output_file)
 
@@ -111,10 +106,10 @@ def generate(
 
 if __name__ == "__main__":
     # app()
-    
+
     generate(
         xsd_file="resources/xsd-files/NFSE.xsd.XSD",
         output_file=build_output_file_path("cli.xml"),
         root_element="EnviarLoteRpsEnvio",
-        plugin_name="teste"
+        plugin_name="teste",
     )
