@@ -1,6 +1,7 @@
 [project]
 name = "automacao-plugins"
 version = "0.0.1"
+requires-python = ">=3.10"
 dependencies = [
     "typer",
     "rich",
@@ -8,6 +9,13 @@ dependencies = [
     "lxml",
     "pre-commit",
     "xmlschema>=4.1.0",
+    "pymupdf>=1.26.3",
+    "dotenv>=0.9.9",
+    "pgvector>=0.4.1",
+    "psycopg2-binary>=2.9.10",
+    "google-generativeai>=0.8.5",
+    "sentence-transformers>=5.0.0",
+    "tiktoken>=0.9.0",
 ]
 
 [tool.uv]
