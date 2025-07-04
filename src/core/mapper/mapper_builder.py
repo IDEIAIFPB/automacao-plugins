@@ -1,3 +1,4 @@
+from typing import Optional
 from src.core.element_mapper import ElementBuilder
 import lxml.etree as etree
 from lxml.etree import _Element

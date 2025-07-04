@@ -1,5 +1,5 @@
 from .runner import run_test
 from .constants import build_output_file_path
-from .xml_utils import export_xml_to_file, get_xml
+from src.core.utils import export_xml_to_file, get_xml
 
 __all__ = ["run_test", "build_output_file_path", "export_xml_to_file", "get_xml"]

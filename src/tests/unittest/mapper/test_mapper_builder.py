@@ -9,7 +9,7 @@ from src.tests.utils import build_output_file_path, export_xml_to_file, get_xml
 class TestMapperBuilder(TestCase):
     def setUp(self):
         self._builder = MapperBuilder()
-        self._schema = xmlschema.XMLSchema("xsd-files/NFSE.xsd.XSD")
+        self._schema = xmlschema.XMLSchema("xsd-files/nfse-v2-02.xsd")
         self._root = "EnviarLoteRpsEnvio"
         self._plugin_id = "emissao-itaperuna"
         self._output_file = build_output_file_path("mapper_builder_test.xml")

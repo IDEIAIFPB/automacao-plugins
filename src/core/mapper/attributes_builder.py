@@ -17,8 +17,6 @@ class AttributesBuilder(ElementBuilder):
         self._inner_tag = "attribute"
 
     def build(self, property: _Element, attributes: XsdAttributeGroup):
-        if not "id" in attributes and not "Id" in attributes:
-            return property
         attrs_root = etree.SubElement(property, self._tag)
         self._build(attrs_root, attributes, property)
         return property
@@ -29,7 +27,7 @@ class AttributesBuilder(ElementBuilder):
                 name = f'id{property.attrib["name"]}'
                 source_type = SourceType.RANDOM
                 source_args = {"rangeStart" : "0", "rangeEnd": "9999999"}
-                attr = etree.SubElement(root, self._inner_tag, {"name" : name}) if name else attribute
-                self._value_builder.build(attr, source_type, source_args)
+            attr = etree.SubElement(root, self._inner_tag, {"name" : name}) if name else attribute
+            self._value_builder.build(attr, source_type, source_args) if source_type else SourceType.STATIC if source_args else {"value" : "TODO"}
         
         return root
