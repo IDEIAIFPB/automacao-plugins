@@ -71,16 +71,16 @@ def list_elements(
     xsd_file: Path = typer.Argument(
         ...,
         help="Caminho para o arquivo XSD",
-        exists=True,
-        readable=True,
-        file_okay=True,
-        dir_okay=False,
+        # exists=True,
+        # readable=True,
+        # file_okay=True,
+        # dir_okay=False,
     ),
 ):
     """
     Lista todos os elementos disponíveis no arquivo XSD.
     """
-    pass
+    print("Funcionalidade nao implementada ainda")
     # try:
     #     with console.status(f"Analisando o arquivo XSD {xsd_file}..."):
     #         parser = XsdParser(str(xsd_file))
