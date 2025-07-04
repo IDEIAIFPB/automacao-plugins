@@ -78,7 +78,8 @@ class PropertiesBuilder(ElementBuilder):
         xsd_type = xsd_element.type
         attributes = xsd_element.attributes
 
-        self._attributes_builder.build(property, attributes)
+        if attributes:
+            self._attributes_builder.build(property, attributes)
 
         is_not_group = not isinstance(xsd_element, XsdGroup)
         has_no_content = not getattr(xsd_type, 'content', False) # tipos anonimos

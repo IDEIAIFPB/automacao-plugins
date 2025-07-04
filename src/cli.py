@@ -3,15 +3,14 @@
 
 import sys
 from pathlib import Path
-from typing import Optional
-
-from src.core.mapper.value.value_builder import ValueBuilder
 
 import typer
 from rich.console import Console
 from rich import print as rprint
 
 from src.mapper import Mapper
+
+from src.core.utils.constants import build_output_file_path
 
 
 app = typer.Typer(
@@ -48,15 +47,24 @@ def generate(
     Gera um documento de mapeamento XML a partir de um arquivo XSD.
     """
     try:
-        with console.status(f"Analisando o arquivo XSD {xsd_file}..."):
+        with console.status("Construindo o parser"):
             parser = Mapper(
                 root_element,
-                str(xsd_file),
+                plugin_name,
+                xsd_file,
                 output_file
             )
+        
+        with console.status(f"Gerando arvore do xml"):
+            tree = parser.build()
 
         with console.status("Gerando o documento de mapeamento..."):
-            parser.build_xml()
+            xml_content = parser.build_xml(tree)
+        
+        with console.status(f"Exportando o documento para: {xsd_file}"):
+            parser.export_xml_to_file(xml_content, output_file)
+
+        console.status(f"Resultado:\n{xml_content}")
 
         rprint(
             f"[green]✓[/green] Documento de mapeamento gerado com sucesso: [bold]{output_file}[/bold]"
@@ -105,8 +113,8 @@ if __name__ == "__main__":
     # app()
     
     generate(
-        xsd_file="xsd-files/NFSE.xsd.XSD",
-        output_file="a.xml",
-        root_element="CancelarNfseEnvio",
+        xsd_file="resources/xsd-files/NFSE.xsd.XSD",
+        output_file=build_output_file_path("cli.xml"),
+        root_element="EnviarLoteRpsEnvio",
         plugin_name="teste"
     )

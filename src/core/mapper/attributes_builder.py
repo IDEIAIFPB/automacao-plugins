@@ -1,5 +1,5 @@
 from typing import Optional
-from xmlschema.validators import XsdElement, XsdGroup, XsdAttributeGroup, XsdAttribute
+from xmlschema.validators import XsdAttributeGroup
 
 from src.core.element_mapper import ElementBuilder
 import lxml.etree as etree
@@ -26,8 +26,12 @@ class AttributesBuilder(ElementBuilder):
             if attribute in ("id", "Id"):
                 name = f'id{property.attrib["name"]}'
                 source_type = SourceType.RANDOM
-                source_args = {"rangeStart" : "0", "rangeEnd": "9999999"}
-            attr = etree.SubElement(root, self._inner_tag, {"name" : name}) if name else attribute
-            self._value_builder.build(attr, source_type, source_args) if source_type else SourceType.STATIC if source_args else {"value" : "TODO"}
+                source_args = {"rangeStart" : "100000000", "rangeEnd": "999999999"}
+            else:
+                name = attribute
+                source_type = SourceType.STATIC
+                source_args = {"value" : "TODO"}
+            attr = etree.SubElement(root, self._inner_tag, {"name" : name})
+            self._value_builder.build(attr, source_type, source_args)
         
         return root

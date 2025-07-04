@@ -18,7 +18,7 @@ class MapperBuilder(ElementBuilder):
     def metadata(self):
         return self._properties_builder.metadata
 
-    def build(self, root: str, plugin_id: str, schema: XMLSchema):
+    def build(self, plugin_id: str, xsd_element: _Element):
         xml_root = etree.Element(
             "document-mapper",
             {
@@ -27,9 +27,7 @@ class MapperBuilder(ElementBuilder):
             },
             nsmap={"xsi": "http://www.w3.org/2001/XMLSchema-instance"},
         )
-        xsd_element = schema.elements.get(root)
-        if xsd_element is None:
-            raise ValueError(f"Elemento '{root}' não achado no schema.")
+
         self._build(xml_root, xsd_element)
         return xml_root
 
