@@ -1,3 +1,4 @@
+# database/database.py
 import psycopg2
 import os
 from dotenv import load_dotenv
@@ -19,27 +20,43 @@ def get_connection():
 def create_table():
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS documentos (
-            id SERIAL PRIMARY KEY,
-            texto TEXT,
-            embedding VECTOR(384)
-        );
-    """)
-    conn.commit()
-    cur.close()
-    conn.close()
+    try:
+        cur.execute("DROP TABLE IF EXISTS documentos;")
+        conn.commit()
+
+        cur.execute("""
+            CREATE TABLE documentos ( -- Removido IF NOT EXISTS para sempre recriar
+                id SERIAL PRIMARY KEY,
+                texto TEXT,
+                embedding VECTOR(768)
+            );
+        """)
+        conn.commit()
+        print("Tabela 'documentos' verificada/recriada com sucesso!")
+    except Exception as e:
+        conn.rollback()
+        print(f"Erro ao criar/verificar tabela 'documentos': {e}")
+        raise
+    finally:
+        cur.close()
+        conn.close()
 
 
 def insert_chunks_and_embeddings(chunks, embeddings):
     conn = get_connection()
     cur = conn.cursor()
-    for chunk, emb in zip(chunks, embeddings):
-        emb_str = ",".join(map(str, emb))
-        cur.execute(
-            "INSERT INTO documentos (texto, embedding) VALUES (%s, %s)",
-            (chunk, f"[{emb_str}]"),
-        )
-    conn.commit()
-    cur.close()
-    conn.close()
+    try:
+        for chunk, emb in zip(chunks, embeddings):
+            emb_str = ",".join(map(str, emb))
+            cur.execute(
+                "INSERT INTO documentos (texto, embedding) VALUES (%s, %s)",
+                (chunk, f"[{emb_str}]"),
+            )
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print(f"Erro ao inserir chunks e embeddings: {e}")
+        raise
+    finally:
+        cur.close()
+        conn.close()
