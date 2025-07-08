@@ -13,7 +13,7 @@ class ActionBuilder(ElementBuilder):
         self._request_builder = RequestBuilder()
         self._response_builder = ResponseBuilder()
 
-    def build(self, plugin_id: str, signatures: list, operation_tag: str, wsdl_path: str):
+    def build(self, plugin_id: str, signatures: list, operation_tag: str, wsdl_path: str, final_envelope_tag: str):
         xml_root = etree.Element(
             self._tag,
             {
@@ -22,9 +22,17 @@ class ActionBuilder(ElementBuilder):
             },
             nsmap={"xsi": "http://www.w3.org/2001/XMLSchema-instance"},
         )
-
-        self._build(xml_root, signatures, operation_tag, wsdl_path)
+        file_type = plugin_id.split("-")[0]
+        self._build(xml_root, signatures, operation_tag, wsdl_path, final_envelope_tag, file_type)
         return xml_root
 
-    def _build(self, xml_root: _Element, signatures: list, operation_tag: str, wsdl_path: str):
-        self._request_builder.build(xml_root, signatures, operation_tag, wsdl_path)
+    def _build(
+        self,
+        xml_root: _Element,
+        signatures: list,
+        operation_tag: str,
+        wsdl_path: str,
+        final_envelope_tag: str,
+        file_type: str,
+    ):
+        self._request_builder.build(xml_root, signatures, operation_tag, wsdl_path, final_envelope_tag, file_type)
