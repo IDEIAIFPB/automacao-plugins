@@ -27,6 +27,4 @@ class ActionBuilder(ElementBuilder):
         return xml_root
 
     def _build(self, xml_root: _Element, signatures: list, operation_tag: str, wsdl_path: str):
-        self._request_builder.build(
-            xml_root,
-        )
+        self._request_builder.build(xml_root, signatures, operation_tag, wsdl_path)
