@@ -81,16 +81,17 @@ class ParametersBuilder(ElementBuilder):
         self._tag = "parameters"
         self._inner_tag = "parameter"
 
-    def build(self, tree: _Element, action_type: str) -> _Element:
+    def build(self, tree: _Element, file_type: str, response_tag: _Element, targets_element: list):
         parameters_tree = etree.SubElement(tree, self._tag)
-        return self._build(parameters_tree, action_type)
+        return self._build(parameters_tree, file_type, response_tag, targets_element)
 
-    def _build(self, tree: _Element, action_type: str) -> _Element:
-        action_type = action_type.upper()
+    def _build(self, tree: _Element, file_type: str, response_tag: _Element, targets_element: list):
+        file_type = file_type.upper()
 
-        if action_type == TIPO_CANCELAMENTO:
+        if file_type == TIPO_CANCELAMENTO:
             return tree
 
+        i = 0
         for key, value in DEFAULT_PARAMS.items():
             etree.SubElement(
                 tree,
@@ -98,11 +99,14 @@ class ParametersBuilder(ElementBuilder):
                 attrib={
                     "id": key,
                     "origin": "RESPONSE",
-                    "xpath": value,
+                    "xpath": value
+                    if value != ""
+                    else self._format_result(self.create_xpath(response_tag, targets_element[i])),
                 },
             )
+            i += 1
 
-        if action_type == TIPO_EMISSAO:
+        if file_type == TIPO_EMISSAO:
             for key, value in PARAMETERS_EMISSAO.items():
                 etree.SubElement(
                     tree,
@@ -116,11 +120,31 @@ class ParametersBuilder(ElementBuilder):
 
         return tree
 
-    # def create_xpath(self, initial_tag: str, end_tag: str, xsd_path: str) -> str:
-    #     # Lê o schema do XSD
-    #     schema = XMLSchema(xsd_path)
-    #     initial_element = schema.elements.get(initial_tag)
+    def extract_local_name(self, name):
+        if "}" in name:
+            return name.split("}")[-1]
+        return name
 
-    #     xpath = f"/{initial_element.name}"
+    def create_xpath(self, element, target_element, current_path=None):
+        local_name = self.extract_local_name(element.name)
 
-    #     while not xpath.endswith(f"/{end_tag}"):
+        if current_path is None:
+            current_path = [local_name]
+        else:
+            current_path = current_path + [local_name]
+
+        if local_name == target_element:
+            return current_path
+
+        if element.type.is_complex():
+            for child in element.type.content.iter_elements():
+                result = self.create_xpath(child, target_element, current_path)
+
+                if result:
+                    return result
+
+        return None
+
+    def _format_result(self, result):
+        result = "/" + "/".join(result) if result else ""
+        return result
