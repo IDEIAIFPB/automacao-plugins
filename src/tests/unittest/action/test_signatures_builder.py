@@ -6,7 +6,7 @@ from src.core.action import SignaturesBuilder
 from src.tests.utils import build_output_file_path, export_xml_to_file, get_xml
 
 
-class TestMapperBuilder(TestCase):
+class TestSignaturesBuilder(TestCase):
     def setUp(self):
         self._builder = SignaturesBuilder()
         self._signatures = [

@@ -1,7 +1,8 @@
 import lxml.etree as etree
 from lxml.etree import _Element
 
-from src.core.action import SignaturesBuilder, TemplateBuilder
+from src.core.action.signatures_builder import SignaturesBuilder
+from src.core.action.template_builder import TemplateBuilder
 from src.core.element_mapper import ElementBuilder
 
 
@@ -49,25 +50,29 @@ class RequestBuilder(ElementBuilder):
 
         etree.SubElement(headers, "commonHeader", name="Content-Type", value="text/xml;charset=UTF-8")
         wsdl_tree = etree.parse(wsdl_path)
-        root = wsdl_tree.getroot()
-        namespaces = root.nsmap
-        binding_operation = self._get_binding_operation(root, operation_tag, namespaces)
+        wsdl_root = wsdl_tree.getroot()
+        namespaces = wsdl_root.nsmap
+        binding_operation = self._get_binding_operation(wsdl_root, operation_tag, namespaces)
 
         soap_action = self._get_soap_action(binding_operation, namespaces)
 
         etree.SubElement(headers, "commonHeader", name="SOAPAction", value=soap_action)
 
-        if signatures:
-            signatures_element = etree.SubElement(endpoint, "signatures")
-            for signature in signatures:
-                etree.SubElement(signatures_element, "signature")
-        self._template_builder.build(tree, operation_tag, wsdl_tree, final_envelope_tag)
+        body = etree.SubElement(tree, "body")
+        input = etree.SubElement(body, "input")
+        document_mapper = etree.SubElement(input, "document-mapper")
+        document_mapper.text = f"{file_type}-mapper.xml"
+
+        input = self._signatures_builder.build(input, signatures)
+
+        content = etree.SubElement(body, "content")
+        self._template_builder.build(content, wsdl_root, binding_operation, final_envelope_tag, namespaces)
 
         return tree
 
-    def _get_binding_operation(self, root: _Element, operation_tag: str, namespaces: dict):
+    def _get_binding_operation(self, wsdl_root: _Element, operation_tag: str, namespaces: dict):
         bindig_operation_name = operation_tag
-        bindig_operation = root.find(
+        bindig_operation = wsdl_root.find(
             f"./wsdl:binding/wsdl:operation[@name='{bindig_operation_name}']",
             namespaces=namespaces,
         )

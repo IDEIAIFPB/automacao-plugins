@@ -1,7 +1,7 @@
 from lxml import etree as ET
 
 
-def montar_envelope(elemento, pai, xsd, xsd_root, tag_final=None, target_namespace=None):
+def montar_envelope(elemento, pai, xsd_root, tag_final=None, target_namespace=None):
     elementos = elemento.findall(".//xsd:element", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"})
     name = elemento.get("name")
     if name is None or name == tag_final:
@@ -12,12 +12,12 @@ def montar_envelope(elemento, pai, xsd, xsd_root, tag_final=None, target_namespa
     if xsd_root.get("elementFormDefault") != "qualified":
         target_namespace = None
     for elemento_interno in elementos:
-        montar_envelope(elemento_interno, pai, xsd, xsd_root, tag_final, target_namespace)
+        montar_envelope(elemento_interno, pai, xsd_root, tag_final, target_namespace)
         return
 
     if elemento.get("type") is not None:
         tipo = elemento.get("type").split(":")[-1]
-        tipo_complexo = xsd.find(
+        tipo_complexo = xsd_root.find(
             f"./xsd:complexType[@name='{tipo}']",
             namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"},
         )
@@ -32,28 +32,28 @@ def montar_envelope(elemento, pai, xsd, xsd_root, tag_final=None, target_namespa
                 pai.set(atributo.get("name"), "?")
 
         if tipo_complexo is not None:
-            percorre_tipo_complexo(tipo_complexo, pai, xsd, xsd_root, tag_final, target_namespace)
+            percorre_tipo_complexo(tipo_complexo, pai, xsd_root, tag_final, target_namespace)
             return
 
     pai.text = "?"
 
 
-def percorre_tipo_complexo(tipo_complexo, pai, xsd, xsd_root, tag_final, target_namespace=None):
+def percorre_tipo_complexo(tipo_complexo, pai, xsd_root, tag_final, target_namespace=None):
     elementos = tipo_complexo.findall(".//xsd:element", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"})
     for elemento in elementos:
-        montar_envelope(elemento, pai, xsd, xsd_root, tag_final, target_namespace)
+        montar_envelope(elemento, pai, xsd_root, tag_final, target_namespace)
 
 
-def montar_header(xsd, xsd_root, header, nsmap, envelope, root, namespaces, target_namespace=None):
+def montar_header(xsd_root, header, nsmap, envelope, root, namespaces, target_namespace=None):
     tag_header = ET.SubElement(envelope, ET.QName(nsmap["soapenv"], "Header"))
     if header is not None:
         message_name = header.get("message").split(":")[-1]
         element_name = get_element_by_message_name(message_name, root, namespaces)
-        elemento = xsd.find(
+        elemento = xsd_root.find(
             f"./xsd:element[@name='{element_name}']",
             namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"},
         )
-        montar_envelope(elemento, tag_header, xsd, xsd_root, target_namespace=target_namespace)
+        montar_envelope(elemento, tag_header, xsd_root, target_namespace=target_namespace)
 
 
 def get_element_by_message_name(message_name, root, namespaces):
@@ -124,7 +124,7 @@ def mapeia_wsdl(wsdl, operacao, tag_final):
 
     header = bindig_operation.find("wsdl:input/soap:header", namespaces=namespaces)
 
-    montar_header(xsd, xsd_root, header, nsmap, envelope, root, namespaces, target_namespace)
+    montar_header(xsd_root, header, nsmap, envelope, root, namespaces, target_namespace)
 
     operation = root.find(
         f"./wsdl:portType/wsdl:operation[@name='{bindig_operation_name}']",
@@ -150,7 +150,7 @@ def mapeia_wsdl(wsdl, operacao, tag_final):
         f"./xsd:element[@name='{element_name}']",
         namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"},
     )
-    montar_envelope(elemento, body, xsd, xsd_root, tag_final, target_namespace)
+    montar_envelope(elemento, body, xsd_root, tag_final, target_namespace)
 
     xml_content = ET.tostring(envelope, pretty_print=True, encoding="utf-8", xml_declaration=True).decode("utf-8")
 

@@ -81,14 +81,14 @@ class ParametersBuilder(ElementBuilder):
         self._tag = "parameters"
         self._inner_tag = "parameter"
 
-    def build(self, tree: _Element, tipo: str) -> _Element:
+    def build(self, tree: _Element, action_type: str) -> _Element:
         parameters_tree = etree.SubElement(tree, self._tag)
-        return self._build(parameters_tree, tipo)
+        return self._build(parameters_tree, action_type)
 
-    def _build(self, tree: _Element, tipo: str) -> _Element:
-        tipo = tipo.upper()
+    def _build(self, tree: _Element, action_type: str) -> _Element:
+        action_type = action_type.upper()
 
-        if tipo == TIPO_CANCELAMENTO:
+        if action_type == TIPO_CANCELAMENTO:
             return tree
 
         for key, value in DEFAULT_PARAMS.items():
@@ -102,7 +102,7 @@ class ParametersBuilder(ElementBuilder):
                 },
             )
 
-        if tipo == TIPO_EMISSAO:
+        if action_type == TIPO_EMISSAO:
             for key, value in PARAMETERS_EMISSAO.items():
                 etree.SubElement(
                     tree,
@@ -115,3 +115,12 @@ class ParametersBuilder(ElementBuilder):
                 )
 
         return tree
+
+    # def create_xpath(self, initial_tag: str, end_tag: str, xsd_path: str) -> str:
+    #     # Lê o schema do XSD
+    #     schema = XMLSchema(xsd_path)
+    #     initial_element = schema.elements.get(initial_tag)
+
+    #     xpath = f"/{initial_element.name}"
+
+    #     while not xpath.endswith(f"/{end_tag}"):

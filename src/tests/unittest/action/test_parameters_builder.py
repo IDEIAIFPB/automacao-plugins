@@ -6,7 +6,7 @@ from src.core.action import ParametersBuilder
 from src.tests.utils import build_output_file_path, export_xml_to_file, get_xml
 
 
-class TestMapperBuilder(TestCase):
+class TestParametersBuilder(TestCase):
     def setUp(self):
         self._builder = ParametersBuilder()
         self._output_file = build_output_file_path("parameters_builder_test_consulta.xml")

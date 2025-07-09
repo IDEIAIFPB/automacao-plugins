@@ -1,9 +1,10 @@
 from lxml import etree as ET
+
 from automation_request import mapeia_wsdl
-from automation_response import mapeia_wsdl_response, monta_status, monta_parameters
+from automation_response import mapeia_wsdl_response, monta_parameters, monta_status
 
 arquivo = "consulta"
-wsdl = "nfse04.wsdl"
+wsdl = "wsdl-files/nfse04.wsdl"
 operacao = "ConsultarNfsePorRps"
 tag_final = "ConsultarNfseRpsEnvio"
 init_envelope_resposta = "ConsultarNfseRpsResposta"
@@ -15,9 +16,9 @@ nsmap = {"xsi": "http://www.w3.org/2001/XMLSchema-instance"}
 
 document_action = ET.Element("document-action", nsmap=nsmap, id=f"consulta-{plugin}")
 
-document_action.attrib[
-    "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation"
-] = "../../../schemas/document-action.xsd"
+document_action.attrib["{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation"] = (
+    "../../../schemas/document-action.xsd"
+)
 
 request = ET.SubElement(document_action, "request")
 
@@ -36,12 +37,8 @@ headers = ET.SubElement(request, "headers")
 
 envelope, soap_action = mapeia_wsdl(wsdl, operacao, tag_final)
 
-common_header = ET.SubElement(
-    headers, "commonHeader", name="Content-Type", value="text/xml;charset=UTF-8"
-)
-common_header2 = ET.SubElement(
-    headers, "commonHeader", name="SOAPAction", value=soap_action
-)
+common_header = ET.SubElement(headers, "commonHeader", name="Content-Type", value="text/xml;charset=UTF-8")
+common_header2 = ET.SubElement(headers, "commonHeader", name="SOAPAction", value=soap_action)
 
 body = ET.SubElement(request, "body")
 
@@ -71,16 +68,12 @@ ET.SubElement(details, "message", id="codigo", type="ERROR", xpath="")
 ET.SubElement(details, "message", id="mensagem", type="ERROR", xpath="")
 ET.SubElement(details, "message", id="correcao", type="ERROR", xpath="")
 
-parameters = monta_parameters(
-    arquivo, response_body, init_envelope_resposta, lista_fins_resposta, xsd
-)
+parameters = monta_parameters(arquivo, response_body, init_envelope_resposta, lista_fins_resposta, xsd)
 
 response = ET.SubElement(document_action, "checksum")
 response = ET.SubElement(document_action, "signature")
 
-xml_content = ET.tostring(
-    document_action, pretty_print=True, encoding="utf-8", xml_declaration=True
-).decode("utf-8")
+xml_content = ET.tostring(document_action, pretty_print=True, encoding="utf-8", xml_declaration=True).decode("utf-8")
 
 with open(f"{arquivo}2-action.xml", "w", encoding="utf-8") as f:
     f.write(xml_content)
