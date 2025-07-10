@@ -1,7 +1,6 @@
-from lxml import etree
+import lxml.etree as etree
 from lxml.etree import _Element
 from xmlschema import XMLSchema
-from xmlschema.validators import XsdElement
 
 from src.core.action.details_builder import DetailsBuilder
 from src.core.action.parameters_builder import ParametersBuilder
@@ -17,10 +16,29 @@ class ResponseBuilder(ElementBuilder):
         self._status_builder = StatusBuilder()
         self._details_builder = DetailsBuilder()
 
-    def build(self, tree: _Element, parsed_xsd: XMLSchema, response_tag: str, plugin_id: str):
-        response = etree.SubElement(tree, self._tag)
-        self._build(response, plugin_id, parsed_xsd, response_tag)
+    def build(self, tree: _Element, parsed_xsd: XMLSchema, response_tag: str, plugin_id: str, targets_element: list):
+        response = self._build(parsed_xsd, response_tag, plugin_id.split("-")[0], targets_element or [])
+        tree.append(response)
+        return tree
+
+    def _build(self, parsed_xsd: XMLSchema, response_tag: str, file_type: str, targets_element: list):
+        response = etree.Element(self._tag)
+
+        body = etree.SubElement(response, "body")
+
+        input_elem = etree.SubElement(body, "input")
+        etree.SubElement(input_elem, "content", xpath=self._get_main_xpath(parsed_xsd, response_tag))
+
+        status = self._status_builder.build(parsed_xsd, file_type, response_tag, targets_element)
+        body.append(status)
+
+        details = self._details_builder.build(parsed_xsd, file_type, response_tag, targets_element)
+        body.append(details)
+
+        parameters = self._parameters_builder.build(file_type, response_tag, targets_element)
+        body.append(parameters)
+
         return response
 
-    def _build(self, xml_root: _Element, xsd_element: XsdElement):
-        pass
+    def _get_main_xpath(self, response_tag: str):
+        return f"/Envelope/Body/{response_tag}"
