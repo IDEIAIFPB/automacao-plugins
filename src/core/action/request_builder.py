@@ -18,12 +18,16 @@ class RequestBuilder(ElementBuilder):
         tree: _Element,
         signatures: list,
         operation_tag: str,
-        wsdl_path: str,
         final_envelope_tag: str,
         file_type: str,
+        wsdl_root: _Element,
+        namespaces: dict,
+        wsdl_schema_root: _Element,
     ):
         request = etree.SubElement(tree, self._tag)
-        self._build(request, signatures, operation_tag, wsdl_path, final_envelope_tag, file_type)
+        self._build(
+            request, signatures, operation_tag, final_envelope_tag, file_type, wsdl_root, namespaces, wsdl_schema_root
+        )
         return tree
 
     def _build(
@@ -31,9 +35,11 @@ class RequestBuilder(ElementBuilder):
         tree: _Element,
         signatures: list,
         operation_tag: str,
-        wsdl_path: str,
         final_envelope_tag: str,
         file_type: str,
+        wsdl_root: _Element,
+        namespaces: dict,
+        wsdl_schema_root: _Element,
     ):
         endpoint = etree.SubElement(tree, "endpoint")
 
@@ -49,9 +55,7 @@ class RequestBuilder(ElementBuilder):
         headers = etree.SubElement(tree, "headers")
 
         etree.SubElement(headers, "commonHeader", name="Content-Type", value="text/xml;charset=UTF-8")
-        wsdl_tree = etree.parse(wsdl_path)
-        wsdl_root = wsdl_tree.getroot()
-        namespaces = wsdl_root.nsmap
+
         binding_operation = self._get_binding_operation(wsdl_root, operation_tag, namespaces)
 
         soap_action = self._get_soap_action(binding_operation, namespaces)
@@ -66,7 +70,9 @@ class RequestBuilder(ElementBuilder):
         input = self._signatures_builder.build(input, signatures)
 
         content = etree.SubElement(body, "content")
-        self._template_builder.build(content, wsdl_root, binding_operation, final_envelope_tag, namespaces)
+        self._template_builder.build(
+            content, wsdl_root, binding_operation, final_envelope_tag, namespaces, wsdl_schema_root
+        )
 
         return tree
 

@@ -6,6 +6,8 @@ from src.core.action.details_builder import DetailsBuilder
 from src.core.action.parameters_builder import ParametersBuilder
 from src.core.action.status_builder import StatusBuilder
 from src.core.element_mapper import ElementBuilder
+from src.core.utils.constants import CONDITTIONS_MAP
+from src.core.utils.xml_utils import get_element_by_message_name
 
 
 class ResponseBuilder(ElementBuilder):
@@ -16,29 +18,99 @@ class ResponseBuilder(ElementBuilder):
         self._status_builder = StatusBuilder()
         self._details_builder = DetailsBuilder()
 
-    def build(self, tree: _Element, parsed_xsd: XMLSchema, response_tag: str, plugin_id: str, targets_element: list):
-        response = self._build(parsed_xsd, response_tag, plugin_id.split("-")[0], targets_element or [])
+    def build(
+        self,
+        tree: _Element,
+        parsed_xsd: XMLSchema,
+        response_tag: str,
+        operation_tag: str,
+        file_type: str,
+        mapper_root: _Element,
+        wsdl_root: _Element,
+        namespaces: dict,
+        wsdl_schema_root: _Element,
+        targets_tags: dict,
+    ):
+        response = self._build(
+            parsed_xsd,
+            response_tag,
+            operation_tag,
+            file_type,
+            mapper_root,
+            wsdl_root,
+            namespaces,
+            wsdl_schema_root,
+            targets_tags or [],
+        )
         tree.append(response)
         return tree
 
-    def _build(self, parsed_xsd: XMLSchema, response_tag: str, file_type: str, targets_element: list):
+    def _build(
+        self,
+        parsed_xsd: XMLSchema,
+        response_tag: str,
+        operation_tag: str,
+        file_type: str,
+        mapper_root: _Element,
+        wsdl_root: _Element,
+        namespaces: dict,
+        wsdl_schema_root: _Element,
+        targets_tags: dict,
+    ):
         response = etree.Element(self._tag)
 
         body = etree.SubElement(response, "body")
 
         input_elem = etree.SubElement(body, "input")
-        etree.SubElement(input_elem, "content", xpath=self._get_main_xpath(parsed_xsd, response_tag))
+        etree.SubElement(
+            input_elem, "content", xpath=self._get_output_xpath(operation_tag, wsdl_root, namespaces, wsdl_schema_root)
+        )
 
-        status = self._status_builder.build(parsed_xsd, file_type, response_tag, targets_element)
-        body.append(status)
+        response_element = parsed_xsd.elements.get(response_tag)
 
-        details = self._details_builder.build(parsed_xsd, file_type, response_tag, targets_element)
-        body.append(details)
+        self._status_builder.build(file_type, response, CONDITTIONS_MAP, response_element, targets_tags)
 
-        parameters = self._parameters_builder.build(file_type, response_tag, targets_element)
-        body.append(parameters)
+        self._details_builder.build(response, response_element, targets_tags)
+
+        self._parameters_builder.build(response, file_type, response_element, mapper_root, targets_tags)
 
         return response
 
-    def _get_main_xpath(self, response_tag: str):
-        return f"/Envelope/Body/{response_tag}"
+    def _get_output_xpath(self, operation_tag: str, wsdl_root: _Element, namespaces: dict, wsdl_schema_root: _Element):
+        operation = wsdl_root.find(
+            f"./wsdl:portType/wsdl:operation[@name='{operation_tag}']",
+            namespaces=namespaces,
+        )
+        output = operation.find("wsdl:output", namespaces=namespaces)
+        output_message = output.get("message").split(":")[-1]
+        output_element_name = get_element_by_message_name(output_message, wsdl_root, namespaces)
+        element = wsdl_schema_root.find(
+            f"./xsd:element[@name='{output_element_name}']",
+            namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"},
+        )
+        output_xpath = self._mount_output_xpath(element, wsdl_schema_root)
+
+        return output_xpath
+
+    def _mount_output_xpath(self, element, xsd):
+        output_xpath = f"Envelope/Body/{element.get('name')}"
+        if element.get("type") is not None:
+            type = element.get("type").split(":")[-1]
+            complex_type = xsd.find(
+                f"./xsd:complexType[@name='{type}']", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
+            )
+            if complex_type is not None:
+                output_xpath = self._map_complex_type(complex_type, output_xpath, xsd)
+        return output_xpath
+
+    def _map_complex_type(self, complex_type, output_xpath, xsd):
+        element = complex_type.find(".//xsd:element", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"})
+        output_xpath += f"/{element.get('name')}"
+        if element.get("type") is not None:
+            type = element.get("type").split(":")[-1]
+            complex_type = xsd.find(
+                f"./xsd:complexType[@name='{type}']", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"}
+            )
+            if complex_type is not None:
+                output_xpath = self._map_complex_type(complex_type, output_xpath, xsd)
+        return output_xpath

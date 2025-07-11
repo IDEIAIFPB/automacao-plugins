@@ -2,10 +2,13 @@ import lxml.etree as etree
 from lxml.etree import _Element
 
 from src.core.element_mapper import ElementBuilder
+from src.core.utils.xml_utils import create_xpath, format_result
 
 TIPO_EMISSAO = "EMISSAO"
 TIPO_CANCELAMENTO = "CANCELAMENTO"
 TIPO_CONSULTA = "CONSULTA"
+
+PARAMS_KEY = ["numero_param", "protocolo_param", "aliquota_param"]
 
 DEFAULT_PARAMS = {
     "NumeroNFe": "",
@@ -81,70 +84,76 @@ class ParametersBuilder(ElementBuilder):
         self._tag = "parameters"
         self._inner_tag = "parameter"
 
-    def build(self, tree: _Element, file_type: str, response_tag: _Element, targets_element: list):
+    def build(
+        self,
+        tree: _Element,
+        file_type: str,
+        response_element: _Element,
+        mapper_root: _Element,
+        targets_tags: dict = None,
+    ):
         parameters_tree = etree.SubElement(tree, self._tag)
-        return self._build(parameters_tree, file_type, response_tag, targets_element)
+        self._build(parameters_tree, file_type, response_element, mapper_root, targets_tags)
+        return tree
 
-    def _build(self, tree: _Element, file_type: str, response_tag: _Element, targets_element: list):
+    def _build(
+        self,
+        tree: _Element,
+        file_type: str,
+        response_element: _Element,
+        mapper_root: _Element,
+        targets_tags: dict = None,
+    ):
         file_type = file_type.upper()
 
         if file_type == TIPO_CANCELAMENTO:
             return tree
 
-        i = 0
+        index = 0
         for key, value in DEFAULT_PARAMS.items():
+            xpath_value = (
+                format_result(create_xpath(response_element, targets_tags[PARAMS_KEY[index]]))
+                if targets_tags and targets_tags[PARAMS_KEY[index]]
+                else ""
+            )
             etree.SubElement(
                 tree,
                 self._inner_tag,
                 attrib={
                     "id": key,
                     "origin": "RESPONSE",
-                    "xpath": value
-                    if value != ""
-                    else self._format_result(self.create_xpath(response_tag, targets_element[i])),
+                    "xpath": value if value != "" else xpath_value,
                 },
             )
-            i += 1
+            index += 1
 
         if file_type == TIPO_EMISSAO:
             for key, value in PARAMETERS_EMISSAO.items():
+                if key == "AliquotaAtividade":
+                    xpath_value = self._create_xpath_by_mapper(mapper_root, targets_tags[PARAMS_KEY[2]])
                 etree.SubElement(
                     tree,
                     self._inner_tag,
                     attrib={
                         "id": key,
                         "origin": "REQUEST" if key == "AliquotaAtividade" else "INPUT",
-                        "xpath": value,
+                        "xpath": xpath_value if key == "AliquotaAtividade" and xpath_value else value,
                     },
                 )
 
         return tree
 
-    def extract_local_name(self, name):
-        if "}" in name:
-            return name.split("}")[-1]
-        return name
+    def _create_xpath_by_mapper(self, element: _Element, target_element: str, current_path=""):
+        local_name = element.get("name")
 
-    def create_xpath(self, element, target_element, current_path=None):
-        local_name = self.extract_local_name(element.name)
-
-        if current_path is None:
-            current_path = [local_name]
-        else:
-            current_path = current_path + [local_name]
-
+        current_path += f"/{local_name}"
         if local_name == target_element:
             return current_path
 
-        if element.type.is_complex():
-            for child in element.type.content.iter_elements():
-                result = self.create_xpath(child, target_element, current_path)
-
-                if result:
-                    return result
+        properties = element.findall(".//property")
+        for property in properties:
+            result = self._create_xpath_by_mapper(property, target_element, current_path)
+            if result:
+                return result
 
         return None
-
-    def _format_result(self, result):
-        result = "/" + "/".join(result) if result else ""
-        return result
