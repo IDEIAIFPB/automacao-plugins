@@ -11,14 +11,8 @@ def export_xml_to_file(xml: str, path: str) -> None:
         f.write(xml)
 
 
-def _extract_local_name(name):
-    if "}" in name:
-        return name.split("}")[-1]
-    return name
-
-
 def create_xpath(element, target_element, current_path=[]):
-    local_name = _extract_local_name(element.name)
+    local_name = element.local_name
 
     current_path = current_path + [local_name]
 
