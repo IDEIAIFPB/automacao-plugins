@@ -25,6 +25,17 @@ class TestActionBuilder(TestCase):
             "numero_param": "NumeroLote",
             "protocolo_param": "Protocolo",
             "aliquota_param": "Aliquota",
+            "codigo_verificacao_param": "CodigoVerificacao",
+            "codigo_details": "Codigo",
+            "mensagem_detail": "Mensagem",
+            "correcao_details": "Correcao",
+            "numero_consulta": "NumeroLote",
+            "codigo_cancelamento_consulta": "Codigo",
+            "codigo_consulta": "Codigo",
+            "data_hora": "DataHora",
+            "codigo_cancelamento": "Codigo",
+            "codigo_emissao": "Codigo",
+            "numero_emissao": "NumeroLote",
         }
 
     def test_build(self):

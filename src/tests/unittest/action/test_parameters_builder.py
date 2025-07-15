@@ -35,7 +35,12 @@ class TestParametersBuilder(TestCase):
         self._output_file = build_output_file_path("parameters_builder_test_emissao.xml")
         root = etree.Element("root")
         response_tag = self._schema.elements.get("EnviarLoteRpsResposta")
-        targets_element = {"numero_param": "NumeroLote", "protocolo_param": "Protocolo", "aliquota_param": "Aliquota"}
+        targets_element = {
+            "numero_param": "NumeroLote",
+            "protocolo_param": "Protocolo",
+            "aliquota_param": "Aliquota",
+            "codigo_verificacao_param": "CodigoVerificacao",
+        }
         tree = self._builder.build(root, "Emissao", response_tag, mapper_root, targets_element)
         s_tree = get_xml(tree)
         export_xml_to_file(s_tree, self._output_file)
