@@ -1,32 +1,35 @@
 TEMP_PATH = "./src/tests/temp"
 
+DETAILS_IDS = ["codigo", "mensagem", "correcao"]
+KEYS_TAGS = ["codigo_details", "mensagem_detail", "correcao_details"]
+
 CONDITTIONS_MAP = {
     "consulta": {
         "conflict": {},
         "accepted": {
             "conditions": [
-                {"comparison": "EXISTS", "target_key": "numero_consulta"},
-                {"comparison": "NOT_EXISTS", "target_key": "codigo_cancelamento_consulta"},
+                {"comparison": "EXISTS", "target_tag_key": "numero_consulta"},
+                {"comparison": "NOT_EXISTS", "target_tag_key": "codigo_cancelamento_consulta"},
             ]
         },
-        "cancelled": {"conditions": [{"comparison": "EXISTS", "target_key": "codigo_cancelamento_consulta"}]},
-        "rejected": {"conditions": [{"comparison": "EXISTS", "target_key": "codigo_consulta"}]},
+        "cancelled": {"conditions": [{"comparison": "EXISTS", "target_tag_key": "codigo_cancelamento_consulta"}]},
+        "rejected": {"conditions": [{"comparison": "EXISTS", "target_tag_key": "codigo_consulta"}]},
     },
     "cancelamento": {
         "accepted": {},
         "conflict": {},
-        "cancelled": {"conditions": [{"comparison": "EXISTS", "target_key": "data_hora"}]},
-        "rejected": {"conditions": [{"comparison": "EXISTS", "target_key": "codigo_cancelamento"}]},
+        "cancelled": {"conditions": [{"comparison": "EXISTS", "target_tag_key": "data_hora"}]},
+        "rejected": {"conditions": [{"comparison": "EXISTS", "target_tag_key": "codigo_cancelamento"}]},
     },
     "emissao": {
         "conflict": {
             "conditions": [
-                {"comparison": "CONTAINS", "value": "L018", "target_key": "codigo_emissao"},
-                {"comparison": "CONTAINS", "value": "218", "target_key": "codigo_emissao"},
-                {"comparison": "CONTAINS", "value": "E10", "target_key": "codigo_emissao"},
-                {"comparison": "CONTAINS", "value": "E405", "target_key": "codigo_emissao"},
-                {"comparison": "CONTAINS", "value": "E163", "target_key": "codigo_emissao"},
-                {"comparison": "CONTAINS", "value": "E179", "target_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "L018", "target_tag_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "218", "target_tag_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "E10", "target_tag_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "E405", "target_tag_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "E163", "target_tag_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "E179", "target_tag_key": "codigo_emissao"},
                 {"comparison": "CONTAINS", "value": "PERMITE A CONSULTA", "xpath": "/"},
                 {"comparison": "CONTAINS", "value": "RPS.*J.*EXISTE", "xpath": "/"},
                 {
@@ -38,10 +41,81 @@ CONDITTIONS_MAP = {
                 {"comparison": "CONTAINS", "value": "RPS.*j.*informado", "xpath": "/"},
             ]
         },
-        "accepted": {"conditions": [{"comparison": "EXISTS", "target_key": "numero_emissao"}]},
-        "rejected": {"conditions": [{"comparison": "EXISTS", "target_key": "codigo_emissao"}]},
+        "accepted": {"conditions": [{"comparison": "EXISTS", "target_tag_key": "numero_emissao"}]},
+        "rejected": {"conditions": [{"comparison": "EXISTS", "target_tag_key": "codigo_emissao"}]},
         "cancelled": {},
     },
+}
+
+TIPO_EMISSAO = "EMISSAO"
+TIPO_CANCELAMENTO = "CANCELAMENTO"
+
+DEFAULT_PARAMS = {
+    "NumeroNFe": ["RESPONSE", "numero_param"],
+    "CodigoVerificacao": ["RESPONSE", "codigo_verificacao_param"],
+}
+PARAMETERS_EMISSAO = {
+    "Protocolo": ["RESPONSE", "protocolo_param"],
+    "AliquotaAtividade": ["REQUEST", "aliquota_param"],
+    "SistemaOrigem": ["INPUT", "/SynchroId/SistemaOrigem"],
+    "CPFCNPJRemetente": ["INPUT", "/SynchroId/CpfCnpjPrestador"],
+    "CodIBGEMun": ["INPUT", "/SynchroId/CodIBGEMun"],
+    "InscricaoMunicipal": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/InscricaoPrestador"],
+    "RazaoSocialPrestador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/RazaoSocialPrestador"],
+    "NomeFantasiaPrestador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/NomeFantasiaPrestador"],
+    "EnderecoPrestador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/EnderecoPrestador"],
+    "CidadePrestador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/CidadePrestador"],
+    "UFPrestador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/UFPrestador"],
+    "EmailPrestador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/EmailPrestador"],
+    "SerieRPS": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/SerieRPS"],
+    "NumeroRPS": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/NumeroRPS"],
+    "NomeMunicipioTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/CidadeTomadorDescricao"],
+    "BairroTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/Bairro"],
+    "CidadeTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/Cidade"],
+    "Uf": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/UF"],
+    "CEPTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/CEP"],
+    "EmailTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EmailTomador"],
+    "TelefoneTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/TelefoneTomador"],
+    "InscricaoMunicipalTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/InscricaoMunicipalTomador"],
+    "TipoLogradouroTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/TipoLogradouro"],
+    "LogradouroTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/Logradouro"],
+    "NumeroEnderecoTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/NumeroEndereco"],
+    "ComplementoEnderecoTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/ComplementoEndereco"],
+    "Tributacao": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/TributacaoRPS"],
+    "CodigoAtividade": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/CodigoTributacaoMunicipio"],
+    "TipoRecolhimento": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/TipoRecolhimento"],
+    "RazaoSocialTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/RazaoSocialTomador"],
+    "DiscriminacaoServico": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/Discriminacao"],
+    "OptanteSimplesNacional": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/OptanteSimplesNacional"],
+    "BaseCalculo": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/BaseCalculo"],
+    "ValorLiquidoNfse": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorLiquidoNfse"],
+    "ValorINSS": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorINSS"],
+    "ValorIss": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorIss"],
+    "ValorPIS": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorPIS"],
+    "ValorCOFINS": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorCOFINS"],
+    "ValorIR": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorIR"],
+    "ValorCSLL": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorCSLL"],
+    "ValorTotalServicos": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorServicos"],
+    "ValorTotalDeducoes": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorDeducoes"],
+    "DescricaoMunicipioPrestacao": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/DescricaoMunicipioPrestacao"],
+    "MunicipioPrestacao": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/MunicipioPrestacao"],
+    "CodigoMunicipio": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/CodigoMunicipio"],
+    "DataEmissao": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/DataEmissao"],
+    "HoraEmissao": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/HoraEmissao"],
+    "CNPJTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/CPFCNPJTomador/CNPJ"],
+    "CPFTomador": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/CPFCNPJTomador/CPF"],
+    "DocTomadorEstrangeiro": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/DocTomadorEstrangeiro"],
+    "CodigoServico": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/CodigoServico"],
+    "DescricaoCodServico": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/DescricaoCodServico"],
+    "TipoRPS": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/TipoRPS"],
+    "LocalPrestacao": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/DescricaoMunicipioPrestacao"],
+    "ISSRetido": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ISSRetido"],
+    "NaturezaOperacao": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/NaturezaOperacao"],
+    "OutrasInformacoes": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/OutrasInformacoes"],
+    "ValorIssRetido": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/ValorIssRetido"],
+    "OutrasRetencoes": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/OutrasRetencoes"],
+    "RegimeEspecialTributacao": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/RegimeEspecialTributacao"],
+    "Competencia": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/Competencia"],
 }
 
 
