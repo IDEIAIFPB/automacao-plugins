@@ -1,8 +1,8 @@
-from src.core.element_mapper import ElementBuilder
 import lxml.etree as etree
 from lxml.etree import _Element
 from xmlschema.validators import XsdElement
 
+from src.core.element_mapper import ElementBuilder
 from src.core.mapper.properties_builder import PropertiesBuilder
 
 

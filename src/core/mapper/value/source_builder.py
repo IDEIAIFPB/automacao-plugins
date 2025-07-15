@@ -1,10 +1,11 @@
 from typing import Any
+
+import lxml.etree as etree
+from lxml.etree import _Element
+
 from src.core import ElementBuilder
 from src.core.mapper.data import JsonProperties
 from src.core.mapper.enum import SourceType
-
-from lxml.etree import _Element
-import lxml.etree as etree
 
 
 class SourceBuilder(ElementBuilder):
@@ -20,9 +21,7 @@ class SourceBuilder(ElementBuilder):
             SourceType.VARIABLE: ["variableId"],
         }
 
-    def build(
-        self, parent: _Element, source_args: dict[str:Any], source_type: SourceType
-    ) -> _Element:
+    def build(self, parent: _Element, source_args: dict[str:Any], source_type: SourceType) -> _Element:
         sources_element = etree.SubElement(parent, self._tag)
         source_args = self._treat_args(source_args, source_type)
         etree.SubElement(sources_element, source_type.value, **source_args)
@@ -34,9 +33,7 @@ class SourceBuilder(ElementBuilder):
         if missing:
             expected = ", ".join(f'"{key}"' for key in required)
             received = ", ".join(f'"{key}"' for key in source_args.keys())
-            raise ValueError(
-                f"Argumentos inválidos: esperado {expected}, recebido: {received}"
-            )
+            raise ValueError(f"Argumentos inválidos: esperado {expected}, recebido: {received}")
 
     def _treat_args(self, source_args: dict, source_type: SourceType) -> dict:
         required = self._source_keys.get(source_type)

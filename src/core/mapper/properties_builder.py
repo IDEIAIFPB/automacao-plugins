@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import Optional
+
+import lxml.etree as etree
+from lxml.etree import _Element
 from xmlschema.validators import XsdElement, XsdGroup
 
 from src.core.element_mapper import ElementBuilder
-import lxml.etree as etree
-from lxml.etree import _Element
-
+from src.core.mapper.attributes_builder import AttributesBuilder
 from src.core.mapper.enum import SourceType
 from src.core.mapper.value import ValueBuilder
-from src.core.mapper.attributes_builder import AttributesBuilder
 
 
 @dataclass
@@ -54,18 +54,14 @@ class PropertiesBuilder(ElementBuilder):
             return False
         return True
 
-    def _build(
-        self, xsd_element: XsdElement, tree: Optional[_Element] = None, xpath=""
-    ):
+    def _build(self, xsd_element: XsdElement, tree: Optional[_Element] = None, xpath=""):
         name = self._get_element_name(xsd_element)
         if self._get_element_name(xsd_element) == "Signature":
             path_broken = xpath.split("/")
             target = path_broken[-1]
             if len(path_broken) > 1:
                 parent = path_broken[-2]
-                self._metada.signature.append(
-                    {"parent": parent, "target": target, "type": "ELEMENT"}
-                )
+                self._metada.signature.append({"parent": parent, "target": target, "type": "ELEMENT"})
                 return tree
             self._metada.signature.append({"target": target, "type": "ELEMENT"})
             return tree
@@ -91,9 +87,7 @@ class PropertiesBuilder(ElementBuilder):
         has_no_content = not getattr(xsd_type, "content", False)  # tipos anonimos
 
         if is_not_group and has_no_content:
-            self._value_builder.build(
-                property, SourceType.XML_PROPERTY, {"xpath": current_path}
-            )
+            self._value_builder.build(property, SourceType.XML_PROPERTY, {"xpath": current_path})
             return tree
 
         properties = etree.SubElement(property, self._tag)

@@ -1,8 +1,9 @@
 from unittest import TestCase, main
 
-import xmlschema
-from src.core.mapper import PropertiesBuilder
 import lxml.etree as etree
+import xmlschema
+
+from src.core.mapper import PropertiesBuilder
 from src.tests.utils import build_output_file_path
 
 
