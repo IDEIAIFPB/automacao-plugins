@@ -65,8 +65,7 @@ class ActionBuilder(ElementBuilder):
         wsdl_tree = etree.parse(wsdl_path)
         wsdl_root = wsdl_tree.getroot()
         namespaces = wsdl_root.nsmap
-        wsdl_schema = self._parse_wsdl_schema(wsdl_root, namespaces)
-        wsdl_schema_root = wsdl_schema.getroot()
+        wsdl_schema_root = self._parse_wsdl_schema(wsdl_root, namespaces)
         mapper_root = mapper_tree.find(".//property")
 
         self._request_builder.build(
@@ -95,8 +94,7 @@ class ActionBuilder(ElementBuilder):
         initial_xsd = xsd_importado.get("schemaLocation") if xsd_importado is not None else None
 
         if initial_xsd is None:
-            with open("schema_extraido.xsd", "wb") as f:
-                f.write(etree.tostring(schema))
-            initial_xsd = "schema_extraido.xsd"
+            return schema
 
-        return etree.parse(initial_xsd)
+        wsdl_schema = etree.parse(initial_xsd)
+        return wsdl_schema.getroot()
