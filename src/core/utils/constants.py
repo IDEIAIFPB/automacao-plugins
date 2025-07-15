@@ -5,28 +5,28 @@ CONDITTIONS_MAP = {
         "conflict": {},
         "accepted": {
             "conditions": [
-                {"comparison": "EXISTS", "xpath_key": "numero_consulta"},
-                {"comparison": "NOT_EXISTS", "xpath_key": "codigo_cancelamento_consulta"},
+                {"comparison": "EXISTS", "target_key": "numero_consulta"},
+                {"comparison": "NOT_EXISTS", "target_key": "codigo_cancelamento_consulta"},
             ]
         },
-        "cancelled": {"conditions": [{"comparison": "EXISTS", "xpath_key": "codigo_cancelamento_consulta"}]},
-        "rejected": {"conditions": [{"comparison": "EXISTS", "xpath_key": "codigo_consulta"}]},
+        "cancelled": {"conditions": [{"comparison": "EXISTS", "target_key": "codigo_cancelamento_consulta"}]},
+        "rejected": {"conditions": [{"comparison": "EXISTS", "target_key": "codigo_consulta"}]},
     },
     "cancelamento": {
         "accepted": {},
         "conflict": {},
-        "cancelled": {"conditions": [{"comparison": "EXISTS", "xpath_key": "data_hora"}]},
-        "rejected": {"conditions": [{"comparison": "EXISTS", "xpath_key": "codigo_cancelamento"}]},
+        "cancelled": {"conditions": [{"comparison": "EXISTS", "target_key": "data_hora"}]},
+        "rejected": {"conditions": [{"comparison": "EXISTS", "target_key": "codigo_cancelamento"}]},
     },
     "emissao": {
         "conflict": {
             "conditions": [
-                {"comparison": "CONTAINS", "value": "L018", "xpath": "Codigo"},
-                {"comparison": "CONTAINS", "value": "218", "xpath": "Codigo"},
-                {"comparison": "CONTAINS", "value": "E10", "xpath": "Codigo"},
-                {"comparison": "CONTAINS", "value": "E405", "xpath": "Codigo"},
-                {"comparison": "CONTAINS", "value": "E163", "xpath": "Codigo"},
-                {"comparison": "CONTAINS", "value": "E179", "xpath": "Codigo"},
+                {"comparison": "CONTAINS", "value": "L018", "target_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "218", "target_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "E10", "target_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "E405", "target_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "E163", "target_key": "codigo_emissao"},
+                {"comparison": "CONTAINS", "value": "E179", "target_key": "codigo_emissao"},
                 {"comparison": "CONTAINS", "value": "PERMITE A CONSULTA", "xpath": "/"},
                 {"comparison": "CONTAINS", "value": "RPS.*J.*EXISTE", "xpath": "/"},
                 {
@@ -38,8 +38,8 @@ CONDITTIONS_MAP = {
                 {"comparison": "CONTAINS", "value": "RPS.*j.*informado", "xpath": "/"},
             ]
         },
-        "accepted": {"conditions": [{"comparison": "EXISTS", "xpath_key": "numero_emissao"}]},
-        "rejected": {"conditions": [{"comparison": "EXISTS", "xpath_key": "codigo_emissao"}]},
+        "accepted": {"conditions": [{"comparison": "EXISTS", "target_key": "numero_emissao"}]},
+        "rejected": {"conditions": [{"comparison": "EXISTS", "target_key": "codigo_emissao"}]},
         "cancelled": {},
     },
 }
