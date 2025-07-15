@@ -22,19 +22,9 @@ class TestStatusBuilder(TestCase):
             "codigo_cancelamento": "Codigo",
         }
         file_type = "cancelamento"
-        tree = self._builder.build(root, CONDITTIONS_MAP[file_type], response_tag, targets_tags)
+        tree = self._builder.build(file_type, root, CONDITTIONS_MAP, response_tag, targets_tags)
         s_tree = get_xml(tree)
         export_xml_to_file(s_tree, self._output_file)
-
-    # def test_conflict(self):
-    #     root = etree.Element("teste")
-    #     response_tag = self._schema.elements.get("CancelarNfseResposta")
-    #     targets_tags = {
-    #         "data_hora": "DataHora"
-    #     }
-    #     tree = self._builder.cancel(root, CONDITTIONS_MAP["cancelamento"]["cancelled"], response_tag, targets_tags)
-    #     s_tree = get_xml(tree)
-    #     export_xml_to_file(s_tree, self._output_file)
 
 
 if __name__ == "__main__":
