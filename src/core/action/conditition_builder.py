@@ -15,12 +15,14 @@ class ConditionBuilder(ElementBuilder):
         self,
         tree: _Element,
         conditions_map: dict,
+        status_type: str,
         response_tag: _Element,
         targets_tags: dict,
-        target_key: str = "xpath",
     ):
         conditions_tree = etree.SubElement(tree, self._tag)
-        self._build(conditions_tree, conditions_map, response_tag, targets_tags, target_key)
+        if status_type == "conflict":
+            conditions_tree.attrib["type"] = "OR"
+        self._build(conditions_tree, conditions_map, response_tag, targets_tags)
         return tree
 
     def _build(
@@ -29,31 +31,18 @@ class ConditionBuilder(ElementBuilder):
         conditions_map: dict,
         response_tag: _Element,
         targets_tags: dict,
-        target_key: str = "xpath",
     ):
         for condition in conditions_map.get("conditions", []):
-            comparison = condition.get("comparison") or ""
+            if "target_tag_key" in condition.keys():
+                target_tag_key = condition.pop("target_tag_key") or ""
 
-            target_tag_key = condition.get("target_tag_key") or ""
-
-            if target_tag_key:
+            if target_tag_key and "xpath" not in condition.keys():
                 xpath = format_result(create_xpath(response_tag, targets_tags.get(target_tag_key, target_tag_key)))
-            else:
-                xpath = condition.get("xpath")
-            # xpath_from_condition = condition.get(target_key) or ""
-            # if targets_tags and xpath_from_condition:
-            #     xpath = format_result(
-            #         create_xpath(response_tag, targets_tags.get(xpath_from_condition, xpath_from_condition))
-            #     )
-            # else:
-            #     xpath = xpath_from_condition
+                condition["xpath"] = xpath
 
             etree.SubElement(
                 tree,
                 self._inner_tag,
-                attrib={
-                    "comparison": comparison,
-                    "xpath": xpath or "",
-                },
+                condition,
             )
         return tree

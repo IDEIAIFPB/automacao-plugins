@@ -1,16 +1,15 @@
 from lxml import etree
 from lxml.etree import _Element
 
+from src.core.action.conditition_builder import ConditionBuilder
 from src.core.element_mapper import ElementBuilder
-
-from .conditition_builder import ConditionBuilder
 
 
 class StatusBuilder(ElementBuilder):
     def __init__(self):
         super().__init__()
         self._tag = "status"
-        self._cancel = "cancelled"
+        self._cancelled = "cancelled"
         self._conflict = "conflict"
         self._rejected = "rejected"
         self._accepted = "accepted"
@@ -22,7 +21,7 @@ class StatusBuilder(ElementBuilder):
         tree: _Element,
         conditions_map: dict,
         response_element: _Element,
-        targets_tags: dict = None,
+        targets_tags: dict,
     ):
         status_tree = etree.SubElement(tree, self._tag)
         self._build(file_type, status_tree, conditions_map, response_element, targets_tags)
@@ -34,19 +33,17 @@ class StatusBuilder(ElementBuilder):
         tree: _Element,
         conditions_map: dict,
         response_element: _Element,
-        targets_tags: dict = None,
+        targets_tags: dict,
     ):
-        file_type = file_type.upper()
-
         type_actions = {
-            "EMISSAO": [self.accept, self.conflict, self.reject],
-            "CANCELAMENTO": [self.cancel, self.reject],
-            "CONSULTA": [self.conflict, self.reject],
+            "EMISSAO": [self._accepted, self._conflict, self._rejected],
+            "CANCELAMENTO": [self._cancelled, self._rejected],
+            "CONSULTA": [self._conflict, self._rejected],
         }
 
-        actions = type_actions.get(file_type, [])
-        for action in actions:
-            action(tree, conditions_map, response_element, targets_tags)
+        status_types = type_actions.get(file_type.upper(), [])
+        for status_type in status_types:
+            self._inner_status(tree, conditions_map[file_type], response_element, targets_tags, status_type)
 
         etree.SubElement(
             tree,
@@ -58,18 +55,10 @@ class StatusBuilder(ElementBuilder):
 
         return tree
 
-    def conflict(self, tree: _Element, conditions_map: dict, response_element: _Element, targets_tags: dict = None):
-        conflict = etree.SubElement(tree, "conflict")
-        return self._condition_builder.build(conflict, conditions_map, response_element, targets_tags, "xpath")
-
-    def accept(self, tree: _Element, conditions_map: dict, response_element: _Element, targets_tags: dict = None):
-        accepted = etree.SubElement(tree, "accepted")
-        return self._condition_builder.build(accepted, conditions_map, response_element, targets_tags, "target_key")
-
-    def reject(self, tree: _Element, conditions_map: dict, response_element: _Element, targets_tags: dict = None):
-        rejected = etree.SubElement(tree, "rejected")
-        return self._condition_builder.build(rejected, conditions_map, response_element, targets_tags, "target_key")
-
-    def cancel(self, tree: _Element, conditions_map: dict, response_element: _Element, targets_tags: dict = None):
-        cancelled = etree.SubElement(tree, "cancelled")
-        return self._condition_builder.build(cancelled, conditions_map, response_element, targets_tags, "target_key")
+    def _inner_status(
+        self, tree: _Element, conditions_map: dict, response_element: _Element, targets_tags: dict, status_type: str
+    ):
+        innner_status = etree.SubElement(tree, status_type)
+        return self._condition_builder.build(
+            innner_status, conditions_map[status_type], status_type, response_element, targets_tags
+        )
