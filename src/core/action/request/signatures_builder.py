@@ -21,11 +21,7 @@ class SignaturesBuilder(ElementBuilder):
             etree.SubElement(
                 tree,
                 self._inner_tag,
-                {
-                    "attribute": "Id",
-                    "parent": signature["parent"],
-                    "target": signature["target"],
-                    "type": signature["type"],
-                },
+                signature,
+                attribute="Id",
             )
         return tree
