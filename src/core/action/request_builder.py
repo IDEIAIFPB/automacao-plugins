@@ -41,33 +41,13 @@ class RequestBuilder(ElementBuilder):
         namespaces: dict,
         wsdl_schema_root: _Element,
     ):
-        endpoint = etree.SubElement(tree, "endpoint")
-
-        url_parameter_name = etree.SubElement(endpoint, "urlParameterName")
-        url_parameter_name.text = f"url-endpoint-{file_type}"
-
-        method = etree.SubElement(endpoint, "method")
-        method.text = "POST"
-
-        tls = etree.SubElement(endpoint, "tls")
-        tls.text = "TLSv1.2"
-
-        headers = etree.SubElement(tree, "headers")
-
-        etree.SubElement(headers, "commonHeader", name="Content-Type", value="text/xml;charset=UTF-8")
+        self._build_endpoint(tree, file_type)
 
         binding_operation = self._get_binding_operation(wsdl_root, operation_tag, namespaces)
 
-        soap_action = self._get_soap_action(binding_operation, namespaces)
+        self._build_headers(tree, wsdl_root, operation_tag, namespaces, binding_operation)
 
-        etree.SubElement(headers, "commonHeader", name="SOAPAction", value=soap_action)
-
-        body = etree.SubElement(tree, "body")
-        input = etree.SubElement(body, "input")
-        document_mapper = etree.SubElement(input, "document-mapper")
-        document_mapper.text = f"{file_type}-mapper.xml"
-
-        input = self._signatures_builder.build(input, signatures)
+        body = self._build_body(tree, file_type, signatures)
 
         content = etree.SubElement(body, "content")
         self._template_builder.build(
@@ -94,3 +74,36 @@ class RequestBuilder(ElementBuilder):
             raise ValueError("SOAP Action não encontrada")
 
         return soap_action.get("soapAction")
+
+    def _build_endpoint(self, tree: _Element, file_type: str):
+        endpoint = etree.SubElement(tree, "endpoint")
+
+        url_parameter_name = etree.SubElement(endpoint, "urlParameterName")
+        url_parameter_name.text = f"url-endpoint-{file_type}"
+
+        method = etree.SubElement(endpoint, "method")
+        method.text = "POST"
+
+        tls = etree.SubElement(endpoint, "tls")
+        tls.text = "TLSv1.2"
+
+    def _build_headers(
+        self, tree: _Element, wsdl_root: _Element, operation_tag: str, namespaces: dict, binding_operation: _Element
+    ):
+        headers = etree.SubElement(tree, "headers")
+
+        etree.SubElement(headers, "commonHeader", name="Content-Type", value="text/xml;charset=UTF-8")
+
+        soap_action = self._get_soap_action(binding_operation, namespaces)
+
+        etree.SubElement(headers, "commonHeader", name="SOAPAction", value=soap_action)
+
+    def _build_body(self, tree, file_type, signatures):
+        body = etree.SubElement(tree, "body")
+        input = etree.SubElement(body, "input")
+        document_mapper = etree.SubElement(input, "document-mapper")
+        document_mapper.text = f"{file_type}-mapper.xml"
+
+        input = self._signatures_builder.build(input, signatures)
+
+        return body
