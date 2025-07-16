@@ -48,14 +48,15 @@ class TemplateBuilder(ElementBuilder):
         target_namespace: str = None,
     ):
         header_tag = etree.SubElement(envelope, etree.QName(envelope_nsmap["soapenv"], "Header"))
-        if wsdl_header is not None:
-            message_name = wsdl_header.get("message").split(":")[-1]
-            element_name = get_element_by_message_name(message_name, wsdl_root, namespaces)
-            elemento = xsd_root.find(
-                f"./xsd:element[@name='{element_name}']",
-                namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"},
-            )
-            self._mount_envelope(elemento, header_tag, xsd_root, target_namespace=target_namespace)
+        if wsdl_header is None:
+            return
+        message_name = wsdl_header.get("message").split(":")[-1]
+        element_name = get_element_by_message_name(message_name, wsdl_root, namespaces)
+        elemento = xsd_root.find(
+            f"./xsd:element[@name='{element_name}']",
+            namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"},
+        )
+        self._mount_envelope(elemento, header_tag, xsd_root, target_namespace=target_namespace)
 
     def _get_envelope(
         self,
@@ -80,15 +81,7 @@ class TemplateBuilder(ElementBuilder):
             wsdl_schema_root, wsdl_header, envelope_nsmap, envelope, wsdl_root, namespaces, target_namespace
         )
 
-        bindig_operation_name = binding_operation.get("name")
-
-        operation = wsdl_root.find(
-            f"./wsdl:portType/wsdl:operation[@name='{bindig_operation_name}']",
-            namespaces=namespaces,
-        )
-
-        if operation is None:
-            raise ValueError("Operation não encontrada")
+        operation = self._find_operation(binding_operation, wsdl_root, namespaces)
 
         input = operation.find("wsdl:input", namespaces=namespaces)
 
@@ -106,7 +99,23 @@ class TemplateBuilder(ElementBuilder):
         )
         self._mount_envelope(element, body, wsdl_schema_root, envelope_final_tag, target_namespace)
 
-        return etree.tostring(envelope, pretty_print=True, encoding="utf-8", xml_declaration=True).decode("utf-8")
+        return self._export_template_xml(envelope)
+
+    def _find_operation(self, binding_operation: _Element, wsdl_root: _Element, namespaces: dict):
+        bindig_operation_name = binding_operation.get("name")
+
+        operation = wsdl_root.find(
+            f"./wsdl:portType/wsdl:operation[@name='{bindig_operation_name}']",
+            namespaces=namespaces,
+        )
+
+        if operation is None:
+            raise ValueError("Operation não encontrada")
+        return operation
+
+    def _export_template_xml(self, envelope: _Element) -> str:
+        xml_bytes = etree.tostring(envelope, pretty_print=True, encoding="utf-8", xml_declaration=True)
+        return xml_bytes.decode("utf-8")
 
     def _map_complex_type(self, complex_type, parent, wsdl_schema_root, tag_final, target_namespace=None):
         elements = complex_type.findall(".//xsd:element", namespaces={"xsd": "http://www.w3.org/2001/XMLSchema"})
