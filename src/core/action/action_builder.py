@@ -1,6 +1,6 @@
 import lxml.etree as etree
+import xmlschema
 from lxml.etree import _Element
-from xmlschema import XMLSchema
 
 from src.core.action.request.request_builder import RequestBuilder
 from src.core.action.response.response_builder import ResponseBuilder
@@ -21,7 +21,7 @@ class ActionBuilder(ElementBuilder):
         operation_tag: str,
         wsdl_path: str,
         final_envelope_tag: str,
-        parsed_xsd: XMLSchema,
+        xsd_path: str,
         response_tag: str,
         mapper_tree: _Element,
         targets_tags: dict,
@@ -42,7 +42,7 @@ class ActionBuilder(ElementBuilder):
             wsdl_path,
             final_envelope_tag,
             file_type,
-            parsed_xsd,
+            xsd_path,
             response_tag,
             mapper_tree,
             targets_tags,
@@ -57,7 +57,7 @@ class ActionBuilder(ElementBuilder):
         wsdl_path: str,
         final_envelope_tag: str,
         file_type: str,
-        parsed_xsd: XMLSchema,
+        xsd_path: str,
         response_tag: str,
         mapper_tree: _Element,
         targets_tags: dict,
@@ -73,7 +73,7 @@ class ActionBuilder(ElementBuilder):
         )
         self._response_builder.build(
             xml_root,
-            parsed_xsd,
+            xmlschema.XMLSchema(xsd_path),
             response_tag,
             operation_tag,
             file_type,

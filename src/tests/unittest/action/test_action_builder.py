@@ -1,7 +1,5 @@
 from unittest import TestCase, main
 
-from xmlschema import XMLSchema
-
 from src.core.action import ActionBuilder
 from src.mapper import Mapper
 from src.tests.utils import build_output_file_path, export_xml_to_file, get_xml
@@ -19,7 +17,6 @@ class TestActionBuilder(TestCase):
         self._operation_tag = "RecepcionarLoteRps"
         self._wsdl_path = "resources/wsdl-files/nfse04.wsdl"
         self._final_envelope_tag = "EnviarLoteRpsEnvio"
-        self._parsed_xsd = XMLSchema("resources/xsd-files/nfse-v2-02.xsd")
         self._response_tag = "EnviarLoteRpsResposta"
         self._targets_tags = {
             "numero_param": "NumeroLote",
@@ -53,7 +50,7 @@ class TestActionBuilder(TestCase):
             self._operation_tag,
             self._wsdl_path,
             self._final_envelope_tag,
-            self._parsed_xsd,
+            xsd_file,
             self._response_tag,
             mapper_tree,
             self._targets_tags,
