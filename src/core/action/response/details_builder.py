@@ -13,7 +13,7 @@ class DetailsBuilder(ElementBuilder):
         self._inner_tag = "message"
 
     def build(self, tree: _Element, response_element: _Element, targets_tags: dict):
-        details = etree.SubElement(tree, self._tag)
+        details = etree.SubElement(tree, self._tag, {"optional": "false"})
         self._build(details, response_element, targets_tags)
         return tree
 

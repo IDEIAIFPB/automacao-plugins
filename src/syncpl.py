@@ -145,7 +145,7 @@ if __name__ == "__main__":
         xsd_file="resources/xsd-files/NFSE.xsd.XSD",
         output_file=build_output_file_path("cli.xml"),
         root_element="EnviarLoteRpsEnvio",
-        plugin_name="teste",
+        plugin_name="emissao-campina",
         operation_tag="RecepcionarLoteRps",
         response_tag="EnviarLoteRpsResposta",
         wsdl_path="resources/wsdl-files/nfse04.wsdl",

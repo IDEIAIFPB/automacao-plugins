@@ -19,7 +19,7 @@ class TemplateBuilder(ElementBuilder):
         namespaces: dict,
         wsdl_schema_root: _Element,
     ):
-        template = etree.SubElement(tree, self._tag)
+        template = etree.SubElement(tree, self._tag, {"inputResultVariable": "REQUEST_CONTENT"})
         self._build(template, wsdl_root, binding_operation, final_envelope_tag, namespaces, wsdl_schema_root)
         return tree
 

@@ -66,13 +66,15 @@ class ResponseBuilder(ElementBuilder):
             input_elem, "content", xpath=self._get_output_xpath(operation_tag, wsdl_root, namespaces, wsdl_schema_root)
         )
 
+        return_tag = etree.SubElement(body, "return")
+
         response_element = parsed_xsd.elements.get(response_tag)
 
-        self._status_builder.build(file_type, response, CONDITTIONS_MAP, response_element, targets_tags)
+        self._status_builder.build(file_type, return_tag, CONDITTIONS_MAP, response_element, targets_tags)
 
-        self._details_builder.build(response, response_element, targets_tags)
+        self._details_builder.build(return_tag, response_element, targets_tags)
 
-        self._parameters_builder.build(response, file_type, response_element, mapper_root, targets_tags)
+        self._parameters_builder.build(return_tag, file_type, response_element, mapper_root, targets_tags)
 
         return response
 
