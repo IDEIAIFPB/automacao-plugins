@@ -1,8 +1,8 @@
 import lxml.etree as etree
 from lxml.etree import _Element
 
+from src.core.action.content_builder import ContentBuilder
 from src.core.action.signatures_builder import SignaturesBuilder
-from src.core.action.template_builder import TemplateBuilder
 from src.core.element_mapper import ElementBuilder
 
 
@@ -11,7 +11,7 @@ class RequestBuilder(ElementBuilder):
         super().__init__()
         self._tag = "request"
         self._signatures_builder = SignaturesBuilder()
-        self._template_builder = TemplateBuilder()
+        self._content_builder = ContentBuilder()
 
     def build(
         self,
@@ -49,9 +49,8 @@ class RequestBuilder(ElementBuilder):
 
         body = self._build_body(tree, file_type, signatures)
 
-        content = etree.SubElement(body, "content")
-        self._template_builder.build(
-            content, wsdl_root, binding_operation, final_envelope_tag, namespaces, wsdl_schema_root
+        self._content_builder.build(
+            body, wsdl_root, binding_operation, final_envelope_tag, namespaces, wsdl_schema_root
         )
 
         return tree

@@ -1,5 +1,6 @@
 from .action_builder import ActionBuilder
 from .conditition_builder import ConditionBuilder
+from .content_builder import ContentBuilder
 from .parameters_builder import ParametersBuilder
 from .request_builder import RequestBuilder
 from .response_builder import ResponseBuilder
@@ -16,4 +17,5 @@ __all__ = [
     "ParametersBuilder",
     "ConditionBuilder",
     "StatusBuilder",
+    "ContentBuilder",
 ]
