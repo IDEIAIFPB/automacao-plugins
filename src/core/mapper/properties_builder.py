@@ -54,22 +54,19 @@ class PropertiesBuilder(ElementBuilder):
             return False
         return True
 
-    def _build(self, xsd_element: XsdElement, tree: Optional[_Element] = None, xpath=""):
+    def _build(self, xsd_element: XsdElement, tree: Optional[_Element] = None, xpath="", last_element_name: str = None):
         name = self._get_element_name(xsd_element)
         if self._get_element_name(xsd_element) == "Signature":
             path_broken = xpath.split("/")
-            target = path_broken[-1]
-            if len(path_broken) > 1:
-                parent = path_broken[-2]
+            target = last_element_name
+            if len(path_broken) >= 1:
+                parent = path_broken[-1]
                 self._metada.signature.append({"parent": parent, "target": target, "type": "ELEMENT"})
                 return tree
             self._metada.signature.append({"target": target, "type": "ELEMENT"})
             return tree
         if xsd_element in self._visited:
             return tree
-
-        # if not self._is_element_available(xsd_element):
-        #     return tree
 
         property: _Element = etree.SubElement(tree, "property", {"name": name})
 
@@ -92,6 +89,7 @@ class PropertiesBuilder(ElementBuilder):
 
         properties = etree.SubElement(property, self._tag)
         for sub_element in xsd_element:
-            self._build(sub_element, properties, current_path)
+            self._build(sub_element, properties, current_path, last_element_name)
+            last_element_name = self._get_element_name(sub_element)
 
         return tree
