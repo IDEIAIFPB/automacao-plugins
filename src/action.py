@@ -10,7 +10,6 @@ class Action:
         operation_tag: str,
         response_tag: str,
         wsdl_path: str,
-        output_file: str,
         signatures: list,
         plugin_id: str,
         xsd_path: str,
@@ -21,7 +20,6 @@ class Action:
         self._action_builder = ActionBuilder()
         self._operation_tag = operation_tag
         self._wsdl_path = wsdl_path
-        self._output_file = output_file
         self._response_tag = response_tag
         self._plugin_id = plugin_id
         self._signatures = signatures
