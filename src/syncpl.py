@@ -4,6 +4,8 @@
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent.parent)) # Adiciona o diretório pai ao sys.path para importar módulos corretamente
+
 import typer
 from rich import print as rprint
 from rich.console import Console
@@ -101,12 +103,15 @@ def list_elements(
     #     sys.exit(1)
 
 
-if __name__ == "__main__":
-    # app()
+def main():
+    app()
 
-    generate(
-        xsd_file="resources/xsd-files/NFSE.xsd.XSD",
-        output_file=build_output_file_path("cli.xml"),
-        root_element="EnviarLoteRpsEnvio",
-        plugin_name="teste",
-    )
+# if __name__ == "__main__":
+#     main()
+
+#     # generate(
+#     #     xsd_file="resources/xsd-files/NFSE.xsd.XSD",
+#     #     output_file=build_output_file_path("cli.xml"),
+#     #     root_element="EnviarLoteRpsEnvio",
+#     #     plugin_name="teste",
+#     # )
