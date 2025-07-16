@@ -1,5 +1,4 @@
 from lxml.etree import _Element
-from xmlschema import XMLSchema
 
 from src.core.action.action_builder import ActionBuilder
 from src.core.utils.xml_utils import export_xml_to_file, get_xml
@@ -14,7 +13,10 @@ class Action:
         output_file: str,
         signatures: list,
         plugin_id: str,
-        parsed_xsd: XMLSchema,
+        xsd_path: str,
+        final_envelope_tag: str,
+        mapper_tree: _Element,
+        targets_tags: dict,
     ):
         self._action_builder = ActionBuilder()
         self._operation_tag = operation_tag
@@ -23,7 +25,10 @@ class Action:
         self._response_tag = response_tag
         self._plugin_id = plugin_id
         self._signatures = signatures
-        self._parsed_xsd = parsed_xsd
+        self._xsd_path = xsd_path
+        self._final_envelope_tag = final_envelope_tag
+        self._mapper_tree = mapper_tree
+        self._targets_tags = targets_tags
 
     def build_to_file(self, path: str) -> tuple[_Element, str]:
         tree = self.build()
@@ -38,8 +43,11 @@ class Action:
             self._signatures,
             self._operation_tag,
             self._wsdl_path,
-            self._parsed_xsd,
+            self._final_envelope_tag,
+            self._xsd_path,
             self._response_tag,
+            self._mapper_tree,
+            self._targets_tags,
         )
 
         return tree
