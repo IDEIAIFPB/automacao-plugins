@@ -1,12 +1,12 @@
 from .action_builder import ActionBuilder
-from .conditition_builder import ConditionBuilder
-from .content_builder import ContentBuilder
-from .parameters_builder import ParametersBuilder
-from .request_builder import RequestBuilder
-from .response_builder import ResponseBuilder
-from .signatures_builder import SignaturesBuilder
-from .status_builder import StatusBuilder
-from .template_builder import TemplateBuilder
+from .request.content_builder import ContentBuilder
+from .request.request_builder import RequestBuilder
+from .request.signatures_builder import SignaturesBuilder
+from .request.template_builder import TemplateBuilder
+from .response.conditition_builder import ConditionBuilder
+from .response.parameters_builder import ParametersBuilder
+from .response.response_builder import ResponseBuilder
+from .response.status_builder import StatusBuilder
 
 __all__ = [
     "ActionBuilder",

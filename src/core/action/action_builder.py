@@ -2,8 +2,8 @@ import lxml.etree as etree
 from lxml.etree import _Element
 from xmlschema import XMLSchema
 
-from src.core.action.request_builder import RequestBuilder
-from src.core.action.response_builder import ResponseBuilder
+from src.core.action.request.request_builder import RequestBuilder
+from src.core.action.response.response_builder import ResponseBuilder
 from src.core.element_mapper import ElementBuilder
 
 

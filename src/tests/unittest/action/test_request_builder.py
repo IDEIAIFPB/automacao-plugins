@@ -16,7 +16,7 @@ class TestRequestBuilder(TestCase):
         ]
         self._output_file = build_output_file_path("request_builder_test.xml")
         self._operation_tag = "RecepcionarLoteRps"
-        self._wsdl_path = "wsdl-files/nfse04.wsdl"
+        self._wsdl_path = "resources/wsdl-files/nfse04.wsdl"
         self._final_envelope_tag = "EnviarLoteRpsEnvio"
         self._file_type = "emissao"
 

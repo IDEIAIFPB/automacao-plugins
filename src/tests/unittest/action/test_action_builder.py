@@ -17,7 +17,7 @@ class TestActionBuilder(TestCase):
             {"parent": "parent2", "target": "target2", "type": "type2"},
         ]
         self._operation_tag = "RecepcionarLoteRps"
-        self._wsdl_path = "wsdl-files/nfse04.wsdl"
+        self._wsdl_path = "resources/wsdl-files/nfse04.wsdl"
         self._final_envelope_tag = "EnviarLoteRpsEnvio"
         self._parsed_xsd = XMLSchema("resources/xsd-files/nfse-v2-02.xsd")
         self._response_tag = "EnviarLoteRpsResposta"
