@@ -1,8 +1,9 @@
 import lxml.etree as etree
 from lxml.etree import _Element
 
+from src.core.action.enum import FileType
 from src.core.element_mapper import ElementBuilder
-from src.core.utils.constants import DEFAULT_PARAMS, PARAMETERS_EMISSAO, TIPO_CANCELAMENTO, TIPO_EMISSAO
+from src.core.utils.constants import DEFAULT_PARAMS, PARAMETERS_EMISSAO
 from src.core.utils.xml_utils import create_xpath, format_result
 
 
@@ -32,9 +33,7 @@ class ParametersBuilder(ElementBuilder):
         mapper_root: _Element,
         targets_tags: dict = None,
     ):
-        file_type = file_type.upper()
-
-        if file_type == TIPO_CANCELAMENTO:
+        if file_type == FileType.CANCELAMENTO:
             return tree
 
         for key, value in DEFAULT_PARAMS.items():
@@ -54,7 +53,7 @@ class ParametersBuilder(ElementBuilder):
                 },
             )
 
-        if file_type == TIPO_EMISSAO:
+        if file_type == FileType.EMISSAO:
             for key, value in PARAMETERS_EMISSAO.items():
                 if value[1][0] != "/":
                     if key == "AliquotaAtividade":

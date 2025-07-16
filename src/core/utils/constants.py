@@ -47,9 +47,6 @@ CONDITTIONS_MAP = {
     },
 }
 
-TIPO_EMISSAO = "EMISSAO"
-TIPO_CANCELAMENTO = "CANCELAMENTO"
-
 DEFAULT_PARAMS = {
     "NumeroNFe": ["RESPONSE", "numero_param"],
     "CodigoVerificacao": ["RESPONSE", "codigo_verificacao_param"],

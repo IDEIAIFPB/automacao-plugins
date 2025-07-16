@@ -1,7 +1,8 @@
 from lxml import etree
 from lxml.etree import _Element
 
-from src.core.action.conditition_builder import ConditionBuilder
+from src.core.action.enum import FileType
+from src.core.action.response.conditition_builder import ConditionBuilder
 from src.core.element_mapper import ElementBuilder
 
 
@@ -36,12 +37,12 @@ class StatusBuilder(ElementBuilder):
         targets_tags: dict,
     ):
         type_actions = {
-            "EMISSAO": [self._accepted, self._conflict, self._rejected],
-            "CANCELAMENTO": [self._cancelled, self._rejected],
-            "CONSULTA": [self._conflict, self._rejected],
+            FileType.EMISSAO: [self._accepted, self._conflict, self._rejected],
+            FileType.CANCELAMENTO: [self._cancelled, self._rejected],
+            FileType.CONSULTA: [self._conflict, self._rejected],
         }
 
-        status_types = type_actions.get(file_type.upper(), [])
+        status_types = type_actions.get(file_type, [])
         for status_type in status_types:
             self._inner_status(tree, conditions_map[file_type], response_element, targets_tags, status_type)
 
