@@ -37,9 +37,9 @@ class StatusBuilder(ElementBuilder):
         targets_tags: dict,
     ):
         type_actions = {
-            FileType.EMISSAO: [self._accepted, self._conflict, self._rejected],
-            FileType.CANCELAMENTO: [self._cancelled, self._rejected],
-            FileType.CONSULTA: [self._conflict, self._rejected],
+            FileType.EMISSAO.value: [self._accepted, self._conflict, self._rejected],
+            FileType.CANCELAMENTO.value: [self._cancelled, self._rejected],
+            FileType.CONSULTA.value: [self._conflict, self._rejected],
         }
 
         status_types = type_actions.get(file_type, [])
@@ -50,7 +50,7 @@ class StatusBuilder(ElementBuilder):
             tree,
             "default",
             attrib={
-                "status": "unknown",
+                "status": "UNKNOWN",
             },
         )
 

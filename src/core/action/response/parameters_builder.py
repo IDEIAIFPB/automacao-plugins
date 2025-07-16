@@ -33,7 +33,7 @@ class ParametersBuilder(ElementBuilder):
         mapper_root: _Element,
         targets_tags: dict = None,
     ):
-        if file_type == FileType.CANCELAMENTO:
+        if file_type == FileType.CANCELAMENTO.value:
             return tree
 
         for key, value in DEFAULT_PARAMS.items():
@@ -53,7 +53,7 @@ class ParametersBuilder(ElementBuilder):
                 },
             )
 
-        if file_type == FileType.EMISSAO:
+        if file_type == FileType.EMISSAO.value:
             for key, value in PARAMETERS_EMISSAO.items():
                 if value[1][0] != "/":
                     if key == "AliquotaAtividade":
