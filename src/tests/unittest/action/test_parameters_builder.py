@@ -3,7 +3,7 @@ from unittest import TestCase, main
 import lxml.etree as etree
 from xmlschema import XMLSchema
 
-from src.core.action import ParametersBuilder
+from src.core.action.response import ParametersBuilder
 from src.mapper import Mapper
 from src.tests.utils import build_output_file_path, create_xpath, export_xml_to_file, format_result, get_xml
 

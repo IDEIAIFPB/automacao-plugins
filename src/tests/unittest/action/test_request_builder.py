@@ -2,7 +2,8 @@ from unittest import TestCase, main
 
 import lxml.etree as etree
 
-from src.core.action import ActionBuilder, RequestBuilder
+from src.core.action import ActionBuilder
+from src.core.action.request import RequestBuilder
 from src.tests.utils import build_output_file_path, export_xml_to_file, get_xml
 
 

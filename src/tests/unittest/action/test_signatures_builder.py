@@ -2,7 +2,7 @@ from unittest import TestCase, main
 
 import lxml.etree as etree
 
-from src.core.action import SignaturesBuilder
+from src.core.action.request import SignaturesBuilder
 from src.tests.utils import build_output_file_path, export_xml_to_file, get_xml
 
 

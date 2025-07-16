@@ -3,7 +3,7 @@ from unittest import TestCase, main
 import lxml.etree as etree
 from xmlschema import XMLSchema
 
-from src.core.action import StatusBuilder
+from src.core.action.response import StatusBuilder
 from src.core.utils.constants import CONDITTIONS_MAP
 from src.tests.utils import build_output_file_path, export_xml_to_file, get_xml
 
