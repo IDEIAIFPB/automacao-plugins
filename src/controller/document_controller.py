@@ -5,13 +5,9 @@ from src.service.document_service import DocumentService
 document_bp = Blueprint("document", __name__)
 document_service = DocumentService()
 
-# --- NOVO: Determine o caminho da raiz do projeto dinamicamente ---
-# Isso assume que o arquivo 'app.py' está em 'src/' e 'resources/' está na raiz do projeto.
-# Se 'app.py' está em 'src/app.py', então os.path.dirname(__file__) é 'seu_projeto/src/controllers'
-# os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')) retorna 'seu_projeto'
+
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 RESOURCES_DIR = os.path.join(PROJECT_ROOT, "resources")
-# --- Fim da nova determinação do caminho ---
 
 
 @document_bp.route("/documents/update", methods=["POST"])
@@ -22,11 +18,8 @@ def process_document():
     if not file_path_relative:
         return jsonify({"error": "O caminho do documento é obrigatório."}), 400
 
-    # --- NOVO: Constrói o caminho absoluto do arquivo ---
     full_file_path = os.path.join(PROJECT_ROOT, file_path_relative)
-    # --- Fim do novo caminho absoluto ---
 
-    # --- Ajuste nas verificações para usar o caminho absoluto ---
     print(f"DEBUG: file_path recebido (relativo): {file_path_relative}")
     print(f"DEBUG: full_file_path construído: {full_file_path}")
     print(f"DEBUG: os.path.exists({full_file_path}): {os.path.exists(full_file_path)}")
@@ -34,9 +27,6 @@ def process_document():
         f"DEBUG: file_path_relative.startswith('resources/'): {file_path_relative.startswith('resources/')}"
     )
 
-    # A verificação de segurança `startswith('resources/')` ainda é importante para garantir
-    # que o usuário não esteja tentando acessar arquivos fora da pasta de recursos designada.
-    # A validação `os.path.exists` agora usará o caminho absoluto.
     if not file_path_relative.startswith("resources/") or not os.path.exists(
         full_file_path
     ):
@@ -44,7 +34,6 @@ def process_document():
             {"error": "Caminho do documento inválido ou não permitido."}
         ), 400
 
-    # O serviço agora recebe o caminho absoluto para processar o documento
     success = document_service.process_and_store_document(full_file_path)
 
     if success:

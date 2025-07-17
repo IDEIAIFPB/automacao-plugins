@@ -16,7 +16,6 @@ class DocumentRepository:
     """
 
     def __init__(self):
-        # Garante que a tabela existe ao inicializar o repositório
         create_table()
 
     def retrieve_relevant_documents(self, query_text: str, k: int = 3) -> list[str]:
@@ -40,7 +39,7 @@ class DocumentRepository:
             documents = [row[0] for row in results]
         except Exception as e:
             print(f"Erro ao recuperar documentos: {e}")
-            raise  # Re-lança a exceção para ser tratada pela camada de serviço/controller
+            raise
         finally:
             if cursor:
                 cursor.close()

@@ -1,4 +1,3 @@
-# services/document_service.py
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
@@ -37,11 +36,9 @@ class DocumentService:
             )
             return True
         except (ValueError, FileNotFoundError) as e:
-            # Erros específicos do file_reader
             print(f"Erro ao processar e armazenar o documento '{file_path}': {e}")
             return False
         except Exception as e:
-            # Outros erros inesperados
             print(f"Erro inesperado no serviço de documento para '{file_path}': {e}")
             return False
 
