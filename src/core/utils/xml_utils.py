@@ -13,6 +13,8 @@ def export_xml_to_file(xml: str, path: str) -> None:
 
 def create_xpath(element, target_element, current_path=[]):
     local_name = element.local_name
+    if local_name == "Signature":
+        return
 
     current_path = current_path + [local_name]
 
