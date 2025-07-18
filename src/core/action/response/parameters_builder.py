@@ -62,15 +62,17 @@ class ParametersBuilder(ElementBuilder):
                         xpath_value = (
                             format_result(create_xpath(response_element, targets_tags[value[1]]))
                             if targets_tags and targets_tags[value[1]]
-                            else ""
+                            else None
                         )
+                        if not xpath_value:
+                            continue
                 etree.SubElement(
                     tree,
                     self._inner_tag,
                     attrib={
                         "id": key,
                         "origin": value[0],
-                        "xpath": xpath_value if value[1][0] != "/" and xpath_value else value[1],
+                        "xpath": xpath_value if value[1][0] != "/" else value[1],
                     },
                 )
 

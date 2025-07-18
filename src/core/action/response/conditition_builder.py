@@ -38,6 +38,8 @@ class ConditionBuilder(ElementBuilder):
 
             if target_tag_key and "xpath" not in condition.keys():
                 xpath = format_result(create_xpath(response_tag, targets_tags.get(target_tag_key, target_tag_key)))
+                if not xpath:
+                    continue
                 condition["xpath"] = xpath
 
             etree.SubElement(
