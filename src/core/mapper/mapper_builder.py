@@ -1,8 +1,8 @@
-from src.core.element_mapper import ElementBuilder
 import lxml.etree as etree
 from lxml.etree import _Element
 from xmlschema.validators import XsdElement
 
+from src.core.element_mapper import ElementBuilder
 from src.core.mapper.properties_builder import PropertiesBuilder
 
 
@@ -21,7 +21,7 @@ class MapperBuilder(ElementBuilder):
             "document-mapper",
             {
                 "id": plugin_id,
-                "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "../../../schemas/document-mapper.xsd",
+                "{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation": "../../../schemas/document-mapping.xsd",
             },
             nsmap={"xsi": "http://www.w3.org/2001/XMLSchema-instance"},
         )
