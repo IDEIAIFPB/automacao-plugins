@@ -32,7 +32,7 @@ def create_xpath(element, target_element, current_path=[]):
 
 
 def format_result(result):
-    result = "/" + "/".join(result) if result else ""
+    result = "/" + "/".join(result) if result else None
     return result
 
 

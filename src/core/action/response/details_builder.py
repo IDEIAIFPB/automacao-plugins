@@ -21,7 +21,7 @@ class DetailsBuilder(ElementBuilder):
         for index, (detail_id) in enumerate(DETAILS_IDS):
             if targets_tags and KEYS_TAGS[index] in targets_tags.keys():
                 xpath_value = format_result(create_xpath(response_element, targets_tags[KEYS_TAGS[index]]))
-            else:
-                xpath_value = ""
+                if not xpath_value:
+                    continue
 
-            etree.SubElement(tree, self._inner_tag, {"id": detail_id, "type": "ERROR", "xpath": xpath_value})
+                etree.SubElement(tree, self._inner_tag, {"id": detail_id, "type": "ERROR", "xpath": xpath_value})
