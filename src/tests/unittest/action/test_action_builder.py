@@ -10,7 +10,6 @@ from src.tests.utils import build_output_file_path, get_xml
 class TestActionBuilder(TestCase):
     def setUp(self):
         self._builder = ActionBuilder()
-        self._output_file = build_output_file_path("action_builder_test.xml")
         self._plugin_id = "emissao-teste"
         self._operation_tag = "GerarNfse"
         self._wsdl_path = "resources/wsdl-files/nfse04.wsdl"
@@ -199,14 +198,14 @@ class TestActionBuilder(TestCase):
         )
         s_tree = get_xml(tree)
 
-        TestCase.assertEqual(self, s_tree, self._emissao_tree)
+        self.assertEqual(self, s_tree, self._emissao_tree)
 
     def test_parse_wsdl_schema(self):
         wsdl_tree = etree.parse(self._wsdl_path)
         wsdl_root = wsdl_tree.getroot()
         namespaces = wsdl_root.nsmap
         wsdl_schema_root = self._builder._parse_wsdl_schema(wsdl_root, namespaces)
-        TestCase.assertIsNotNone(self, wsdl_schema_root)
+        self.assertIsNotNone(self, wsdl_schema_root)
 
 
 if __name__ == "__main__":
