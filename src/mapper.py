@@ -2,13 +2,11 @@ import xmlschema
 from lxml.etree import _Element
 
 from src.core.mapper.mapper_builder import MapperBuilder
-from src.core.utils.xml_utils import get_xml, export_xml_to_file
+from src.core.utils.xml_utils import export_xml_to_file, get_xml
 
 
 class Mapper:
-    def __init__(
-        self, root_element: str, plugin_id: str, xsd_path: str, output_file: str
-    ):
+    def __init__(self, root_element: str, plugin_id: str, xsd_path: str, output_file: str):
         self._mapper_builder = MapperBuilder()
         self._root_element = root_element
         self._schema = xmlschema.XMLSchema(xsd_path)

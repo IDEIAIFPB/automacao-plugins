@@ -1,4 +1,5 @@
 from typing import Optional
+
 import lxml.etree as etree
 from lxml.etree import _Element
 

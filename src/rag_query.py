@@ -1,11 +1,11 @@
 import os
-from dotenv import load_dotenv
-from pgvector.psycopg2 import register_vector
-from processing.embedder import generate_embeddings
-from database.database import get_connection
 
 import google.generativeai as genai
+from dotenv import load_dotenv
+from pgvector.psycopg2 import register_vector
 
+from database.database import get_connection
+from processing.embedder import generate_embeddings
 
 load_dotenv()
 

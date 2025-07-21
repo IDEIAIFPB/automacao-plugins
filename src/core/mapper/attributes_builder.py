@@ -1,12 +1,10 @@
+import lxml.etree as etree
+from lxml.etree import _Element
 from xmlschema.validators import XsdAttributeGroup
 
 from src.core.element_mapper import ElementBuilder
-import lxml.etree as etree
-
 from src.core.mapper.enum import SourceType
 from src.core.mapper.value import ValueBuilder
-
-from lxml.etree import _Element
 
 
 class AttributesBuilder(ElementBuilder):
@@ -23,12 +21,11 @@ class AttributesBuilder(ElementBuilder):
 
     def _build(self, root: _Element, attributes: XsdAttributeGroup, property: _Element):
         for attribute in attributes:
+            name = attribute
             if attribute in ("id", "Id"):
-                name = f"id{property.attrib['name']}"
                 source_type = SourceType.RANDOM
                 source_args = {"rangeStart": "100000000", "rangeEnd": "999999999"}
             else:
-                name = attribute
                 source_type = SourceType.STATIC
                 source_args = {"value": "TODO"}
             attr = etree.SubElement(root, self._inner_tag, {"name": name})

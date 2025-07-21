@@ -9,3 +9,39 @@ def get_xml(tree: _Element) -> str:
 def export_xml_to_file(xml: str, path: str) -> None:
     with open(path, "w") as f:
         f.write(xml)
+
+
+def create_xpath(element, target_element, current_path=[]):
+    local_name = element.local_name
+    if local_name == "Signature":
+        return
+
+    current_path = current_path + [local_name]
+
+    if local_name == target_element:
+        return current_path
+
+    if element.type.is_complex():
+        for child in element.type.content.iter_elements():
+            result = create_xpath(child, target_element, current_path)
+
+            if result:
+                return result
+
+    return None
+
+
+def format_result(result):
+    result = "/" + "/".join(result) if result else None
+    return result
+
+
+def get_element_by_message_name(message_name: str, wsdl_root: _Element, namespaces: dict):
+    message = wsdl_root.find(f"./wsdl:message[@name='{message_name}']", namespaces=namespaces)
+
+    if message is None:
+        raise ValueError("Message não encontrado")
+
+    part = message.find("./wsdl:part", namespaces=namespaces)
+
+    return part.get("element").split(":")[-1]
