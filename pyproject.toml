@@ -31,7 +31,7 @@ lint = [
 ]
 
 [project.scripts]
-syncpl = "cli:main"
+syncpl = "src.syncpl:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]

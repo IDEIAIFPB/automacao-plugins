@@ -1,14 +1,8 @@
 #!.venv/bin/python3
 # -*- coding: utf-8 -*-
-
+import json
 import sys
 from pathlib import Path
-
-sys.path.insert(
-    0, str(Path(__file__).parent.parent)
-)  # Adiciona o diretório pai ao sys.path para importar módulos corretamente
-
-import json
 
 import typer
 from rich import print as rprint
@@ -152,34 +146,33 @@ def list_elements(
 
 def main():
     app()
+    # generate(
+    #     xsd_file="resources/xsd-files/NFSE.xsd.XSD",
+    #     output_file=build_output_file_path("cli.xml"),
+    #     root_element="EnviarLoteRpsEnvio",
+    #     plugin_name="emissao-campina",
+    #     operation_tag="RecepcionarLoteRps",
+    #     response_tag="EnviarLoteRpsResposta",
+    #     wsdl_path="resources/wsdl-files/nfse04.wsdl",
+    #     action_output_file=build_output_file_path("cli-action.xml"),
+    #     targets_tags=json.dumps({
+    #         "numero_param": "NumeroLote",
+    #         "protocolo_param": "Protocolo",
+    #         "aliquota_param": "Aliquota",
+    #         "codigo_verificacao_param": "CodigoVerificacao",
+    #         "codigo_details": "Codigo",
+    #         "mensagem_detail": "Mensagem",
+    #         "correcao_details": "Correcao",
+    #         "numero_consulta": "NumeroLote",
+    #         "codigo_cancelamento_consulta": "Codigo",
+    #         "codigo_consulta": "Codigo",
+    #         "data_hora": "DataHora",
+    #         "codigo_cancelamento": "Codigo",
+    #         "codigo_emissao": "Codigo",
+    #         "numero_emissao": "NumeroLote"
+    #     }),
+    # )
 
 
-# if __name__ == "__main__":
-#     main()
-
-# generate(
-#     xsd_file="resources/xsd-files/NFSE.xsd.XSD",
-#     output_file=build_output_file_path("cli.xml"),
-#     root_element="EnviarLoteRpsEnvio",
-#     plugin_name="emissao-campina",
-#     operation_tag="RecepcionarLoteRps",
-#     response_tag="EnviarLoteRpsResposta",
-#     wsdl_path="resources/wsdl-files/nfse04.wsdl",
-#     action_output_file=build_output_file_path("cli-action.xml"),
-#     targets_tags=json.dumps({
-#         "numero_param": "NumeroLote",
-#         "protocolo_param": "Protocolo",
-#         "aliquota_param": "Aliquota",
-#         "codigo_verificacao_param": "CodigoVerificacao",
-#         "codigo_details": "Codigo",
-#         "mensagem_detail": "Mensagem",
-#         "correcao_details": "Correcao",
-#         "numero_consulta": "NumeroLote",
-#         "codigo_cancelamento_consulta": "Codigo",
-#         "codigo_consulta": "Codigo",
-#         "data_hora": "DataHora",
-#         "codigo_cancelamento": "Codigo",
-#         "codigo_emissao": "Codigo",
-#         "numero_emissao": "NumeroLote"
-#     }),
-# )
+if __name__ == "__main__":
+    main()
