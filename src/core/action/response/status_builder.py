@@ -2,7 +2,7 @@ from lxml import etree
 from lxml.etree import _Element
 
 from src.core.action.enum import FileType
-from src.core.action.response import ConditionBuilder
+from src.core.action.response.conditition_builder import ConditionBuilder
 from src.core.element_mapper import ElementBuilder
 
 

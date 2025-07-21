@@ -1,7 +1,8 @@
 import lxml.etree as etree
 from lxml.etree import _Element
 
-from src.core.action.request import ContentBuilder, SignaturesBuilder
+from src.core.action.request.content_builder import ContentBuilder
+from src.core.action.request.signatures_builder import SignaturesBuilder
 from src.core.element_mapper import ElementBuilder
 
 
