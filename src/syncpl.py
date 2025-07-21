@@ -156,7 +156,7 @@ if __name__ == "__main__":
             "aliquota_param": "Aliquota",
             "codigo_verificacao_param": "CodigoVerificacao",
             "codigo_details": "Codigo",
-            "mensagem_detail": "Mensagem",
+            "mensagem_details": "Mensagem",
             "correcao_details": "Correcao",
             "numero_consulta": "NumeroLote",
             "codigo_cancelamento_consulta": "Codigo",
