@@ -7,7 +7,7 @@ from src.core.action.response.details_builder import DetailsBuilder
 from src.tests.utils import get_xml
 
 
-class TestParametersBuilder(TestCase):
+class TestDetailsBuilder(TestCase):
     def setUp(self):
         self._builder = DetailsBuilder()
         self._schema = XMLSchema("resources/xsd-files/nfse-v2-04.xsd")
