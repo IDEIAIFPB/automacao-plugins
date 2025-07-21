@@ -13,27 +13,32 @@ class TestConditionBuilder(TestCase):
         self._builder = ConditionBuilder()
         self._schema = XMLSchema("resources/xsd-files/nfse-v2-04.xsd")
         self._root = etree.Element("teste")
+        self._targets_tags = {
+            "data_hora": "DataHora",
+        }
+        self._file_type = "cancelamento"
+        self._status_type = "cancelled"
 
         # String de condições para status cancelled no action de cancelamento
-        self._cancealmento_cancelled_str = """<teste>
+        self._conditions_str = """<teste>
   <conditions>
     <condition comparison="EXISTS" xpath="/CancelarNfseResposta/RetCancelamento/NfseCancelamento/Confirmacao/DataHora"/>
   </conditions>
 </teste>
 """
 
-    def test_build_cancealmento_cancelled(self):
+    def test_build(self):
         response_tag = self._schema.elements.get("CancelarNfseResposta")
-        targets_tags = {
-            "data_hora": "DataHora",
-        }
-        file_type = "cancelamento"
-        status_type = "cancelled"
+
         tree = self._builder.build(
-            self._root, CONDITTIONS_MAP[file_type][status_type], status_type, response_tag, targets_tags
+            self._root,
+            CONDITTIONS_MAP[self._file_type][self._status_type],
+            self._status_type,
+            response_tag,
+            self._targets_tags,
         )
         s_tree = get_xml(tree)
-        self.assertEqual(self, s_tree, self._cancealmento_cancelled_str)
+        self.assertEqual(s_tree, self._conditions_str)
 
 
 if __name__ == "__main__":

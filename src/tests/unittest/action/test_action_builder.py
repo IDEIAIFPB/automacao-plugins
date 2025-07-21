@@ -198,14 +198,14 @@ class TestActionBuilder(TestCase):
         )
         s_tree = get_xml(tree)
 
-        self.assertEqual(self, s_tree, self._emissao_tree)
+        self.assertEqual(s_tree, self._emissao_tree)
 
     def test_parse_wsdl_schema(self):
         wsdl_tree = etree.parse(self._wsdl_path)
         wsdl_root = wsdl_tree.getroot()
         namespaces = wsdl_root.nsmap
         wsdl_schema_root = self._builder._parse_wsdl_schema(wsdl_root, namespaces)
-        self.assertIsNotNone(self, wsdl_schema_root)
+        self.assertIsNotNone(wsdl_schema_root)
 
 
 if __name__ == "__main__":
