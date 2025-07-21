@@ -46,7 +46,8 @@ exclude = [
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "/src/core",
+    "/src",
+    "README.md",
 ]
 
 [tool.ruff]
