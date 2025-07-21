@@ -96,12 +96,18 @@ class TestParametersBuilder(TestCase):
   </parameters>
 </teste>
 """
+        self._xpath_str = "/GerarNfseEnvio/Rps/InfDeclaracaoPrestacaoServico/Servico/Valores/Aliquota"
 
     def test_build(self):
         tree = self._builder.build(self._root, "emissao", self._response_tag, self._mapper_root, self._targets_tags)
         s_tree = get_xml(tree)
 
         self.assertEqual(s_tree, self._parameters_str)
+
+    def test_create_xpath_by_mapper(self):
+        xpath = self._builder._create_xpath_by_mapper(self._mapper_root, self._targets_tags["aliquota_param"])
+
+        self.assertEqual(xpath, self._xpath_str)
 
 
 if __name__ == "__main__":
