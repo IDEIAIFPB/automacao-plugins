@@ -1,5 +1,5 @@
-from src.core.utils.constants import build_output_file_path
 from src.core.utils.xml_utils import (
+    build_output_file_path,
     create_xpath,
     export_xml_to_file,
     format_result,

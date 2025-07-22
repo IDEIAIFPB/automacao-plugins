@@ -45,3 +45,10 @@ def get_element_by_message_name(message_name: str, wsdl_root: _Element, namespac
     part = message.find("./wsdl:part", namespaces=namespaces)
 
     return part.get("element").split(":")[-1]
+
+
+TEMP_PATH = "./src/tests/temp"
+
+
+def build_output_file_path(file_name: str) -> str:
+    return f"{TEMP_PATH}/{file_name}"

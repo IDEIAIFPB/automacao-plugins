@@ -2,7 +2,7 @@ import lxml.etree as etree
 from lxml.etree import _Element
 from xmlschema.validators import XsdAttributeGroup
 
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.mapper.enum import SourceType
 from src.core.mapper.value import ValueBuilder
 

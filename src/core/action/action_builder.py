@@ -4,7 +4,7 @@ from lxml.etree import _Element
 
 from src.core.action.request.request_builder import RequestBuilder
 from src.core.action.response.response_builder import ResponseBuilder
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 
 
 class ActionBuilder(ElementBuilder):

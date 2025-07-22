@@ -5,7 +5,7 @@ import lxml.etree as etree
 from lxml.etree import _Element
 from xmlschema.validators import XsdElement, XsdGroup
 
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.mapper.attributes_builder import AttributesBuilder
 from src.core.mapper.enum import SourceType
 from src.core.mapper.value import ValueBuilder
@@ -15,7 +15,6 @@ from src.core.mapper.value import ValueBuilder
 class PropertiesMetadata:
     # parent tag (str), target (str)
     signature = list()
-    #
     variable = dict()
 
 

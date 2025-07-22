@@ -1,7 +1,7 @@
 import lxml.etree as etree
 from lxml.etree import _Element
 
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.utils.xml_utils import get_element_by_message_name
 
 

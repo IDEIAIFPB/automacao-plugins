@@ -9,7 +9,7 @@ from rich import print as rprint
 from rich.console import Console
 
 from src.action import Action
-from src.core.utils.constants import build_output_file_path
+from src.core.utils.xml_utils import build_output_file_path
 from src.mapper import Mapper
 
 app = typer.Typer(

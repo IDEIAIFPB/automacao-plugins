@@ -2,7 +2,7 @@ import lxml.etree as etree
 from lxml.etree import _Element
 
 from src.core.action.enum import FileType
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.utils.constants import DEFAULT_PARAMS, PARAMETERS_EMISSAO
 from src.core.utils.xml_utils import create_xpath, format_result
 
