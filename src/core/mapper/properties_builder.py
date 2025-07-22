@@ -44,6 +44,7 @@ class PropertiesBuilder(ElementBuilder):
 
     def build(self, tree: _Element, xsd_element: XsdElement):
         properties = etree.SubElement(tree, self._tag)
+        self._metada.signature.clear()
         self._build(xsd_element, properties)
         return tree
 
