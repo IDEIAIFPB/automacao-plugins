@@ -4,6 +4,17 @@ Uma ferramenta para converter automaticamente arquivos XSD em documentos de mape
 
 ## Instalação
 
+Para fazer o build do projeto, você precisa ter o Python 3.8 ou superior instalado.
+Você pode instalar o Syncpl usando o `uv` (um gerenciador de pacotes para Python):
+
+```bash
+uv build
+```
+
+```bash
+pip install dist/syncpl-0.0.1-py3-none-any.whl
+```
+
 Para contribuir com o desenvolvimento é necessáiro que:
 
 1. Instale as dependências do projeto
