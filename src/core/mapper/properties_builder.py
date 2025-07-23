@@ -17,6 +17,10 @@ class PropertiesMetadata:
     signature = list()
     variable = dict()
 
+    def clear(self):
+        self.signature.clear()
+        self.variable.clear()
+
 
 class PropertiesBuilder(ElementBuilder):
     def __init__(self):
@@ -43,6 +47,7 @@ class PropertiesBuilder(ElementBuilder):
 
     def build(self, tree: _Element, xsd_element: XsdElement):
         properties = etree.SubElement(tree, self._tag)
+        self._metada.clear()
         self._build(xsd_element, properties)
         return tree
 

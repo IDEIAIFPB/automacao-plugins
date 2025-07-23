@@ -33,6 +33,7 @@ class ConditionBuilder(ElementBuilder):
         targets_tags: dict,
     ):
         for condition in conditions_map.get("conditions", []):
+            target_tag_key = None
             if "target_tag_key" in condition.keys():
                 target_tag_key = condition.pop("target_tag_key") or ""
 
