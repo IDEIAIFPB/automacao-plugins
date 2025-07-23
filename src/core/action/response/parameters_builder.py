@@ -66,8 +66,8 @@ class ParametersBuilder(ElementBuilder):
                             if targets_tags and targets_tags[value[1]]
                             else None
                         )
-                        if not xpath_value:
-                            continue
+                    if not xpath_value:
+                        continue
                 etree.SubElement(
                     tree,
                     self._inner_tag,

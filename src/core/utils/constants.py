@@ -1,7 +1,7 @@
 TEMP_PATH = "./src/tests/temp"
 
 DETAILS_IDS = ["codigo", "mensagem", "correcao"]
-KEYS_TAGS = ["codigo_details", "mensagem_detail", "correcao_details"]
+KEYS_TAGS = ["codigo_details", "mensagem_details", "correcao_details"]
 
 CONDITTIONS_MAP = {
     "consulta": {
