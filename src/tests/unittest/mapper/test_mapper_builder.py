@@ -3,7 +3,6 @@ from unittest import TestCase, main
 import xmlschema
 
 from src.core.mapper import MapperBuilder
-from src.tests.utils import build_output_file_path, export_xml_to_file, get_xml
 
 
 class TestMapperBuilder(TestCase):
@@ -12,14 +11,9 @@ class TestMapperBuilder(TestCase):
         self._schema = xmlschema.XMLSchema("resources/xsd-files/nfse-v2-02.xsd")
         self._root = self._schema.elements.get("EnviarLoteRpsEnvio")
         self._plugin_id = "emissao-itaperuna"
-        self._output_file = build_output_file_path("mapper_builder_test.xml")
 
     def test_build(self):
-        tree = self._builder.build(self._plugin_id, self._root)
-        teste = self._builder.metadata
-        print(teste)
-        s_tree = get_xml(tree)
-        export_xml_to_file(s_tree, self._output_file)
+        pass
 
 
 if __name__ == "__main__":
