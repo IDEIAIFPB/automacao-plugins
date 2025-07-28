@@ -112,5 +112,4 @@ dmypy.json
 *.swp
 *.swo
 
-*.xml
 src/tests/temp/*.xml

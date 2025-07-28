@@ -1,0 +1,660 @@
+<document-mapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="emissao-teste"xsi:noNamespaceSchemaLocation="../../../schemas/document-mapping.xsd">
+  <properties>
+    <property name="GerarNfseEnvio">
+      <properties>
+        <property name="Rps">
+          <properties>
+            <property name="InfDeclaracaoPrestacaoServico">
+              <attributes>
+                <attribute name="id">
+                  <value>
+                    <sources>
+                      <random rangeEnd="999999999" rangeStart="100000000" sourceId="2"/>
+                    </sources>
+                  </value>
+                </attribute>
+              </attributes>
+              <properties>
+                <property name="Rps">
+                  <attributes>
+                    <attribute name="id">
+                      <value>
+                        <sources>
+                          <random rangeEnd="999999999" rangeStart="100000000" sourceId="2"/>
+                        </sources>
+                      </value>
+                    </attribute>
+                  </attributes>
+                  <properties>
+                    <property name="IdentificacaoRps">
+                      <properties>
+                        <property name="Numero">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/NumeroRPS" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Serie">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/SerieRPS" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Tipo">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/TipoRPS" />
+                            </sources>
+                          </value>
+                        </property>
+                      </properties>
+                    </property>
+                    <property name="DataEmissao">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/DataEmissao" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="Status">
+                      <value>
+                        <sources>
+                          <xmlProperty sourceId="1" xpath="/SynchroId/PedidoEnvioRPS/RPS/StatusRPS" />
+                        </sources>
+                        <operations>
+                          <map ignoreNotFound="true">
+                            <mappingRule value="1">
+                              <conditions>
+                                <condition comparison="EQUALS" sourceId="1" value="N" />
+                              </conditions>
+                            </mappingRule>
+                            <mappingRule value="2">
+                              <conditions>
+                                <condition comparison="EQUALS" sourceId="2" value="C" />
+                              </conditions>
+                            </mappingRule>
+                            <mappingRule value="2">
+                              <conditions>
+                                <condition comparison="EQUALS" sourceId="3" value="E" />
+                              </conditions>
+                            </mappingRule>
+                          </map>
+                        </operations>
+                      </value>
+                    </property>
+                    <property name="RpsSubstituido">
+                      <properties>
+                        <property name="Numero">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/RpsSubstituido/Numero" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Serie">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/RpsSubstituido/Serie" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Tipo">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/RpsSubstituido/Tipo" />
+                            </sources>
+                          </value>
+                        </property>
+                      </properties>
+                    </property>
+                  </properties>
+                </property>
+                <property name="Competencia">
+                  <value>
+                    <sources>
+                      <xmlProperty sourceId="1" xpath="/SynchroId/PedidoEnvioRPS/RPS/Competencia" />
+                    </sources>
+                    <operations>
+                      <subString endIndex="10" sourceId="1" startIndex="0" />
+                    </operations>
+                  </value>
+                </property>
+                <property name="Servico">
+                  <properties>
+                    <property name="Valores">
+                      <properties>
+                        <property name="ValorServicos">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ValorServicos" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="ValorDeducoes">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ValorDeducoes" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="ValorPis">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ValorPIS" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="ValorCofins">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ValorCOFINS" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="ValorInss">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ValorINSS" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="ValorIr">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ValorIR" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="ValorCsll">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ValorCSLL" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="OutrasRetencoes">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/OutrasRetencoes" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="ValTotTributos">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ValTotTributos" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="ValorIss">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ValorIss" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Aliquota">
+                          <value>
+                            <sources>
+                              <xmlProperty sourceId="1"
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/AliquotaServicos" />
+                            </sources>
+                            <operations>
+                              <percentage sourceId="1" />
+                            </operations>
+                          </value>
+                        </property>
+                        <property name="DescontoIncondicionado">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/DescontoIncondicionado" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="DescontoCondicionado">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/DescontoCondicionado" />
+                            </sources>
+                          </value>
+                        </property>
+                      </properties>
+                    </property>
+                    <property name="IssRetido">
+                      <value>
+                        <sources>
+                          <xmlProperty sourceId="1" xpath="/SynchroId/PedidoEnvioRPS/RPS/ISSRetido" />
+                        </sources>
+                        <operations>
+                          <map ignoreNotFound="true">
+                            <mappingRule value="1">
+                              <conditions>
+                                <condition comparison="EQUALS" sourceId="1" value="true" />
+                              </conditions>
+                            </mappingRule>
+                            <mappingRule value="2">
+                              <conditions>
+                                <condition comparison="EQUALS" sourceId="1" value="false" />
+                              </conditions>
+                            </mappingRule>
+                          </map>
+                        </operations>
+                      </value>
+                    </property>
+                    <property name="ResponsavelRetencao">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ResponsavelRetencao" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="ItemListaServico">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ItemListaServico" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="CodigoCnae">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/CodigoCnae" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="CodigoTributacaoMunicipio">
+                      <value>
+                        <sources>
+                          <xmlProperty
+                            xpath="/SynchroId/PedidoEnvioRPS/RPS/CodigoTributacaoMunicipio" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="CodigoNbs">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/CodigoNbs" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="Discriminacao">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/Discriminacao" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="CodigoMunicipio">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/CodigoMunicipio" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="CodigoPais">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/CodigoPaisServico" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="ExigibilidadeISS">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ExigibilidadeISS" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="MunicipioIncidencia">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/MunicipioPrestacao" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="NumeroProcesso">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/NumeroProcesso" />
+                        </sources>
+                      </value>
+                    </property>
+                  </properties>
+                </property>
+                <property name="Prestador">
+                  <properties>
+                    <property name="CpfCnpj">
+                      <properties>
+                        <property name="Cpf">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/CPFCNPJPrestador/CPF" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Cnpj">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/CPFCNPJPrestador/CNPJ" />
+                            </sources>
+                          </value>
+                        </property>
+                      </properties>
+                    </property>
+                    <property name="InscricaoMunicipal">
+                      <value>
+                        <sources>
+                          <xmlProperty
+                            xpath="/SynchroId/PedidoEnvioRPS/RPS/ChaveRPS/InscricaoPrestador" />
+                        </sources>
+                      </value>
+                    </property>
+                  </properties>
+                </property>
+                <property name="TomadorServico">
+                  <properties>
+                    <property name="IdentificacaoTomador">
+                      <properties>
+                        <property name="CpfCnpj">
+                          <properties>
+                            <property name="Cpf" referenceId="campoCpfTomador">
+                              <value>
+                                <sources>
+                                  <xmlProperty
+                                    xpath="/SynchroId/PedidoEnvioRPS/RPS/CPFCNPJTomador/CPF" />
+                                </sources>
+                              </value>
+                            </property>
+                            <property name="Cnpj" referenceId="campoCnpjTomador">
+                              <value>
+                                <sources>
+                                  <xmlProperty
+                                    xpath="/SynchroId/PedidoEnvioRPS/RPS/CPFCNPJTomador/CNPJ" />
+                                </sources>
+                              </value>
+                            </property>
+                          </properties>
+                        </property>
+                        <property name="InscricaoMunicipal">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/InscricaoMunicipalTomador" />
+                            </sources>
+                          </value>
+                        </property>
+                      </properties>
+                    </property>
+                    <property name="NifTomador">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/NifTomador" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="RazaoSocial">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/RazaoSocialTomador" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="Endereco">
+                      <properties>
+                        <property name="Endereco">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/Logradouro" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Numero">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/NumeroEndereco" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Complemento">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/ComplementoEndereco" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Bairro">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/Bairro" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="CodigoMunicipio" referenceId="campoCodigoMunicipioTomador">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/Cidade" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Uf" referenceId="campoUfTomador">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/UF" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="Cep">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/CEP" />
+                            </sources>
+                          </value>
+                        </property>
+                      </properties>
+                    </property>
+                    <property name="EnderecoExterior" referenceId="grupoEnderecoTomadorExterior">
+                      <properties>
+                        <property name="CodigoPais">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/CodigoPais" />
+                            </sources>
+                          </value>
+                        </property>
+                        <property name="EnderecoCompletoExterior">
+                          <value>
+                            <sources>
+                              <static sourceId="separador" value=" " />
+                              <xmlProperty sourceId="1"
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/Logradouro" />
+                              <xmlProperty sourceId="2"
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/NumeroEndereco" />
+                              <xmlProperty sourceId="3"
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/EnderecoTomador/ComplementoEndereco" />
+                            </sources>
+                            <operations>
+                              <concat>
+                                <source sourceId="1" />
+                                <source sourceId="separador" />
+                                <source sourceId="2" />
+                                <source sourceId="separador" />
+                                <source sourceId="3" />
+                              </concat>
+                            </operations>
+                          </value>
+                        </property>
+                      </properties>
+                    </property>
+                    <property name="Contato">
+                      <properties>
+                        <property name="Telefone">
+                          <value>
+                            <sources>
+                              <xmlProperty sourceId="1"
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/DDDTomador" />
+                              <xmlProperty sourceId="2"
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/TelefoneTomador" />
+                            </sources>
+                            <operations>
+                              <concat>
+                                <source sourceId="1" />
+                                <source sourceId="2" />
+                              </concat>
+                            </operations>
+                          </value>
+                        </property>
+                        <property name="Email">
+                          <value>
+                            <sources>
+                              <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/EmailTomador" />
+                            </sources>
+                          </value>
+                        </property>
+                      </properties>
+                    </property>
+                  </properties>
+                </property>
+                <property name="Intermediario">
+                  <properties>
+                    <property name="IdentificacaoIntermediario">
+                      <properties>
+                        <property name="CpfCnpj">
+                          <properties>
+                            <property name="Cpf">
+                              <value>
+                                <sources>
+                                  <xmlProperty
+                                    xpath="/SynchroId/PedidoEnvioRPS/RPS/IntermediarioServico/IdentificacaoIntermediario/CpfCnpj/CPF" />
+                                </sources>
+                              </value>
+                            </property>
+                            <property name="Cnpj">
+                              <value>
+                                <sources>
+                                  <xmlProperty
+                                    xpath="/SynchroId/PedidoEnvioRPS/RPS/IntermediarioServico/IdentificacaoIntermediario/CpfCnpj/CNPJ" />
+                                </sources>
+                              </value>
+                            </property>
+                          </properties>
+                        </property>
+                        <property name="InscricaoMunicipal">
+                          <value>
+                            <sources>
+                              <xmlProperty
+                                xpath="/SynchroId/PedidoEnvioRPS/RPS/IntermediarioServico/IdentificacaoIntermediario/InscricaoMunicipal" />
+                            </sources>
+                          </value>
+                        </property>
+                      </properties>
+                    </property>
+                    <property name="RazaoSocial">
+                      <value>
+                        <sources>
+                          <xmlProperty
+                            xpath="/SynchroId/PedidoEnvioRPS/RPS/IntermediarioServico/RazaoSocial" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="CodigoMunicipio">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/CodigoMunicipio" />
+                        </sources>
+                      </value>
+                    </property>
+                  </properties>
+                </property>
+                <property name="ConstrucaoCivil">
+                  <properties>
+                    <property name="CodigoObra">
+                      <value>
+                        <sources>
+                          <xmlProperty
+                            xpath="/SynchroId/PedidoEnvioRPS/RPS/ConstrucaoCivil/CodigoObra" />
+                        </sources>
+                      </value>
+                    </property>
+                    <property name="Art">
+                      <value>
+                        <sources>
+                          <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/ConstrucaoCivil/Art" />
+                        </sources>
+                      </value>
+                    </property>
+                  </properties>
+                </property>
+                <property name="RegimeEspecialTributacao">
+                  <value>
+                    <sources>
+                      <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/RegimeEspecialTributacao" />
+                    </sources>
+                  </value>
+                </property>
+                <property name="OptanteSimplesNacional">
+                  <value>
+                    <sources>
+                      <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/OptanteSimplesNacional" />
+                    </sources>
+                  </value>
+                </property>
+                <property name="IncentivoFiscal">
+                  <value>
+                    <sources>
+                      <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/IncentivoFiscal" />
+                    </sources>
+                  </value>
+                </property>
+                <property name="InformacoesComplementares">
+                  <value>
+                    <sources>
+                      <xmlProperty xpath="/SynchroId/PedidoEnvioRPS/RPS/OutrasInformacoes" />
+                    </sources>
+                  </value>
+                </property>
+              </properties>
+            </property>
+          </properties>
+        </property>
+      </properties>
+    </property>
+  </properties>
+  <filters>
+    <filter action="REMOVE" name="regraRemoveGrupoEnderecoTomadorNacional"
+      targetReferenceId="grupoEnderecoTomadorNacional">
+      <conditions logicalOperator="AND">
+        <condition comparison="EQUALS" propertyReferenceId="campoUfTomador" value="EX" />
+      </conditions>
+    </filter>
+    <filter action="REMOVE" name="regraRemoveGrupoEnderecoTomadorExterior"
+      targetReferenceId="grupoEnderecoTomadorExterior">
+      <conditions logicalOperator="AND">
+        <condition comparison="NOT_EQUALS" propertyReferenceId="campoUfTomador" value="EX" />
+      </conditions>
+    </filter>
+    <filter action="REMOVE" name="regraRemoveResponsavelRetencao"
+      targetReferenceId="ResponsavelRetencao">
+      <conditions logicalOperator="AND">
+        <condition comparison="EQUALS" propertyReferenceId="IssRetido" value="0" />
+        <condition comparison="EXISTS" propertyReferenceId="ResponsavelRetencao" />
+      </conditions>
+    </filter>
+  </filters>
+  <checksum>336614590</checksum>
+  <signature>
+    ZK1ZgMEKAXuAxMWjRaj8zMYgG8294QeBAD9HscriV2igk2AFK0C6pPQ+Iev4wy+qlbc4Hg+mK9jqxfTEz2Y/3I+BnlvEX8/G6WkRrBxDhFAN0lKZwnExT/hkerdEk9IzmcuBy2h3u7xqr/aUVKhk7bLrey/cNnvjWmkS6lo64IJyCNIlxF3QkYPytE9CHatn9V0SEu8i997npneiTfz+GH4EVCNZv8K6FwzN2gOZQB9hHeQWr45p53d///5pPoOi8soO/TSc3tsAyLSnsF0dvcGLCCv/rDsXwc7ouAw4Watgoe8pr/qq59y28SlbsJGOFWuimSHz43m5xFfKmhM5RMNsy/1fTW3WB93XdNSdPZ9JF8yGT2M7XghJtBOQeJO02VFByc5j22wEP8kZf2dBGifxvpIxrF56zQZXgs/N5RDJ4xSl0lforN/e03A251surJsV4Fpe/Zv4wTyffIk2vIDcmhidwMrgKiLeiJUZMIuS2eUA/J768mpb3pY8ucfmo32Oej1gnAV2uDdGhD8yR3d9ptuonTSVe1SXVkT2397geFDHY0grJAZbo3w4lNYFX2PFBa4kbaEZdqLpdYtk/k2Uls8heMIRJ35SRF9Vs5pGiH44+EM4z8T7a+ZaX4uUe8uSsjf8j+c36Ci4boGwFB85VuFLjGx6T/1f43dCx3U=</signature>
+</document-mapper>
