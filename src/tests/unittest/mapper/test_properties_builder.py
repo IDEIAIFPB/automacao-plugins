@@ -4,14 +4,14 @@ import lxml.etree as etree
 import xmlschema
 
 from src.core.mapper import PropertiesBuilder
-from src.tests.utils import build_output_file_path
+from src.core.utils.xml_utils import build_output_file_path
 
 
 class TestPropertiesBuilder(TestCase):
     def setUp(self):
         self._builder = PropertiesBuilder()
-        _schema = xmlschema.XMLSchema("resources/xsd-files/NFSE.xsd.XSD")
-        self._xsd_element = _schema.elements.get("EnviarLoteRpsEnvio")
+        _schema = xmlschema.XMLSchema("resources/xsd-files/nfse-v2-04.xsd")
+        self._xsd_element = _schema.elements.get("GerarNfseEnvio")
         self._output_file = build_output_file_path("properties_builder_test.xml")
 
     def test_build(self):
