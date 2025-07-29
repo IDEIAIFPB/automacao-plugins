@@ -1,4 +1,3 @@
-import re
 import unittest
 from dataclasses import dataclass
 
@@ -9,15 +8,11 @@ from src.core.mapper.value.value_builder import ValueBuilder
 from src.core.utils.xml_utils import build_output_file_path, get_xml
 
 
-# pojo para guardar as informações pra teste
 @dataclass
 class Source:
     def __init__(self, content: str, args: dict):
-        self.content = content  # self.unindent(content)
+        self.content = content
         self.args = args
-
-    def unindent(self, content: str) -> str:
-        return re.sub(r"    ", "  ", content)
 
 
 class TestValueBuilder(unittest.TestCase):
