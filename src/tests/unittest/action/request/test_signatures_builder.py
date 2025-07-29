@@ -19,7 +19,7 @@ class TestSignaturesBuilder(TestCase):
         self._root = etree.Element("teste")
         self._signatures_expected = """<teste>
   <signatures>
-    <signature attribute="Id" parent="Rps" target="InfDeclaracaoPrestacaoServico" type="ELEMENT"/>
+    <signature target="InfDeclaracaoPrestacaoServico" type="ELEMENT" parent="Rps" attribute="id"/>
   </signatures>
 </teste>
 """

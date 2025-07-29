@@ -22,6 +22,5 @@ class SignaturesBuilder(ElementBuilder):
                 tree,
                 self._inner_tag,
                 signature,
-                attribute="Id",
             )
         return tree
