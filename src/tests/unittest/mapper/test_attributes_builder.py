@@ -1,6 +1,7 @@
 from unittest import TestCase, main
 
 import xmlschema
+from lxml import etree
 
 from src.core.mapper import AttributesBuilder
 from src.core.utils.xml_utils import get_xml
@@ -18,24 +19,42 @@ class TestMapperBuilder(TestCase):
     </xs:attributeGroup>
 </xs:schema>
 """
+        schema_attr = xmlschema.XMLSchema(xml_content)
 
-        # Criar o schema a partir do XML
-        schema = xmlschema.XMLSchema(xml_content)
-
-        # Acessar o attribute group do schema
-        attribute_group = schema.all_attributes["meuGrupoAtributos"]
-        print(f"Nome do grupo: {attribute_group.name}")
-        print(f"Tipo: {type(attribute_group)}")
-        print(f"Atributos no grupo: {list(attribute_group.iter_attributes())}")
-
-        self._plugin_id = "emissao-teste"
-        with open("src/tests/resources/mapper.xml") as file:
-            self._emissao_tree = file.read()  # carrega uma request gerada pela automação
+        self._attribute_group = schema_attr.attribute_groups["meuGrupoAtributos"]
 
     def test_build(self):
-        tree = self._builder.build()
+        tree = etree.Element("root")
+        self._builder.build(tree, self._attribute_group)
 
-        self.assertEqual(self._emissao_tree, get_xml(tree))
+        expected = """<root>
+  <attributes>
+    <attribute name="id">
+      <value>
+        <sources>
+          <random rangeStart="100000000" rangeEnd="999999999"/>
+        </sources>
+      </value>
+    </attribute>
+    <attribute name="nome">
+      <value>
+        <sources>
+          <static value="TODO"/>
+        </sources>
+      </value>
+    </attribute>
+    <attribute name="ativo">
+      <value>
+        <sources>
+          <static value="true"/>
+        </sources>
+      </value>
+    </attribute>
+  </attributes>
+</root>
+"""
+
+        self.assertEqual(expected, get_xml(tree))
 
 
 if __name__ == "__main__":
