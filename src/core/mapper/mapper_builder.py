@@ -30,4 +30,5 @@ class MapperBuilder(ElementBuilder):
         return xml_root
 
     def _build(self, xml_root: _Element, xsd_element: XsdElement):
-        self._properties_builder.build(xml_root, xsd_element)
+        variables = etree.SubElement(xml_root, "variables")
+        self._properties_builder.build(xml_root, xsd_element, variables)
