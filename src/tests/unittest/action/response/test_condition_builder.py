@@ -5,7 +5,7 @@ from xmlschema import XMLSchema
 
 from src.core.action.response import ConditionBuilder
 from src.core.utils.constants import CONDITTIONS_MAP
-from src.tests.utils import get_xml
+from src.core.utils.xml_utils import get_xml
 
 
 class TestConditionBuilder(TestCase):

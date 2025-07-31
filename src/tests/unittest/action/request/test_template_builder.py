@@ -4,7 +4,7 @@ import lxml.etree as etree
 
 from src.core.action import ActionBuilder
 from src.core.action.request.template_builder import TemplateBuilder
-from src.tests.utils import get_xml
+from src.core.utils.xml_utils import get_xml
 
 
 class TestTemplateBuilder(TestCase):

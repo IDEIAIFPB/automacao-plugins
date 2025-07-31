@@ -1,50 +1,40 @@
-from unittest import TestCase, main
-
-import xmlschema
-from lxml import etree
-
-from src.core.action.action_builder import ActionBuilder
-from src.core.action.response.response_builder import ResponseBuilder
-from src.core.utils.xml_utils import build_output_file_path, get_xml
-from src.mapper import Mapper
-
-
-class TestResponseBuilder(TestCase):
-    def setUp(self):
-        self._builder = ResponseBuilder()
-        self._action_builder = ActionBuilder()
-        self._file_type = "emissao"
-        self._operation_tag = "GerarNfse"
-        self._wsdl_path = "resources/wsdl-files/nfse04.wsdl"
-        self._final_envelope_tag = "GerarNfseEnvio"
-        self._response_tag = "GerarNfseResposta"
-        self._targets_tags = {
-            "numero_param": "Numero",
-            "protocolo_param": "Protocolo",
-            "aliquota_param": "Aliquota",
-            "codigo_verificacao_param": "CodigoVerificacao",
-            "codigo_details": "Codigo",
-            "mensagem_details": "Mensagem",
-            "correcao_details": "Correcao",
-            "numero_consulta": "Numero",
-            "codigo_cancelamento_consulta": "Codigo",
-            "codigo_consulta": "Codigo",
-            "data_hora": "DataHora",
-            "codigo_cancelamento": "Codigo",
-            "codigo_emissao": "Codigo",
-            "numero_emissao": "Numero",
-        }
-
-        self._xsd_file = "resources/xsd-files/nfse-v2-04.xsd"
-        self._tree = etree.Element("teste")
-        parser = Mapper(self._final_envelope_tag, "teste", self._xsd_file, build_output_file_path("cli.xml"))
-        self._mapper_tree = parser.build()
-        self._mapper_root = self._mapper_tree.find(".//property")
-        self._wsdl_root = etree.parse(self._wsdl_path).getroot()
-        self._namespaces = self._wsdl_root.nsmap
-        self._wsdl_schema_root = self._action_builder._parse_wsdl_schema(self._wsdl_root, self._namespaces)
-        self.maxDiff = None
-        self._response_str = """<teste>
+<document-action xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="emissao-teste" xsi:noNamespaceSchemaLocation="../../../schemas/document-action.xsd">
+  <request>
+    <endpoint>
+      <urlParameterName>url-endpoint-emissao</urlParameterName>
+      <method>POST</method>
+      <tls>TLSv1.2</tls>
+    </endpoint>
+    <headers>
+      <commonHeader name="Content-Type" value="text/xml;charset=UTF-8"/>
+      <commonHeader name="SOAPAction" value="https://tributosmunicipais.com.br/nfse/api/GerarNfse"/>
+    </headers>
+    <body>
+      <input>
+        <document-mapper>emissao-mapper.xml</document-mapper>
+        <signatures>
+          <signature attribute="Id" parent="Rps" target="InfDeclaracaoPrestacaoServico" type="ELEMENT"/>
+        </signatures>
+      </input>
+      <content>
+        <template inputResultVariable="REQUEST_CONTENT"><![CDATA[<?xml version='1.0' encoding='utf-8'?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="https://tributosmunicipais.com.br/nfse/api/" xmlns:xd="http://www.w3.org/2000/09/xmldsig#">
+  <soapenv:Header/>
+  <soapenv:Body>
+    <tns:GerarNfseRequest>
+      <nfseCabecMsg>
+        <cabecalho>
+          <versaoDados>?</versaoDados>
+        </cabecalho>
+      </nfseCabecMsg>
+      <nfseDadosMsg>REQUEST_CONTENT</nfseDadosMsg>
+    </tns:GerarNfseRequest>
+  </soapenv:Body>
+</soapenv:Envelope>
+]]></template>
+      </content>
+    </body>
+  </request>
   <response>
     <body>
       <input>
@@ -151,33 +141,4 @@ class TestResponseBuilder(TestCase):
       </return>
     </body>
   </response>
-</teste>
-"""
-        self._expected_xpath = "Envelope/Body/GerarNfseResponse/outputXML"
-
-    def test_build(self):
-        tree = self._builder.build(
-            self._tree,
-            xmlschema.XMLSchema(self._xsd_file),
-            self._response_tag,
-            self._operation_tag,
-            self._file_type,
-            self._mapper_root,
-            self._wsdl_root,
-            self._namespaces,
-            self._wsdl_schema_root,
-            self._targets_tags,
-        )
-        s_tree = get_xml(tree)
-
-        self.assertEqual(s_tree, self._response_str)
-
-    def test_get_output_xpath(self):
-        xpath = self._builder._get_output_xpath(
-            self._operation_tag, self._wsdl_root, self._namespaces, self._wsdl_schema_root
-        )
-        self.assertEqual(xpath, self._expected_xpath)
-
-
-if __name__ == "__main__":
-    main()
+</document-action>

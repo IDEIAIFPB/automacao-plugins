@@ -3,7 +3,7 @@ from lxml.etree import _Element
 
 from src.core.action.enum import FileType
 from src.core.action.response.conditition_builder import ConditionBuilder
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 
 
 class StatusBuilder(ElementBuilder):

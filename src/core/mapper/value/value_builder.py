@@ -3,7 +3,7 @@ from typing import Any
 import lxml.etree as etree
 from lxml.etree import _Element
 
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.mapper.enum import SourceType
 from src.core.mapper.value import SourceBuilder
 
