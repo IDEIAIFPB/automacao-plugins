@@ -2,7 +2,7 @@ from lxml import etree
 from lxml.etree import _Element
 
 from src.core.action.request.template_builder import TemplateBuilder
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 
 
 class ContentBuilder(ElementBuilder):

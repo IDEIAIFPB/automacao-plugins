@@ -2,8 +2,8 @@ from enum import Enum
 
 
 class SourceType(Enum):
+    STATIC = "static"
     RANDOM = "random"
     VARIABLE = "variable"
-    XML_PROPERTY = "xmlProperty"
     PARAMETER = "parameter"
-    STATIC = "static"
+    XML_PROPERTY = "xmlProperty"

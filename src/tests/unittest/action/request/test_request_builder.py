@@ -4,8 +4,8 @@ import lxml.etree as etree
 
 from src.core.action import ActionBuilder
 from src.core.action.request import RequestBuilder
+from src.core.utils.xml_utils import build_output_file_path, get_xml
 from src.mapper import Mapper
-from src.tests.utils import build_output_file_path, get_xml
 
 
 class TestRequestBuilder(TestCase):
@@ -42,7 +42,7 @@ class TestRequestBuilder(TestCase):
       <input>
         <document-mapper>emissao-mapper.xml</document-mapper>
         <signatures>
-          <signature attribute="Id" parent="Rps" target="InfDeclaracaoPrestacaoServico" type="ELEMENT"/>
+          <signature target="InfDeclaracaoPrestacaoServico" type="ELEMENT" parent="Rps" attribute="id"/>
         </signatures>
       </input>
       <content>

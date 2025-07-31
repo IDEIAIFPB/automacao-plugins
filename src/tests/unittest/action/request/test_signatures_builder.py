@@ -3,8 +3,8 @@ from unittest import TestCase, main
 import lxml.etree as etree
 
 from src.core.action.request import SignaturesBuilder
+from src.core.utils.xml_utils import build_output_file_path, get_xml
 from src.mapper import Mapper
-from src.tests.utils import build_output_file_path, get_xml
 
 
 class TestSignaturesBuilder(TestCase):
@@ -19,7 +19,7 @@ class TestSignaturesBuilder(TestCase):
         self._root = etree.Element("teste")
         self._signatures_expected = """<teste>
   <signatures>
-    <signature attribute="Id" parent="Rps" target="InfDeclaracaoPrestacaoServico" type="ELEMENT"/>
+    <signature target="InfDeclaracaoPrestacaoServico" type="ELEMENT" parent="Rps" attribute="id"/>
   </signatures>
 </teste>
 """
