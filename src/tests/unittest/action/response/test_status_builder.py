@@ -5,7 +5,7 @@ from xmlschema import XMLSchema
 
 from src.core.action.response import StatusBuilder
 from src.core.utils.constants import CONDITTIONS_MAP
-from src.tests.utils import build_output_file_path, get_xml
+from src.core.utils.xml_utils import build_output_file_path, get_xml
 
 
 class TestStatusBuilder(TestCase):

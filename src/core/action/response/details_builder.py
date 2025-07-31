@@ -1,7 +1,7 @@
 from lxml import etree
 from lxml.etree import _Element
 
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.utils.constants import DETAILS_IDS, KEYS_TAGS
 from src.core.utils.xml_utils import create_xpath, format_result
 

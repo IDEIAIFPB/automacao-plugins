@@ -4,7 +4,7 @@ import lxml.etree as etree
 from xmlschema import XMLSchema
 
 from src.core.action.response.details_builder import DetailsBuilder
-from src.tests.utils import get_xml
+from src.core.utils.xml_utils import get_xml
 
 
 class TestDetailsBuilder(TestCase):
