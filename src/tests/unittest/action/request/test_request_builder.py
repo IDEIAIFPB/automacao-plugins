@@ -42,7 +42,7 @@ class TestRequestBuilder(TestCase):
       <input>
         <document-mapper>emissao-mapper.xml</document-mapper>
         <signatures>
-          <signature attribute="Id" parent="Rps" target="InfDeclaracaoPrestacaoServico" type="ELEMENT"/>
+          <signature target="InfDeclaracaoPrestacaoServico" type="ELEMENT" parent="Rps" attribute="id"/>
         </signatures>
       </input>
       <content>

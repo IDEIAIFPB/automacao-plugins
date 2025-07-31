@@ -68,8 +68,9 @@ class PropertiesBuilder(ElementBuilder):
             if len(path_broken) >= 1:
                 signature["parent"] = path_broken[-1]
             for attribute in last_element.attributes:
-                signature["attribute"] = attribute
-                break
+                if attribute in ("Id", "id"):
+                    signature["attribute"] = attribute
+                    break
             self._metada.signature.append(signature)
             return tree
         if xsd_element in self._visited:
