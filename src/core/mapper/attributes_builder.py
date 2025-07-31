@@ -22,11 +22,13 @@ class AttributesBuilder(ElementBuilder):
         return property
 
     def _build(self, root: _Element, attributes: XsdAttributeGroup, property: _Element, variables_tree: _Element):
-        for attribute in attributes:
-            name = attribute
+        for attribute in attributes.iter_components():
+            if isinstance(attribute, XsdAttributeGroup):
+                continue
+            name = attribute.name
             attr = etree.SubElement(root, self._inner_tag, {"name": name})
-            if attribute in ("id", "Id"):
-                variable_name = f"{name}{property.get('name')}"
+            if name in ("id", "Id"):
+                variable_name = f"{name}{property.get('name')}" if property.get("name") else name
                 source_type = SourceType.RANDOM
                 source_args = {"rangeStart": "100000000", "rangeEnd": "999999999"}
                 self._variable_builder.build(variables_tree, variable_name, source_type, source_args)
@@ -34,7 +36,7 @@ class AttributesBuilder(ElementBuilder):
                 continue
 
             source_type = SourceType.STATIC
-            source_args = {"value": "TODO"}
+            source_args = {"value": "TODO" if not attribute.default else attribute.default}
             self._value_builder.build(attr, source_type, source_args)
 
         return root
