@@ -1,4 +1,20 @@
 <document-mapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="emissao-teste" xsi:noNamespaceSchemaLocation="../../../schemas/document-mapping.xsd">
+  <variables>
+    <variable id="idInfDeclaracaoPrestacaoServico">
+      <value>
+        <sources>
+          <random rangeStart="100000000" rangeEnd="999999999"/>
+        </sources>
+      </value>
+    </variable>
+    <variable id="idRps">
+      <value>
+        <sources>
+          <random rangeStart="100000000" rangeEnd="999999999"/>
+        </sources>
+      </value>
+    </variable>
+  </variables>
   <properties>
     <property name="GerarNfseEnvio">
       <properties>
@@ -9,7 +25,7 @@
                 <attribute name="id">
                   <value>
                     <sources>
-                      <random rangeStart="100000000" rangeEnd="999999999"/>
+                      <variable variableId="idInfDeclaracaoPrestacaoServico"/>
                     </sources>
                   </value>
                 </attribute>
@@ -20,7 +36,7 @@
                     <attribute name="id">
                       <value>
                         <sources>
-                          <random rangeStart="100000000" rangeEnd="999999999"/>
+                          <variable variableId="idRps"/>
                         </sources>
                       </value>
                     </attribute>
