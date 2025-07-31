@@ -1,7 +1,7 @@
 import lxml.etree as etree
 from lxml.etree import _Element
 
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.utils.xml_utils import create_xpath, format_result
 
 
@@ -33,6 +33,7 @@ class ConditionBuilder(ElementBuilder):
         targets_tags: dict,
     ):
         for condition in conditions_map.get("conditions", []):
+            target_tag_key = None
             if "target_tag_key" in condition.keys():
                 target_tag_key = condition.pop("target_tag_key") or ""
 

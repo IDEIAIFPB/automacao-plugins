@@ -2,7 +2,7 @@ import lxml.etree as etree
 from lxml.etree import _Element
 from xmlschema.validators import XsdElement
 
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.mapper.properties_builder import PropertiesBuilder
 
 
@@ -30,4 +30,5 @@ class MapperBuilder(ElementBuilder):
         return xml_root
 
     def _build(self, xml_root: _Element, xsd_element: XsdElement):
-        self._properties_builder.build(xml_root, xsd_element)
+        variables = etree.SubElement(xml_root, "variables")
+        self._properties_builder.build(xml_root, xsd_element, variables)

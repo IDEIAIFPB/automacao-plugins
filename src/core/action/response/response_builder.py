@@ -5,7 +5,7 @@ from xmlschema import XMLSchema
 from src.core.action.response.details_builder import DetailsBuilder
 from src.core.action.response.parameters_builder import ParametersBuilder
 from src.core.action.response.status_builder import StatusBuilder
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.utils.constants import CONDITTIONS_MAP
 from src.core.utils.xml_utils import get_element_by_message_name
 

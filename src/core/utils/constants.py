@@ -1,7 +1,5 @@
-TEMP_PATH = "./src/tests/temp"
-
 DETAILS_IDS = ["codigo", "mensagem", "correcao"]
-KEYS_TAGS = ["codigo_details", "mensagem_detail", "correcao_details"]
+KEYS_TAGS = ["codigo_details", "mensagem_details", "correcao_details"]
 
 CONDITTIONS_MAP = {
     "consulta": {
@@ -114,7 +112,3 @@ PARAMETERS_EMISSAO = {
     "RegimeEspecialTributacao": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/RegimeEspecialTributacao"],
     "Competencia": ["INPUT", "/SynchroId/PedidoEnvioRPS/RPS/Competencia"],
 }
-
-
-def build_output_file_path(file_name: str) -> str:
-    return f"{TEMP_PATH}/{file_name}"

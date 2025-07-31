@@ -2,7 +2,7 @@ import lxml.etree as etree
 from lxml.etree import _Element
 from xmlschema.validators import XsdElement
 
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 
 
 class SignaturesBuilder(ElementBuilder):
@@ -22,6 +22,5 @@ class SignaturesBuilder(ElementBuilder):
                 tree,
                 self._inner_tag,
                 signature,
-                attribute="Id",
             )
         return tree

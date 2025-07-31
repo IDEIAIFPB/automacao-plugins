@@ -14,11 +14,11 @@ class SourceBuilder(ElementBuilder):
         self._tag = "sources"
         self._props = JsonProperties()
         self._source_keys = {
-            SourceType.XML_PROPERTY: ["xpath"],
-            SourceType.RANDOM: ["rangeStart", "rangeEnd"],
-            SourceType.PARAMETER: ["name"],
             SourceType.STATIC: ["value"],
+            SourceType.RANDOM: ["rangeStart", "rangeEnd"],
             SourceType.VARIABLE: ["variableId"],
+            SourceType.PARAMETER: ["name"],
+            SourceType.XML_PROPERTY: ["xpath"],
         }
 
     def build(self, parent: _Element, source_args: dict[str:Any], source_type: SourceType) -> _Element:

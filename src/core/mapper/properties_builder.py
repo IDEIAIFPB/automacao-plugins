@@ -1,11 +1,10 @@
 from dataclasses import dataclass
-from typing import Optional
 
 import lxml.etree as etree
 from lxml.etree import _Element
 from xmlschema.validators import XsdElement, XsdGroup
 
-from src.core.element_mapper import ElementBuilder
+from src.core.element_builder import ElementBuilder
 from src.core.mapper.attributes_builder import AttributesBuilder
 from src.core.mapper.enum import SourceType
 from src.core.mapper.value import ValueBuilder
@@ -15,8 +14,11 @@ from src.core.mapper.value import ValueBuilder
 class PropertiesMetadata:
     # parent tag (str), target (str)
     signature = list()
-    #
     variable = dict()
+
+    def clear(self):
+        self.signature.clear()
+        self.variable.clear()
 
 
 class PropertiesBuilder(ElementBuilder):
@@ -42,9 +44,10 @@ class PropertiesBuilder(ElementBuilder):
             return f"{name}"
         return f"{xpath}/{name}"
 
-    def build(self, tree: _Element, xsd_element: XsdElement):
+    def build(self, tree: _Element, xsd_element: XsdElement, variables_tree: _Element):
         properties = etree.SubElement(tree, self._tag)
-        self._build(xsd_element, properties)
+        self._metada.clear()
+        self._build(xsd_element, properties, variables_tree)
         return tree
 
     def _is_element_available(self, xsd_element: XsdElement) -> bool:
@@ -54,16 +57,21 @@ class PropertiesBuilder(ElementBuilder):
             return False
         return True
 
-    def _build(self, xsd_element: XsdElement, tree: Optional[_Element] = None, xpath="", last_element_name: str = None):
+    def _build(
+        self, xsd_element: XsdElement, tree: _Element, variables_tree: _Element, xpath="", last_element: str = None
+    ):
         name = self._get_element_name(xsd_element)
         if self._get_element_name(xsd_element) == "Signature":
             path_broken = xpath.split("/")
-            target = last_element_name
+            target = self._get_element_name(last_element) if last_element else None
+            signature = {"target": target, "type": "ELEMENT"}
             if len(path_broken) >= 1:
-                parent = path_broken[-1]
-                self._metada.signature.append({"parent": parent, "target": target, "type": "ELEMENT"})
-                return tree
-            self._metada.signature.append({"target": target, "type": "ELEMENT"})
+                signature["parent"] = path_broken[-1]
+            for attribute in last_element.attributes:
+                if attribute in ("Id", "id"):
+                    signature["attribute"] = attribute
+                    break
+            self._metada.signature.append(signature)
             return tree
         if xsd_element in self._visited:
             return tree
@@ -78,7 +86,7 @@ class PropertiesBuilder(ElementBuilder):
         attributes = xsd_element.attributes
 
         if attributes:
-            self._attributes_builder.build(property, attributes)
+            self._attributes_builder.build(property, attributes, variables_tree)
 
         is_not_group = not isinstance(xsd_element, XsdGroup)
         has_no_content = not getattr(xsd_type, "content", False)  # tipos anonimos
@@ -89,7 +97,7 @@ class PropertiesBuilder(ElementBuilder):
 
         properties = etree.SubElement(property, self._tag)
         for sub_element in xsd_element:
-            self._build(sub_element, properties, current_path, last_element_name)
-            last_element_name = self._get_element_name(sub_element)
+            self._build(sub_element, properties, variables_tree, current_path, last_element)
+            last_element = sub_element
 
         return tree
