@@ -18,6 +18,7 @@ custom_theme = Theme(
         "warning": "yellow",  # Amarelo
         "error": "red",  # Vermelho
         "critical": "magenta",  # Magenta
+        "exception": "red",  # Vermelho negrito
     }
 )
 
