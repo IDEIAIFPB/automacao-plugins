@@ -5,8 +5,8 @@ from lxml import etree
 
 from src.core.action.action_builder import ActionBuilder
 from src.core.action.response.response_builder import ResponseBuilder
+from src.core.utils.xml_utils import build_output_file_path, get_xml
 from src.mapper import Mapper
-from src.tests.utils import build_output_file_path, get_xml
 
 
 class TestResponseBuilder(TestCase):

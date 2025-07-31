@@ -3,7 +3,7 @@ from unittest import TestCase, main
 import lxml.etree as etree
 from xmlschema import XMLSchema
 
-from src.tests.utils import create_xpath, format_result, get_element_by_message_name, get_xml
+from src.core.utils.xml_utils import create_xpath, format_result, get_element_by_message_name, get_xml
 
 
 class TestXmlUtils(TestCase):

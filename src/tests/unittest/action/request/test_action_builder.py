@@ -3,8 +3,8 @@ from unittest import TestCase, main
 from lxml import etree
 
 from src.core.action import ActionBuilder
+from src.core.utils.xml_utils import build_output_file_path, get_xml
 from src.mapper import Mapper
-from src.tests.utils import build_output_file_path, get_xml
 
 
 class TestActionBuilder(TestCase):

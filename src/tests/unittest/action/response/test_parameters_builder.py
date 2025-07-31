@@ -4,8 +4,8 @@ import lxml.etree as etree
 from xmlschema import XMLSchema
 
 from src.core.action.response import ParametersBuilder
+from src.core.utils.xml_utils import build_output_file_path, get_xml
 from src.mapper import Mapper
-from src.tests.utils import build_output_file_path, get_xml
 
 
 class TestParametersBuilder(TestCase):
