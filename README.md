@@ -4,18 +4,33 @@ Uma ferramenta para converter automaticamente arquivos XSD em documentos de mape
 
 ## Instalação
 
-Para instalar a ferramenta, clone o repositório e instale usando pip:
+Para fazer o build do projeto, você precisa ter o Python 3.8 ou superior instalado.
+Você pode instalar o Syncpl usando o `uv` (um gerenciador de pacotes para Python):
 
 ```bash
-# Clone o repositório
-git clone https://github.com/IDEIAIFPB/automacao-plugins
-
-# Entre no diretório
-cd syncpl
-
-# Instale o pacote em modo de desenvolvimento
-pip install -e .
+uv build
 ```
+
+```bash
+pip install dist/syncpl-0.0.1-py3-none-any.whl
+```
+
+Para contribuir com o desenvolvimento é necessáiro que:
+
+1. Instale as dependências do projeto
+    ```bash
+    uv sync
+    ```
+
+2. Ative a venv
+   ```bash
+    source .venv/bin/activate
+    ```
+
+3. Instale o pre-commit (formatador de código)
+    ```bash
+    pre-commit install
+    ```
 
 ## Uso
 
@@ -35,24 +50,60 @@ syncpl list-elements caminho/para/seu/arquivo.xsd
 ```
 Isso exibirá uma lista de todos os elementos RAIZ disponíveis no arquivo XSD.
 
-#### Gerar um documento de mapeamento
+#### Gerar um Plugin
 
 ```bash
-syncpl generate caminho/para/seu/arquivo.xsd --root NomeDoElementoRaiz --output saida.xml
+#comando básico
+syncpl generate caminho/para/arquivo.xsd --root NomeDoElementoRaiz --output saida.xml
+
+# Comando completo com action
+syncpl generate resources/xsd-files/NFSE.xsd \
+  --root EnviarLoteRpsEnvio \
+  --output cli.xml \
+  --id emissao-campina \
+  --operation RecepcionarLoteRps \
+  --response EnviarLoteRpsResposta \
+  --wsdl resources/wsdl-files/nfse04.wsdl \
+  --action-output cli-action.xml \
+  --targets '{"numero_param": "NumeroLote", "protocolo_param": "Protocolo"}'
 ```
 
 ### Parâmetros
 
-- `--root`, `-r`: Nome do elemento raiz para iniciar o mapeamento (obrigatório).
-- `--output`, `-o`: Caminho para o arquivo XML de saída. Se não for fornecido, será usado o mesmo nome do arquivo XSD, mas com extensão .xml.
-- `--id`: Identificador para o documento de mapeamento (padrão: "auto-generated").
-- `--xpath-prefix`, `-x`: Prefixo para os caminhos XPath no documento de mapeamento (padrão: "/SynchroId/PedidoEnvioRPS/RPS").
-- `--properties`, `-p`: Caminho para o arquivo de propriedades (padrão: "properties.json"). 
+**Obrigatórios:**
+- `xsd_file`: Caminho para o arquivo XSD de entrada (argumento posicional)
+- `--root`, `-r`: Nome do elemento raiz para iniciar o mapeamento
+
+**Opcionais:**
+- `--output`, `-o`: Caminho para o arquivo XML de saída (padrão: mesmo nome do XSD com extensão .xml)
+- `--id`: Identificador para o documento de mapeamento (padrão: "auto-generated")
+- `--operation`: Tag referente à operação desejada (para geração de action)
+- `--response`: Tag inicial do xml de resposta da prefeitura (para geração de action)
+- `--wsdl`: Caminho para o arquivo WSDL referente ao plugin (para geração de action)
+- `--action-output`: Caminho para o arquivo XML de saída do action
+- `--targets`: Dicionário com tags finais em formato JSON (para geração de action)
+
+**Nota:** Para gerar o arquivo action, todos os parâmetros relacionados ao action são obrigatórios: `--operation`, `--response`, `--wsdl`, `--action-output` e `--targets`.
 
 ## Exemplo
 
-Arquivo xsd `nfse-v2-02.xsd` e queira gerar um mapeamento para o elemento raiz `GerarNfseEnvio`:
+Arquivo xsd `nfse.xsd` e queira gerar um mapeamento para o elemento raiz `EnviarLoteRpsEnvio`:
 
 ```bash
-syncpl generate ./xsd--files/nfse-v2-02.xsd --root GerarNfseEnvio --output emissao-mapper.xml --properties properties.json
+syncpl generate resources/xsd-files/NFSE.xsd cli.xml EnviarLoteRpsEnvio emissao-campina RecepcionarLoteRps EnviarLoteRpsResposta resources/wsdl-files/nfse04.wsdl cli-action.xml '{
+            "numero_param": "NumeroLote",
+            "protocolo_param": "Protocolo",
+            "aliquota_param": "Aliquota",
+            "codigo_verificacao_param": "CodigoVerificacao",
+            "codigo_details": "Codigo",
+            "mensagem_detail": "Mensagem",
+            "correcao_details": "Correcao",
+            "numero_consulta": "NumeroLote",
+            "codigo_cancelamento_consulta": "Codigo",
+            "codigo_consulta": "Codigo",
+            "data_hora": "DataHora",
+            "codigo_cancelamento": "Codigo",
+            "codigo_emissao": "Codigo",
+            "numero_emissao": "NumeroLote"
+        }'
 ```

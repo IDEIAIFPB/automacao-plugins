@@ -111,3 +111,5 @@ dmypy.json
 .vscode/
 *.swp
 *.swo
+
+src/tests/temp/*.xml

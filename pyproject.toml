@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "syncpl"
+version = "0.0.1"
+description = "Syncpl é uma ferramenta para converter arquivos XSD em documentos de mapeamento XML"
+requires-python = ">=3.10"
+dependencies = [
+    "typer",
+    "rich",
+    "lxml",
+    "xmlschema>=4.1.0",
+    "pymupdf>=1.26.3",
+    "python-dotenv>=1.1.1",
+    "pgvector>=0.4.1",
+    "psycopg2-binary>=2.9.10",
+    "google-generativeai>=0.8.5",
+    "sentence-transformers>=5.0.0",
+    "tiktoken>=0.9.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pre-commit",
+    "lxml"
+]
+lint = [
+    "ruff>=0.11.6"
+]
+
+[project.scripts]
+syncpl = "src.syncpl:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+exclude = [
+    "tests/",
+    "*.pyc",
+    "*.pyo",
+    "__pycache__/",
+    ".git/",
+    ".pytest_cache/",
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "README.md",
+]
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py310"
+
+[tool.ruff.lint]
+extend-select = ["I"]
+ignore = ["E402"]
+
+[tool.uv]
+package = true
